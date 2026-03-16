@@ -4,14 +4,26 @@ import { ANIMALS, MOCK_RESULTS } from './constants';
 import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-// --- Canonical Tag Manager ---
-function CanonicalTag() {
+// --- SEO Manager ---
+function SEO({ title, description }: { title: string; description?: string }) {
   const location = useLocation();
   const baseUrl = process.env.APP_URL || window.location.origin;
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
   const canonicalUrl = `${cleanBaseUrl}${location.pathname}`;
 
   useEffect(() => {
+    document.title = title;
+    
+    if (description) {
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.setAttribute('content', description);
+    }
+
     let link: HTMLLinkElement | null = document.querySelector("link[rel='canonical']");
     if (!link) {
       link = document.createElement("link");
@@ -19,7 +31,7 @@ function CanonicalTag() {
       document.head.appendChild(link);
     }
     link.setAttribute("href", canonicalUrl);
-  }, [canonicalUrl]);
+  }, [title, description, canonicalUrl]);
 
   return null;
 }
@@ -124,7 +136,6 @@ function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      <CanonicalTag />
       <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       <header className="bg-emerald-600 text-white shadow-md sticky top-0 z-50">
@@ -241,6 +252,10 @@ function Layout({ children }: { children: ReactNode }) {
 function HomePage() {
   return (
     <>
+      <SEO 
+        title="Puxada do Bicho: Guia Completo das Puxadas dos 25 Animais" 
+        description="Guia de puxadas do jogo do bicho com tabela completa dos 25 animais. Descubra qual bicho puxa outro e veja as combinações mais usadas."
+      />
       <section className="bg-emerald-700 text-white py-12 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-4">Guia de Puxadas do Jogo do Bicho</h2>
