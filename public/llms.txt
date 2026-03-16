@@ -1,6 +1,6 @@
 # Puxadas do Bicho
 
-O portal mais completo para conferir os resultados do Jogo do Bicho em tempo real e entender as puxadas de cada animal.
+O portal especializado em puxadas do Jogo do Bicho. Entenda as tendências e estatísticas de quais animais costumam aparecer após o sorteio de outros.
 
 ## Core Pages
 

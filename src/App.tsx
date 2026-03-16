@@ -169,7 +169,7 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
             <div className="p-6 border-t border-slate-100 bg-slate-50">
               <p className="text-[10px] text-slate-400 leading-tight">
-                © 2026 Puxadas do Bicho. Informações rápidas e precisas para você.
+                © 2026 Puxadas do Bicho. O guia completo de puxadas.
               </p>
             </div>
           </motion.div>
@@ -254,8 +254,9 @@ function Layout({ children }: { children: ReactNode }) {
                 Puxadas do Bicho
               </div>
               <p className="text-sm leading-relaxed">
-                O portal mais completo para conferir os resultados do Jogo do Bicho em tempo real. 
-                Informação rápida e precisa para você.
+                O portal especializado em puxadas do Jogo do Bicho. Entenda as tendências e 
+                estatísticas de quais animais costumam aparecer após o sorteio de outros, 
+                com base em tabelas históricas e padrões de sorteio.
               </p>
             </div>
             <div>
