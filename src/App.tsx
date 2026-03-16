@@ -336,7 +336,7 @@ function HomePage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {ANIMALS.map((animal) => (
             <Link 
-              to={`/puxadas/${animal.name.toLowerCase()}`} 
+              to={`/puxadas/${animal.slug}`} 
               key={animal.id}
               className="group bg-white p-6 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all text-center flex flex-col items-center"
             >
@@ -397,7 +397,7 @@ function PuxadasPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {filteredAnimals.map((animal) => (
             <Link 
-              to={`/puxadas/${animal.name.toLowerCase()}`} 
+              to={`/puxadas/${animal.slug}`} 
               key={animal.id}
               className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-lg transition-all text-center"
             >
@@ -432,7 +432,7 @@ function PuxadasPage() {
 function AnimalDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
-  const animal = ANIMALS.find(a => a.name.toLowerCase() === name?.toLowerCase());
+  const animal = ANIMALS.find(a => a.slug === name?.toLowerCase());
 
   if (!animal) {
     return (
@@ -491,7 +491,7 @@ function AnimalDetailPage() {
                 const puxadaAnimal = ANIMALS.find(a => a.name === puxadaName);
                 return (
                   <Link 
-                    to={`/puxadas/${puxadaName.toLowerCase()}`}
+                    to={`/puxadas/${puxadaAnimal?.slug || puxadaName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`}
                     key={puxadaName}
                     className="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group"
                   >
@@ -524,7 +524,7 @@ function AnimalDetailPage() {
               {recommendedPuxadas.map((recAnimal) => {
                 return (
                   <Link 
-                    to={`/puxadas/${recAnimal.name.toLowerCase()}`}
+                    to={`/puxadas/${recAnimal.slug}`}
                     key={recAnimal.name}
                     className="flex-shrink-0 w-36 p-5 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group shadow-sm hover:shadow-md"
                   >
@@ -656,7 +656,7 @@ function PalpitesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {palpites.animals.map((animal) => (
               <Link 
-                to={`/puxadas/${animal.name.toLowerCase()}`}
+                to={`/puxadas/${animal.slug}`}
                 key={animal.id} 
                 className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group"
               >

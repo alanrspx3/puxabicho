@@ -1,6 +1,7 @@
 export interface Animal {
   id: number;
   name: string;
+  slug: string;
   numbers: number[];
   emoji: string;
   puxadas?: string[];
