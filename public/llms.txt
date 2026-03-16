@@ -1,0 +1,39 @@
+# Puxadas do Bicho
+
+O portal mais completo para conferir os resultados do Jogo do Bicho em tempo real e entender as puxadas de cada animal.
+
+## Core Pages
+
+- [Home](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/): Resultados em tempo real e visão geral.
+- [Guia de Puxadas](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas): Lista completa dos 25 animais e suas respectivas puxadas.
+- [Palpites do Dia](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/palpites): Sugestões de grupos, centenas e milhares baseadas em algoritmos de sorte.
+
+## Animal Details
+
+Informações detalhadas, história e o que cada animal "puxa":
+
+- [Avestruz](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/avestruz)
+- [Águia](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/aguia)
+- [Burro](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/burro)
+- [Borboleta](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/borboleta)
+- [Cachorro](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/cachorro)
+- [Cabra](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/cabra)
+- [Carneiro](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/carneiro)
+- [Camelo](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/camelo)
+- [Cobra](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/cobra)
+- [Coelho](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/coelho)
+- [Cavalo](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/cavalo)
+- [Elefante](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/elefante)
+- [Galo](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/galo)
+- [Gato](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/gato)
+- [Jacaré](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/jacare)
+- [Leão](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/leao)
+- [Macaco](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/macaco)
+- [Porco](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/porco)
+- [Pavão](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/pavao)
+- [Peru](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/peru)
+- [Touro](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/touro)
+- [Tigre](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/tigre)
+- [Urso](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/urso)
+- [Veado](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/veado)
+- [Vaca](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/vaca)
