@@ -7,6 +7,9 @@ O portal especializado em puxadas do Jogo do Bicho. Entenda as tendências e est
 - [Home](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/): Resultados em tempo real e visão geral.
 - [Guia de Puxadas](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas): Lista completa dos 25 animais e suas respectivas puxadas.
 - [Palpites do Dia](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/palpites): Sugestões de grupos, centenas e milhares baseadas em algoritmos de sorte.
+- [Estatísticas](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/estatisticas): Análise de frequência, correlação com a Federal e calculadora de inversões.
+- [O que são Puxadas?](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/o-que-e-puxada): Guia educativo completo sobre o conceito de puxadas.
+- [Metodologia](https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/metodologia): Explicação técnica sobre como os dados são processados.
 
 ## Animal Details
 
