@@ -318,28 +318,65 @@ function HomePage() {
 
 // --- Puxadas Page ---
 function PuxadasPage() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredAnimals = useMemo(() => {
+    return ANIMALS.filter(animal => 
+      animal.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-slate-800 mb-2">Guia de Puxadas</h2>
-        <p className="text-slate-500">Clique em um animal para ver quais bichos ele "puxa" e conhecer sua história.</p>
+      <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-bold text-slate-800 mb-2">Guia de Puxadas</h2>
+          <p className="text-slate-500">Clique em um animal para ver quais bichos ele "puxa" e conhecer sua história.</p>
+        </div>
+        
+        <div className="relative w-full md:w-72">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input
+            type="text"
+            placeholder="Buscar animal..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {ANIMALS.map((animal) => (
-          <Link 
-            to={`/puxadas/${animal.name.toLowerCase()}`} 
-            key={animal.id}
-            className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-lg transition-all text-center"
+      {filteredAnimals.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {filteredAnimals.map((animal) => (
+            <Link 
+              to={`/puxadas/${animal.name.toLowerCase()}`} 
+              key={animal.id}
+              className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-lg transition-all text-center"
+            >
+              <motion.div whileHover={{ scale: 1.1 }}>
+                <div className="text-4xl mb-3">{animal.emoji}</div>
+                <div className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{animal.name}</div>
+                <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {animal.id.toString().padStart(2, '0')}</div>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="py-20 text-center">
+          <div className="text-slate-300 mb-4 flex justify-center">
+            <Search size={48} />
+          </div>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">Nenhum animal encontrado</h3>
+          <p className="text-slate-500">Tente buscar por outro nome.</p>
+          <button 
+            onClick={() => setSearchTerm('')}
+            className="mt-4 text-emerald-600 font-bold hover:underline"
           >
-            <motion.div whileHover={{ scale: 1.1 }}>
-              <div className="text-4xl mb-3">{animal.emoji}</div>
-              <div className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{animal.name}</div>
-              <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {animal.id.toString().padStart(2, '0')}</div>
-            </motion.div>
-          </Link>
-        ))}
-      </div>
+            Limpar busca
+          </button>
+        </div>
+      )}
     </div>
   );
 }
