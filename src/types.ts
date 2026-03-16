@@ -4,6 +4,7 @@ export interface Animal {
   slug: string;
   numbers: number[];
   emoji: string;
+  imageUrl?: string;
   puxadas?: string[];
   history?: string;
 }

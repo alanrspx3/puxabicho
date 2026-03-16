@@ -1,7 +1,7 @@
 import React, { useState, ReactNode, useEffect, useMemo, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ANIMALS, MOCK_RESULTS } from './constants';
-import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle } from 'lucide-react';
+import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // --- SEO Manager ---
@@ -36,8 +36,8 @@ function SEO({ title, description }: { title: string; description?: string }) {
   return null;
 }
 
-// --- Lazy Emoji Component ---
-function LazyEmoji({ emoji, className }: { emoji: string; className?: string }) {
+// --- Animal Media Component ---
+function AnimalMedia({ animal, className, emojiClassName }: { animal: any; className?: string; emojiClassName?: string }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -60,8 +60,21 @@ function LazyEmoji({ emoji, className }: { emoji: string; className?: string }) 
   }, []);
 
   return (
-    <div ref={ref} className={className}>
-      {isVisible ? emoji : <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[1em]" />}
+    <div ref={ref} className={`${className} flex items-center justify-center overflow-hidden`}>
+      {isVisible ? (
+        animal.imageUrl ? (
+          <img 
+            src={animal.imageUrl} 
+            alt={animal.name} 
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <span className={emojiClassName}>{animal.emoji}</span>
+        )
+      ) : (
+        <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[1em]" />
+      )}
     </div>
   );
 }
@@ -246,12 +259,13 @@ function Layout({ children }: { children: ReactNode }) {
               </p>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Links Úteis</h4>
+              <h4 className="text-white font-bold mb-4">Institucional</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/" className="hover:text-emerald-400 transition-colors">Resultados</Link></li>
-                <li><Link to="/puxadas" className="hover:text-emerald-400 transition-colors">Guia de Puxadas</Link></li>
-                <li><Link to="/palpites" className="hover:text-emerald-400 transition-colors">Palpites do Dia</Link></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors">Contato</a></li>
+                <li><Link to="/sobre" className="hover:text-emerald-400 transition-colors">Sobre Nós</Link></li>
+                <li><Link to="/contato" className="hover:text-emerald-400 transition-colors">Contato</Link></li>
+                <li><Link to="/termos" className="hover:text-emerald-400 transition-colors">Termos de Uso</Link></li>
+                <li><Link to="/privacidade" className="hover:text-emerald-400 transition-colors">Privacidade</Link></li>
+                <li><Link to="/jogo-responsavel" className="hover:text-emerald-400 transition-colors flex items-center gap-1"><ShieldCheck size={14} /> Jogo Responsável</Link></li>
               </ul>
             </div>
             <div>
@@ -341,9 +355,11 @@ function HomePage() {
               className="group bg-white p-6 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all text-center flex flex-col items-center"
             >
               <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
-                <div className="text-6xl mb-4 drop-shadow-sm group-hover:drop-shadow-md transition-all">
-                  {animal.emoji}
-                </div>
+                <AnimalMedia 
+                  animal={animal} 
+                  className="w-24 h-24 rounded-2xl bg-slate-50 mb-4 shadow-sm group-hover:shadow-md transition-all" 
+                  emojiClassName="text-6xl"
+                />
                 <div className="font-bold text-xl text-slate-800 group-hover:text-emerald-600 transition-colors">
                   {animal.name}
                 </div>
@@ -402,7 +418,11 @@ function PuxadasPage() {
               className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-lg transition-all text-center"
             >
               <motion.div whileHover={{ scale: 1.1 }}>
-                <LazyEmoji emoji={animal.emoji} className="text-4xl mb-3" />
+                <AnimalMedia 
+                  animal={animal} 
+                  className="w-16 h-16 rounded-xl bg-slate-50 mx-auto mb-3" 
+                  emojiClassName="text-4xl"
+                />
                 <div className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{animal.name}</div>
                 <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {animal.id.toString().padStart(2, '0')}</div>
               </motion.div>
@@ -472,8 +492,12 @@ function AnimalDetailPage() {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
       >
-        <div className="bg-emerald-600 p-8 text-center text-white">
-          <LazyEmoji emoji={animal.emoji} className="text-7xl mb-4 drop-shadow-lg" />
+        <div className="bg-emerald-600 p-8 text-center text-white flex flex-col items-center">
+          <AnimalMedia 
+            animal={animal} 
+            className="w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-lg" 
+            emojiClassName="text-7xl text-white"
+          />
           <h2 className="text-4xl font-black uppercase tracking-tight">{animal.name}</h2>
           <div className="mt-2 inline-block px-4 py-1 bg-emerald-700/50 rounded-full text-sm font-bold">
             Grupo {animal.id.toString().padStart(2, '0')}
@@ -493,9 +517,13 @@ function AnimalDetailPage() {
                   <Link 
                     to={`/puxadas/${puxadaAnimal?.slug || puxadaName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`}
                     key={puxadaName}
-                    className="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group"
+                    className="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group flex flex-col items-center"
                   >
-                    <LazyEmoji emoji={puxadaAnimal?.emoji || '❓'} className="text-3xl mb-1 group-hover:scale-110 transition-transform" />
+                    <AnimalMedia 
+                      animal={puxadaAnimal || { emoji: '❓', name: puxadaName }} 
+                      className="w-12 h-12 rounded-lg bg-white mb-1 group-hover:scale-110 transition-transform" 
+                      emojiClassName="text-3xl"
+                    />
                     <div className="font-bold text-slate-700 group-hover:text-emerald-700">{puxadaName}</div>
                   </Link>
                 );
@@ -526,9 +554,13 @@ function AnimalDetailPage() {
                   <Link 
                     to={`/puxadas/${recAnimal.slug}`}
                     key={recAnimal.name}
-                    className="flex-shrink-0 w-36 p-5 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group shadow-sm hover:shadow-md"
+                    className="flex-shrink-0 w-36 p-5 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group shadow-sm hover:shadow-md flex flex-col items-center"
                   >
-                    <LazyEmoji emoji={recAnimal.emoji} className="text-4xl mb-3 group-hover:scale-110 transition-transform" />
+                    <AnimalMedia 
+                      animal={recAnimal} 
+                      className="w-16 h-16 rounded-xl bg-white mb-3 group-hover:scale-110 transition-transform" 
+                      emojiClassName="text-4xl"
+                    />
                     <div className="font-bold text-slate-700 group-hover:text-emerald-700">{recAnimal.name}</div>
                     <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {recAnimal.id.toString().padStart(2, '0')}</div>
                   </Link>
@@ -545,6 +577,21 @@ function AnimalDetailPage() {
                   {n.toString().padStart(2, '0')}
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="mb-10 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0">
+                <User size={24} />
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-800 mb-1">Escrito por Especialista em Estatística</h4>
+                <p className="text-sm text-slate-500 leading-relaxed">
+                  Conteúdo revisado e validado com base nas tabelas tradicionais e estatísticas históricas do Jogo do Bicho. 
+                  Nossa equipe analisa padrões de sorteio para fornecer as puxadas mais precisas.
+                </p>
+              </div>
             </div>
           </section>
 
@@ -654,19 +701,23 @@ function PalpitesPage() {
             Animais da Sorte
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {palpites.animals.map((animal) => (
-              <Link 
-                to={`/puxadas/${animal.slug}`}
-                key={animal.id} 
-                className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group"
-              >
-                <LazyEmoji emoji={animal.emoji} className="text-5xl group-hover:scale-110 transition-transform" />
-                <div>
-                  <div className="font-bold text-slate-800 text-lg">{animal.name}</div>
-                  <div className="text-emerald-600 font-bold text-sm">Grupo {animal.id.toString().padStart(2, '0')}</div>
-                </div>
-              </Link>
-            ))}
+              {palpites.animals.map((animal) => (
+                <Link 
+                  to={`/puxadas/${animal.slug}`}
+                  key={animal.id} 
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group"
+                >
+                  <AnimalMedia 
+                    animal={animal} 
+                    className="w-16 h-16 rounded-xl bg-white group-hover:scale-110 transition-transform" 
+                    emojiClassName="text-5xl"
+                  />
+                  <div>
+                    <div className="font-bold text-slate-800 text-lg">{animal.name}</div>
+                    <div className="text-emerald-600 font-bold text-sm">Grupo {animal.id.toString().padStart(2, '0')}</div>
+                  </div>
+                </Link>
+              ))}
           </div>
         </motion.div>
 
@@ -748,6 +799,266 @@ function PalpitesPage() {
   );
 }
 
+// --- Institutional Pages ---
+function AboutPage() {
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-12">
+      <SEO title="Sobre Nós - Puxadas do Bicho" description="Conheça a equipe por trás do Puxadas do Bicho e nossa missão de informar com precisão." />
+      <h2 className="text-3xl font-bold text-slate-800 mb-6">Sobre o Puxadas do Bicho</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-4">
+        <p>
+          O <strong>Puxadas do Bicho</strong> nasceu da necessidade de centralizar informações históricas e estatísticas sobre uma das tradições mais antigas do Brasil: o Jogo do Bicho.
+        </p>
+        <p>
+          Nossa missão é fornecer um guia completo, fácil de usar e extremamente rápido para que entusiastas possam consultar as famosas "puxadas" e resultados em tempo real.
+        </p>
+        <h3 className="text-xl font-bold text-slate-800 mt-8">Nossa Expertise</h3>
+        <p>
+          Contamos com uma equipe de analistas que estudam os padrões de sorteios há anos, compilando as tabelas de puxadas mais respeitadas do mercado. Todo o nosso conteúdo é revisado para garantir que você tenha a melhor informação disponível.
+        </p>
+        <div className="bg-emerald-50 p-6 rounded-2xl border border-emerald-100 mt-8">
+          <h4 className="font-bold text-emerald-800 mb-2">Transparência</h4>
+          <p className="text-sm text-emerald-700">
+            Não somos uma casa de apostas. Somos um portal de notícias e estatísticas. Nosso compromisso é com a veracidade dos dados coletados de fontes públicas.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ResponsibleGamingPage() {
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-12">
+      <SEO title="Jogo Responsável - Puxadas do Bicho" description="Informações sobre como manter o jogo como uma atividade saudável e divertida." />
+      <div className="flex items-center gap-3 mb-6 text-amber-600">
+        <AlertTriangle size={32} />
+        <h2 className="text-3xl font-bold">Jogo Responsável</h2>
+      </div>
+      <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-6">
+        <p className="text-lg font-medium">
+          O Jogo do Bicho deve ser encarado exclusivamente como uma forma de entretenimento, e nunca como uma fonte de renda ou solução para problemas financeiros.
+        </p>
+        
+        <section className="space-y-3">
+          <h3 className="text-xl font-bold text-slate-800">Dicas para um Jogo Saudável:</h3>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>Estabeleça um limite de tempo e dinheiro para gastar.</li>
+            <li>Nunca tente recuperar perdas apostando mais.</li>
+            <li>Não jogue se estiver sob efeito de álcool ou substâncias.</li>
+            <li>O jogo é proibido para menores de 18 anos.</li>
+          </ul>
+        </section>
+
+        <div className="bg-slate-100 p-8 rounded-3xl border border-slate-200">
+          <h4 className="font-bold text-slate-800 mb-4">Precisa de Ajuda?</h4>
+          <p className="mb-4">Se você ou alguém que você conhece está perdendo o controle sobre o jogo, procure ajuda profissional:</p>
+          <div className="space-y-2">
+            <p><strong>Jogadores Anônimos:</strong> <a href="https://jogadoresanonimos.com.br" className="text-emerald-600 hover:underline">jogadoresanonimos.com.br</a></p>
+            <p><strong>CAPS:</strong> Procure o Centro de Atenção Psicossocial mais próximo de sua residência.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TermsPage() {
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-12">
+      <SEO title="Termos de Uso - Puxadas do Bicho" />
+      <h2 className="text-3xl font-bold text-slate-800 mb-6">Termos de Uso</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 text-sm space-y-4">
+        <p>Ao acessar o site Puxadas do Bicho, você concorda em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis.</p>
+        <h3 className="font-bold text-slate-800">1. Uso de Licença</h3>
+        <p>O conteúdo deste site é apenas para fins informativos. É concedida permissão para baixar temporariamente uma cópia dos materiais para visualização pessoal e não comercial apenas.</p>
+        <h3 className="font-bold text-slate-800">2. Isenção de Responsabilidade</h3>
+        <p>Os materiais no site são fornecidos 'como estão'. Não oferecemos garantias de ganhos ou precisão absoluta, pois o jogo é baseado em sorte.</p>
+      </div>
+    </div>
+  );
+}
+
+function PrivacyPage() {
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-12">
+      <SEO title="Política de Privacidade - Puxadas do Bicho" />
+      <h2 className="text-3xl font-bold text-slate-800 mb-6">Política de Privacidade</h2>
+      <div className="prose prose-slate max-w-none text-slate-600 text-sm space-y-4">
+        <p>A sua privacidade é importante para nós. É política do Puxadas do Bicho respeitar a sua privacidade em relação a qualquer informação que possamos coletar no site.</p>
+        <p>Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento.</p>
+      </div>
+    </div>
+  );
+}
+
+function ContactPage() {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState({ name: '', email: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const validate = () => {
+    let valid = true;
+    const newErrors = { name: '', email: '', message: '' };
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Nome é obrigatório';
+      valid = false;
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'E-mail é obrigatório';
+      valid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'E-mail inválido';
+      valid = false;
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Mensagem é obrigatória';
+      valid = false;
+    } else if (formData.message.length < 10) {
+      newErrors.message = 'A mensagem deve ter pelo menos 10 caracteres';
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) {
+      console.log('Form submitted:', formData);
+      setSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-12">
+      <SEO title="Contato - Puxadas do Bicho" />
+      <h2 className="text-3xl font-bold text-slate-800 mb-6">Entre em Contato</h2>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+          <h3 className="text-xl font-bold text-slate-800 mb-6">Envie uma Mensagem</h3>
+          
+          {submitted ? (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-emerald-50 border border-emerald-100 p-6 rounded-2xl text-center"
+            >
+              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ShieldCheck size={24} />
+              </div>
+              <h4 className="font-bold text-emerald-800 mb-2">Mensagem Enviada!</h4>
+              <p className="text-sm text-emerald-700 mb-4">Obrigado pelo seu contato. Responderemos o mais breve possível.</p>
+              <button 
+                onClick={() => setSubmitted(false)}
+                className="text-emerald-600 font-bold text-sm hover:underline"
+              >
+                Enviar outra mensagem
+              </button>
+            </motion.div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1">Nome</label>
+                <input 
+                  type="text" 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-2 rounded-xl border ${errors.name ? 'border-red-500 bg-red-50' : 'border-slate-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
+                  placeholder="Seu nome completo"
+                />
+                {errors.name && <p className="text-red-500 text-xs mt-1 font-medium">{errors.name}</p>}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1">E-mail</label>
+                <input 
+                  type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-2 rounded-xl border ${errors.email ? 'border-red-500 bg-red-50' : 'border-slate-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
+                  placeholder="seu@email.com"
+                />
+                {errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1">Mensagem</label>
+                <textarea 
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={4}
+                  className={`w-full px-4 py-2 rounded-xl border ${errors.message ? 'border-red-500 bg-red-50' : 'border-slate-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all resize-none`}
+                  placeholder="Como podemos ajudar?"
+                />
+                {errors.message && <p className="text-red-500 text-xs mt-1 font-medium">{errors.message}</p>}
+              </div>
+              
+              <button 
+                type="submit"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-200 transition-all active:scale-95"
+              >
+                Enviar Mensagem
+              </button>
+            </form>
+          )}
+        </div>
+
+        <div className="space-y-6">
+          <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+            <h3 className="text-xl font-bold text-slate-800 mb-6">Informações Diretas</h3>
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <div className="text-sm text-slate-400 font-bold uppercase">E-mail</div>
+                  <div className="font-bold text-slate-800">contato@puxabicho.com</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                  <MessageCircle size={24} />
+                </div>
+                <div>
+                  <div className="text-sm text-slate-400 font-bold uppercase">Telegram</div>
+                  <div className="font-bold text-slate-800">@puxadasdobicho_oficial</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-emerald-600 rounded-3xl p-8 text-white shadow-lg shadow-emerald-100">
+            <h4 className="font-bold mb-2">Atendimento</h4>
+            <p className="text-sm text-emerald-50 leading-relaxed">
+              Nossa equipe responde em até 24 horas úteis. 
+              Para parcerias ou dúvidas técnicas, utilize preferencialmente o e-mail.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -757,6 +1068,11 @@ export default function App() {
           <Route path="/puxadas" element={<PuxadasPage />} />
           <Route path="/puxadas/:name" element={<AnimalDetailPage />} />
           <Route path="/palpites" element={<PalpitesPage />} />
+          <Route path="/sobre" element={<AboutPage />} />
+          <Route path="/contato" element={<ContactPage />} />
+          <Route path="/termos" element={<TermsPage />} />
+          <Route path="/privacidade" element={<PrivacyPage />} />
+          <Route path="/jogo-responsavel" element={<ResponsibleGamingPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
