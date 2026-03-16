@@ -371,6 +371,10 @@ function PuxadasPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEO 
+        title="Guia de Puxadas do Jogo do Bicho - Tabela Completa" 
+        description="Confira a tabela completa de puxadas do jogo do bicho. Entenda quais animais puxam outros e melhore suas estratégias."
+      />
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold text-slate-800 mb-2">Guia de Puxadas</h2>
@@ -452,6 +456,10 @@ function AnimalDetailPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
+      <SEO 
+        title={`Puxadas do ${animal.name} - Grupo ${animal.id.toString().padStart(2, '0')}`} 
+        description={`Descubra o que o ${animal.name} puxa no jogo do bicho. Veja as dezenas do grupo ${animal.id.toString().padStart(2, '0')} e a história do animal.`}
+      />
       <button 
         onClick={() => navigate('/puxadas')} 
         className="mb-6 text-slate-500 hover:text-emerald-600 font-medium flex items-center gap-2 transition-colors"
@@ -611,6 +619,10 @@ function PalpitesPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEO 
+        title="Palpites do Dia - Jogo do Bicho" 
+        description="Receba palpites diários para o jogo do bicho. Sugestões de grupos, centenas e milhares baseadas em algoritmos de sorte."
+      />
       <div className="bg-emerald-600 rounded-3xl p-8 text-white mb-8 relative overflow-hidden">
         <div className="relative z-10">
           <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
