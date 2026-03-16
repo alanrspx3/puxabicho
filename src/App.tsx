@@ -854,7 +854,7 @@ function ResponsibleGamingPage() {
           <h4 className="font-bold text-slate-800 mb-4">Precisa de Ajuda?</h4>
           <p className="mb-4">Se você ou alguém que você conhece está perdendo o controle sobre o jogo, procure ajuda profissional:</p>
           <div className="space-y-2">
-            <p><strong>Jogadores Anônimos:</strong> <a href="https://jogadoresanonimos.com.br" className="text-emerald-600 hover:underline">jogadoresanonimos.com.br</a></p>
+            <p><strong>Jogadores Anônimos:</strong> <a href="https://jogadoresanonimos.com.br" target="_blank" rel="noopener noreferrer nofollow" className="text-emerald-600 hover:underline">jogadoresanonimos.com.br</a></p>
             <p><strong>CAPS:</strong> Procure o Centro de Atenção Psicossocial mais próximo de sua residência.</p>
           </div>
         </div>
