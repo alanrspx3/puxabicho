@@ -322,6 +322,15 @@ function AnimalDetailPage() {
     );
   }
 
+  const recommendedPuxadas = useMemo(() => {
+    const existingPuxadas = animal.puxadas || [];
+    // Get animals that are NOT the current one and NOT in the current puxadas list
+    return ANIMALS.filter(a => 
+      a.name !== animal.name && 
+      !existingPuxadas.includes(a.name)
+    ).sort(() => 0.5 - Math.random()).slice(0, 4);
+  }, [animal]);
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <button 
@@ -381,21 +390,20 @@ function AnimalDetailPage() {
 
           <section className="mb-10">
             <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Zap className="text-amber-500" size={24} />
+              <Sparkles className="text-amber-500" size={24} />
               Puxadas Recomendadas
             </h3>
             <div className="flex overflow-x-auto gap-4 pb-4 -mx-2 px-2 scrollbar-hide">
-              {animal.puxadas?.map((puxadaName) => {
-                const puxadaAnimal = ANIMALS.find(a => a.name === puxadaName);
+              {recommendedPuxadas.map((recAnimal) => {
                 return (
                   <Link 
-                    to={`/puxadas/${puxadaName.toLowerCase()}`}
-                    key={puxadaName}
+                    to={`/puxadas/${recAnimal.name.toLowerCase()}`}
+                    key={recAnimal.name}
                     className="flex-shrink-0 w-36 p-5 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group shadow-sm hover:shadow-md"
                   >
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{puxadaAnimal?.emoji}</div>
-                    <div className="font-bold text-slate-700 group-hover:text-emerald-700">{puxadaName}</div>
-                    <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {puxadaAnimal?.id.toString().padStart(2, '0')}</div>
+                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{recAnimal.emoji}</div>
+                    <div className="font-bold text-slate-700 group-hover:text-emerald-700">{recAnimal.name}</div>
+                    <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {recAnimal.id.toString().padStart(2, '0')}</div>
                   </Link>
                 );
               })}
