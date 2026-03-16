@@ -36,8 +36,8 @@ function SEO({ title, description }: { title: string; description?: string }) {
   return null;
 }
 
-// --- Lazy Emoji Component ---
-function LazyEmoji({ emoji, className }: { emoji: string; className?: string }) {
+// --- Animal Icon Component ---
+function AnimalIcon({ src, name, className }: { src: string; name: string; className?: string }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -61,7 +61,16 @@ function LazyEmoji({ emoji, className }: { emoji: string; className?: string }) 
 
   return (
     <div ref={ref} className={className}>
-      {isVisible ? emoji : <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[1em]" />}
+      {isVisible ? (
+        <img 
+          src={src} 
+          alt={name} 
+          className="w-full h-full object-contain" 
+          referrerPolicy="no-referrer"
+        />
+      ) : (
+        <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[48px]" />
+      )}
     </div>
   );
 }
@@ -341,9 +350,11 @@ function HomePage() {
               className="group bg-white p-6 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all text-center flex flex-col items-center"
             >
               <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
-                <div className="text-6xl mb-4 drop-shadow-sm group-hover:drop-shadow-md transition-all">
-                  {animal.emoji}
-                </div>
+                <AnimalIcon 
+                  src={animal.image} 
+                  name={animal.name} 
+                  className="w-20 h-20 mb-4 drop-shadow-sm group-hover:drop-shadow-md transition-all" 
+                />
                 <div className="font-bold text-xl text-slate-800 group-hover:text-emerald-600 transition-colors">
                   {animal.name}
                 </div>
@@ -402,7 +413,7 @@ function PuxadasPage() {
               className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-lg transition-all text-center"
             >
               <motion.div whileHover={{ scale: 1.1 }}>
-                <LazyEmoji emoji={animal.emoji} className="text-4xl mb-3" />
+                <AnimalIcon src={animal.image} name={animal.name} className="w-12 h-12 mx-auto mb-3" />
                 <div className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{animal.name}</div>
                 <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {animal.id.toString().padStart(2, '0')}</div>
               </motion.div>
@@ -473,7 +484,7 @@ function AnimalDetailPage() {
         className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
       >
         <div className="bg-emerald-600 p-8 text-center text-white">
-          <LazyEmoji emoji={animal.emoji} className="text-7xl mb-4 drop-shadow-lg" />
+          <AnimalIcon src={animal.image} name={animal.name} className="w-24 h-24 mx-auto mb-4 drop-shadow-lg" />
           <h2 className="text-4xl font-black uppercase tracking-tight">{animal.name}</h2>
           <div className="mt-2 inline-block px-4 py-1 bg-emerald-700/50 rounded-full text-sm font-bold">
             Grupo {animal.id.toString().padStart(2, '0')}
@@ -495,7 +506,11 @@ function AnimalDetailPage() {
                     key={puxadaName}
                     className="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group"
                   >
-                    <LazyEmoji emoji={puxadaAnimal?.emoji || '❓'} className="text-3xl mb-1 group-hover:scale-110 transition-transform" />
+                    <AnimalIcon 
+                      src={puxadaAnimal?.image || ''} 
+                      name={puxadaName} 
+                      className="w-10 h-10 mx-auto mb-1 group-hover:scale-110 transition-transform" 
+                    />
                     <div className="font-bold text-slate-700 group-hover:text-emerald-700">{puxadaName}</div>
                   </Link>
                 );
@@ -528,7 +543,7 @@ function AnimalDetailPage() {
                     key={recAnimal.name}
                     className="flex-shrink-0 w-36 p-5 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group shadow-sm hover:shadow-md"
                   >
-                    <LazyEmoji emoji={recAnimal.emoji} className="text-4xl mb-3 group-hover:scale-110 transition-transform" />
+                    <AnimalIcon src={recAnimal.image} name={recAnimal.name} className="w-12 h-12 mx-auto mb-3 group-hover:scale-110 transition-transform" />
                     <div className="font-bold text-slate-700 group-hover:text-emerald-700">{recAnimal.name}</div>
                     <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {recAnimal.id.toString().padStart(2, '0')}</div>
                   </Link>
@@ -660,7 +675,7 @@ function PalpitesPage() {
                 key={animal.id} 
                 className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group"
               >
-                <LazyEmoji emoji={animal.emoji} className="text-5xl group-hover:scale-110 transition-transform" />
+                <AnimalIcon src={animal.image} name={animal.name} className="w-16 h-16 group-hover:scale-110 transition-transform" />
                 <div>
                   <div className="font-bold text-slate-800 text-lg">{animal.name}</div>
                   <div className="text-emerald-600 font-bold text-sm">Grupo {animal.id.toString().padStart(2, '0')}</div>

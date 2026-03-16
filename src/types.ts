@@ -3,7 +3,7 @@ export interface Animal {
   name: string;
   slug: string;
   numbers: number[];
-  emoji: string;
+  image: string;
   puxadas?: string[];
   history?: string;
 }
