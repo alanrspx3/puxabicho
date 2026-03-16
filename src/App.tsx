@@ -1,4 +1,4 @@
-import { useState, ReactNode, useEffect, useMemo } from 'react';
+import React, { useState, ReactNode, useEffect, useMemo, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ANIMALS, MOCK_RESULTS } from './constants';
 import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle } from 'lucide-react';
@@ -34,6 +34,36 @@ function SEO({ title, description }: { title: string; description?: string }) {
   }, [title, description, canonicalUrl]);
 
   return null;
+}
+
+// --- Lazy Emoji Component ---
+function LazyEmoji({ emoji, className }: { emoji: string; className?: string }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className={className}>
+      {isVisible ? emoji : <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[1em]" />}
+    </div>
+  );
 }
 
 // --- Mobile Drawer Component ---
@@ -139,9 +169,22 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 // --- Layout Component ---
 function Layout({ children }: { children: ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Return focus to trigger when drawer closes
+  useEffect(() => {
+    if (!isDrawerOpen && triggerRef.current) {
+      triggerRef.current.focus();
+    }
+  }, [isDrawerOpen]);
+
+  const handleOpenDrawer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    triggerRef.current = e.currentTarget;
+    setIsDrawerOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -173,7 +216,7 @@ function Layout({ children }: { children: ReactNode }) {
               <Search size={20} />
             </button>
             <button 
-              onClick={() => setIsDrawerOpen(true)}
+              onClick={handleOpenDrawer}
               aria-label="Abrir menu"
               aria-expanded={isDrawerOpen}
               aria-controls="mobile-menu"
@@ -255,7 +298,7 @@ function Layout({ children }: { children: ReactNode }) {
           <span className="text-[10px] font-bold uppercase tracking-tight">Palpites</span>
         </Link>
         <button 
-          onClick={() => setIsDrawerOpen(true)}
+          onClick={handleOpenDrawer}
           aria-label="Abrir menu"
           aria-expanded={isDrawerOpen}
           aria-controls="mobile-menu"
@@ -355,7 +398,7 @@ function PuxadasPage() {
               className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-lg transition-all text-center"
             >
               <motion.div whileHover={{ scale: 1.1 }}>
-                <div className="text-4xl mb-3">{animal.emoji}</div>
+                <LazyEmoji emoji={animal.emoji} className="text-4xl mb-3" />
                 <div className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{animal.name}</div>
                 <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {animal.id.toString().padStart(2, '0')}</div>
               </motion.div>
@@ -422,7 +465,7 @@ function AnimalDetailPage() {
         className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
       >
         <div className="bg-emerald-600 p-8 text-center text-white">
-          <div className="text-7xl mb-4 drop-shadow-lg">{animal.emoji}</div>
+          <LazyEmoji emoji={animal.emoji} className="text-7xl mb-4 drop-shadow-lg" />
           <h2 className="text-4xl font-black uppercase tracking-tight">{animal.name}</h2>
           <div className="mt-2 inline-block px-4 py-1 bg-emerald-700/50 rounded-full text-sm font-bold">
             Grupo {animal.id.toString().padStart(2, '0')}
@@ -444,7 +487,7 @@ function AnimalDetailPage() {
                     key={puxadaName}
                     className="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group"
                   >
-                    <div className="text-3xl mb-1 group-hover:scale-110 transition-transform">{puxadaAnimal?.emoji}</div>
+                    <LazyEmoji emoji={puxadaAnimal?.emoji || '❓'} className="text-3xl mb-1 group-hover:scale-110 transition-transform" />
                     <div className="font-bold text-slate-700 group-hover:text-emerald-700">{puxadaName}</div>
                   </Link>
                 );
@@ -477,7 +520,7 @@ function AnimalDetailPage() {
                     key={recAnimal.name}
                     className="flex-shrink-0 w-36 p-5 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group shadow-sm hover:shadow-md"
                   >
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{recAnimal.emoji}</div>
+                    <LazyEmoji emoji={recAnimal.emoji} className="text-4xl mb-3 group-hover:scale-110 transition-transform" />
                     <div className="font-bold text-slate-700 group-hover:text-emerald-700">{recAnimal.name}</div>
                     <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {recAnimal.id.toString().padStart(2, '0')}</div>
                   </Link>
@@ -605,7 +648,7 @@ function PalpitesPage() {
                 key={animal.id} 
                 className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group"
               >
-                <div className="text-5xl group-hover:scale-110 transition-transform">{animal.emoji}</div>
+                <LazyEmoji emoji={animal.emoji} className="text-5xl group-hover:scale-110 transition-transform" />
                 <div>
                   <div className="font-bold text-slate-800 text-lg">{animal.name}</div>
                   <div className="text-emerald-600 font-bold text-sm">Grupo {animal.id.toString().padStart(2, '0')}</div>
