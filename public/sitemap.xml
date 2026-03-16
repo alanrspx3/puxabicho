@@ -1,47 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/</loc>
+    <loc>https://puxabicho.com/</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas</loc>
+    <loc>https://puxabicho.com/puxadas</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/palpites</loc>
+    <loc>https://puxabicho.com/palpites</loc>
     <lastmod>2026-03-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://puxabicho.com/estatisticas</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://puxabicho.com/o-que-e-puxada</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://puxabicho.com/metodologia</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://puxabicho.com/sobre</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://puxabicho.com/contato</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
   <!-- Animais -->
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/avestruz</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/aguia</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/burro</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/borboleta</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/cachorro</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/cabra</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/carneiro</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/camelo</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/cobra</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/coelho</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/cavalo</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/elefante</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/galo</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/gato</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/jacare</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/leao</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/macaco</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/porco</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/pavao</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/peru</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/touro</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/tigre</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/urso</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/veado</loc><priority>0.6</priority></url>
-  <url><loc>https://ais-pre-qzet2ozwilhqyn6yrw522q-66189667977.us-east1.run.app/puxadas/vaca</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/avestruz</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/aguia</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/burro</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/borboleta</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/cachorro</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/cabra</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/carneiro</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/camelo</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/cobra</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/coelho</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/cavalo</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/elefante</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/galo</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/gato</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/jacare</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/leao</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/macaco</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/porco</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/pavao</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/peru</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/touro</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/tigre</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/urso</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/veado</loc><priority>0.6</priority></url>
+  <url><loc>https://puxabicho.com/puxadas/vaca</loc><priority>0.6</priority></url>
 </urlset>
