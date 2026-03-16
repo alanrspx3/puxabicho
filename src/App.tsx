@@ -48,10 +48,15 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
+            aria-hidden="true"
             className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] md:hidden"
           />
           {/* Drawer */}
           <motion.div
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu de Navegação"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -60,41 +65,45 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
           >
             <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-emerald-600 text-white">
               <div className="flex items-center gap-2 font-bold text-lg">
-                <div className="w-8 h-8 bg-white text-emerald-600 rounded-lg flex items-center justify-center">B</div>
+                <div className="w-8 h-8 bg-white text-emerald-600 rounded-lg flex items-center justify-center" aria-hidden="true">B</div>
                 Menu
               </div>
-              <button onClick={onClose} className="p-2 hover:bg-emerald-500 rounded-full transition-colors">
+              <button 
+                onClick={onClose} 
+                aria-label="Fechar menu"
+                className="p-2 hover:bg-emerald-500 rounded-full transition-colors"
+              >
                 <X size={24} />
               </button>
             </div>
 
             <div className="flex-grow overflow-y-auto py-4">
-              <div className="px-4 mb-6">
+              <nav className="px-4 mb-6" aria-label="Navegação Principal">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Navegação Principal</h4>
                 <div className="space-y-1">
                   <Link to="/" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
-                    <Home size={20} className="text-emerald-500" /> Início
+                    <Home size={20} className="text-emerald-500" aria-hidden="true" /> Início
                   </Link>
                   <Link to="/puxadas" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
-                    <Zap size={20} className="text-emerald-500" /> Guia de Puxadas
+                    <Zap size={20} className="text-emerald-500" aria-hidden="true" /> Guia de Puxadas
                   </Link>
                   <Link to="/palpites" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
-                    <Sparkles size={20} className="text-emerald-500" /> Palpites do Dia
+                    <Sparkles size={20} className="text-emerald-500" aria-hidden="true" /> Palpites do Dia
                   </Link>
                 </div>
-              </div>
+              </nav>
 
               <div className="px-4 mb-6">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Ferramentas</h4>
                 <div className="space-y-1">
                   <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors">
-                    <BarChart3 size={20} className="text-blue-500" /> Estatísticas
+                    <BarChart3 size={20} className="text-blue-500" aria-hidden="true" /> Estatísticas
                   </a>
                   <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors">
-                    <BookOpen size={20} className="text-purple-500" /> Como Jogar
+                    <BookOpen size={20} className="text-purple-500" aria-hidden="true" /> Como Jogar
                   </a>
                   <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors">
-                    <HelpCircle size={20} className="text-amber-500" /> Dúvidas Frequentes
+                    <HelpCircle size={20} className="text-amber-500" aria-hidden="true" /> Dúvidas Frequentes
                   </a>
                 </div>
               </div>
@@ -102,13 +111,13 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
               <div className="px-4">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Redes Sociais</h4>
                 <div className="flex gap-2 px-2">
-                  <button className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
+                  <button aria-label="Facebook" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
                     <Facebook size={20} />
                   </button>
-                  <button className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
+                  <button aria-label="Instagram" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
                     <Instagram size={20} />
                   </button>
-                  <button className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
+                  <button aria-label="WhatsApp" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
                     <MessageCircle size={20} />
                   </button>
                 </div>
@@ -157,11 +166,17 @@ function Layout({ children }: { children: ReactNode }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="p-2 hover:bg-emerald-500 rounded-full transition-colors hidden md:block">
+            <button 
+              aria-label="Pesquisar"
+              className="p-2 hover:bg-emerald-500 rounded-full transition-colors hidden md:block"
+            >
               <Search size={20} />
             </button>
             <button 
               onClick={() => setIsDrawerOpen(true)}
+              aria-label="Abrir menu"
+              aria-expanded={isDrawerOpen}
+              aria-controls="mobile-menu"
               className="p-2 hover:bg-emerald-500 rounded-full transition-colors"
             >
               <Menu size={24} />
@@ -211,34 +226,43 @@ function Layout({ children }: { children: ReactNode }) {
       </footer>
 
       {/* Robust Bottom Tab Bar (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-slate-200 px-2 py-2 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <nav 
+        aria-label="Navegação inferior"
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-slate-200 px-2 py-2 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]"
+      >
         <Link 
           to="/" 
+          aria-current={isActive('/') ? 'page' : undefined}
           className={`flex flex-col items-center gap-1 px-4 py-1 rounded-2xl transition-all ${isActive('/') ? 'text-emerald-600 bg-emerald-50' : 'text-slate-400 hover:text-slate-600'}`}
         >
-          <Home size={22} strokeWidth={isActive('/') ? 2.5 : 2} />
+          <Home size={22} strokeWidth={isActive('/') ? 2.5 : 2} aria-hidden="true" />
           <span className="text-[10px] font-bold uppercase tracking-tight">Início</span>
         </Link>
         <Link 
           to="/puxadas" 
+          aria-current={location.pathname.startsWith('/puxadas') ? 'page' : undefined}
           className={`flex flex-col items-center gap-1 px-4 py-1 rounded-2xl transition-all ${location.pathname.startsWith('/puxadas') ? 'text-emerald-600 bg-emerald-50' : 'text-slate-400 hover:text-slate-600'}`}
         >
-          <Zap size={22} strokeWidth={location.pathname.startsWith('/puxadas') ? 2.5 : 2} />
+          <Zap size={22} strokeWidth={location.pathname.startsWith('/puxadas') ? 2.5 : 2} aria-hidden="true" />
           <span className="text-[10px] font-bold uppercase tracking-tight">Puxadas</span>
         </Link>
         <Link 
           to="/palpites" 
+          aria-current={isActive('/palpites') ? 'page' : undefined}
           className={`flex flex-col items-center gap-1 px-4 py-1 rounded-2xl transition-all ${isActive('/palpites') ? 'text-emerald-600 bg-emerald-50' : 'text-slate-400 hover:text-slate-600'}`}
         >
-          <Sparkles size={22} strokeWidth={isActive('/palpites') ? 2.5 : 2} />
+          <Sparkles size={22} strokeWidth={isActive('/palpites') ? 2.5 : 2} aria-hidden="true" />
           <span className="text-[10px] font-bold uppercase tracking-tight">Palpites</span>
         </Link>
         <button 
           onClick={() => setIsDrawerOpen(true)}
+          aria-label="Abrir menu"
+          aria-expanded={isDrawerOpen}
+          aria-controls="mobile-menu"
           className="flex flex-col items-center gap-1 px-4 py-1 rounded-2xl text-slate-400 hover:text-slate-600 transition-all"
         >
           <div className="relative">
-            <Menu size={22} />
+            <Menu size={22} aria-hidden="true" />
             <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full border-2 border-white"></div>
           </div>
           <span className="text-[10px] font-bold uppercase tracking-tight">Mais</span>
