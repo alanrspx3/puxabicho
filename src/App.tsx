@@ -60,13 +60,13 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
               <div className="px-4 mb-6">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Navegação Principal</h4>
                 <div className="space-y-1">
-                  <Link to="/" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors">
+                  <Link to="/" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <Home size={20} className="text-emerald-500" /> Início
                   </Link>
-                  <Link to="/puxadas" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors">
+                  <Link to="/puxadas" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <Zap size={20} className="text-emerald-500" /> Guia de Puxadas
                   </Link>
-                  <Link to="/palpites" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors">
+                  <Link to="/palpites" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <Sparkles size={20} className="text-emerald-500" /> Palpites do Dia
                   </Link>
                 </div>
@@ -138,11 +138,11 @@ function Layout({ children }: { children: ReactNode }) {
             <h1 className="text-xl font-bold tracking-tight">Puxadas do Bicho</h1>
           </Link>
           
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link to="/" className={`transition-colors ${isActive('/') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Resultados</Link>
+          <div className="hidden md:flex items-center gap-6 text-[11px] font-bold tracking-wider uppercase">
+            <Link to="/" className={`transition-colors ${isActive('/') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Início</Link>
             <Link to="/puxadas" className={`transition-colors ${isActive('/puxadas') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Puxadas</Link>
             <Link to="/palpites" className={`transition-colors ${isActive('/palpites') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Palpites</Link>
-            <a href="#" className="hover:text-emerald-100 transition-colors">Estatísticas</a>
+            <a href="#" className="text-emerald-100 hover:text-white transition-colors">Estatísticas</a>
           </div>
 
           <div className="flex items-center gap-2">
