@@ -819,6 +819,82 @@ function PalpitesPage() {
   );
 }
 
+// --- Betting Tools ---
+function BetCalculator() {
+  const [amount, setAmount] = useState<string>('1.00');
+  const [type, setType] = useState<'duque' | 'terno' | 'quadra'>('duque');
+
+  const multipliers = {
+    duque: 18.5,
+    terno: 130,
+    quadra: 1000
+  };
+
+  const calculateReturn = () => {
+    const val = parseFloat(amount.replace(',', '.'));
+    if (isNaN(val)) return 0;
+    return val * multipliers[type];
+  };
+
+  return (
+    <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+      <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6">
+        <Scale size={24} />
+      </div>
+      <h3 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Prêmios</h3>
+      <p className="text-sm text-slate-500 mb-6">
+        Calcule o retorno potencial para apostas do 1º ao 5º prêmio.
+      </p>
+      
+      <div className="space-y-4">
+        <div>
+          <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Valor da Aposta (R$)</label>
+          <input 
+            type="text" 
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+            placeholder="Ex: 1,00"
+          />
+        </div>
+
+        <div>
+          <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Tipo de Aposta</label>
+          <div className="grid grid-cols-3 gap-2">
+            {(['duque', 'terno', 'quadra'] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setType(t)}
+                className={`py-2 rounded-xl text-[10px] font-bold uppercase transition-all border ${
+                  type === t 
+                    ? 'bg-amber-600 border-amber-600 text-white shadow-lg shadow-amber-100' 
+                    : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="pt-4 border-t border-slate-100">
+          <div className="flex justify-between items-end">
+            <div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase">Retorno Estimado</div>
+              <div className="text-2xl font-bold text-emerald-600">
+                R$ {calculateReturn().toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+            </div>
+            <div className="text-[10px] font-bold text-slate-300 italic">
+              Base: {multipliers[type]}x
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // --- Institutional Pages ---
 function StatisticsPage() {
   return (
@@ -836,68 +912,81 @@ function StatisticsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Frequência de Animais */}
-        <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-          <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6">
-            <BarChart3 size={24} />
+      <div className="mb-12">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+            <BarChart3 size={20} />
           </div>
-          <h3 className="text-xl font-bold text-slate-800 mb-3">Frequência de Animais</h3>
-          <p className="text-sm text-slate-500 mb-6">
-            Análise dos animais que mais saíram nos últimos 30 dias em todos os sorteios nacionais.
-          </p>
-          <div className="space-y-3">
-            {[
-              { name: 'Macaco', freq: '12%', color: 'bg-emerald-500' },
-              { name: 'Cobra', freq: '10%', color: 'bg-emerald-400' },
-              { name: 'Leão', freq: '9%', color: 'bg-emerald-300' }
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="text-xs font-bold text-slate-700 w-16">{item.name}</div>
-                <div className="flex-grow h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div className={`h-full ${item.color}`} style={{ width: item.freq }}></div>
-                </div>
-                <div className="text-[10px] font-bold text-slate-400">{item.freq}</div>
-              </div>
-            ))}
-          </div>
+          <h3 className="text-2xl font-bold text-slate-800">Estatísticas de Frequência</h3>
         </div>
-
-        {/* Correlação Federal */}
-        <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-          <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
-            <Zap size={24} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Frequência de Animais */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+            <h3 className="text-xl font-bold text-slate-800 mb-3">Frequência de Animais</h3>
+            <p className="text-sm text-slate-500 mb-6">
+              Análise dos animais que mais saíram nos últimos 30 dias em todos os sorteios nacionais.
+            </p>
+            <div className="space-y-3">
+              {[
+                { name: 'Macaco', freq: '12%', color: 'bg-emerald-500' },
+                { name: 'Cobra', freq: '10%', color: 'bg-emerald-400' },
+                { name: 'Leão', freq: '9%', color: 'bg-emerald-300' }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div className="text-xs font-bold text-slate-700 w-16">{item.name}</div>
+                  <div className="flex-grow h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className={`h-full ${item.color}`} style={{ width: item.freq }}></div>
+                  </div>
+                  <div className="text-[10px] font-bold text-slate-400">{item.freq}</div>
+                </div>
+              ))}
+            </div>
           </div>
-          <h3 className="text-xl font-bold text-slate-800 mb-3">Correlação Federal</h3>
-          <p className="text-sm text-slate-500 mb-6">
-            Como os resultados da Loteria Federal influenciam as puxadas do dia seguinte.
-          </p>
-          <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
-            <div className="text-xs font-bold text-blue-800 mb-2 uppercase tracking-wider">Tendência da Semana</div>
-            <div className="text-sm text-blue-700 leading-relaxed">
-              Sorteios de quarta-feira têm apresentado alta correlação com o grupo do <strong>Jacaré</strong>.
+
+          {/* Correlação Federal */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+            <h3 className="text-xl font-bold text-slate-800 mb-3">Correlação Federal</h3>
+            <p className="text-sm text-slate-500 mb-6">
+              Como os resultados da Loteria Federal influenciam as puxadas do dia seguinte.
+            </p>
+            <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
+              <div className="text-xs font-bold text-blue-800 mb-2 uppercase tracking-wider">Tendência da Semana</div>
+              <div className="text-sm text-blue-700 leading-relaxed">
+                Sorteios de quarta-feira têm apresentado alta correlação com o grupo do <strong>Jacaré</strong>.
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Calculadora de Inversões */}
-        <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-          <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
-            <Sparkles size={24} />
+      <div className="mb-12">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600">
+            <Sparkles size={20} />
           </div>
-          <h3 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Inversões</h3>
-          <p className="text-sm text-slate-500 mb-6">
-            Gere todas as combinações possíveis de centenas e milhares invertidas.
-          </p>
-          <div className="flex gap-2">
-            <input 
-              type="text" 
-              placeholder="Ex: 1234" 
-              className="flex-grow px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <button className="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-bold">Gerar</button>
+          <h3 className="text-2xl font-bold text-slate-800">Ferramentas de Cálculo</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Calculadora de Prêmios */}
+          <BetCalculator />
+
+          {/* Calculadora de Inversões */}
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+            <h3 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Inversões</h3>
+            <p className="text-sm text-slate-500 mb-6">
+              Gere todas as combinações possíveis de centenas e milhares invertidas.
+            </p>
+            <div className="flex gap-2">
+              <input 
+                type="text" 
+                placeholder="Ex: 1234" 
+                className="flex-grow px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+              <button className="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-bold">Gerar</button>
+            </div>
           </div>
         </div>
+      </div>
 
         {/* Tabelas de Grupos */}
         <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all lg:col-span-3">
@@ -932,7 +1021,6 @@ function StatisticsPage() {
             <Link to="/puxadas" className="text-emerald-600 font-bold text-sm hover:underline">Ver tabela completa de todos os 25 animais</Link>
           </div>
         </div>
-      </div>
 
       <div className="mt-12 p-8 bg-emerald-900 rounded-[40px] text-white overflow-hidden relative">
         <div className="relative z-10">
