@@ -7,6 +7,9 @@ export interface Animal {
   imageUrl?: string;
   puxadas?: string[];
   history?: string;
+  luckyNumber?: string;
+  dreamMeaning?: string;
+  pageTitle?: string;
 }
 
 export interface DrawResult {

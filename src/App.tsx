@@ -497,7 +497,7 @@ function AnimalDetailPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <SEO 
-        title={`Puxadas do ${animal.name} - Grupo ${animal.id.toString().padStart(2, '0')}`} 
+        title={`${animal.pageTitle || `Puxadas do ${animal.name}`} - Grupo ${animal.id.toString().padStart(2, '0')}`} 
         description={`Descubra o que o ${animal.name} puxa no jogo do bicho. Veja as dezenas do grupo ${animal.id.toString().padStart(2, '0')} e a história do animal.`}
       />
       <button 
@@ -518,7 +518,7 @@ function AnimalDetailPage() {
             className="w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-lg" 
             emojiClassName="text-7xl text-white"
           />
-          <h2 className="text-4xl font-black uppercase tracking-tight">{animal.name}</h2>
+          <h1 className="text-4xl font-black uppercase tracking-tight">{animal.pageTitle || animal.name}</h1>
           <div className="mt-2 inline-block px-4 py-1 bg-emerald-700/50 rounded-full text-sm font-bold">
             Grupo {animal.id.toString().padStart(2, '0')}
           </div>
@@ -560,6 +560,62 @@ function AnimalDetailPage() {
               <p className="text-slate-600 leading-relaxed text-lg">
                 {animal.history}
               </p>
+            </div>
+          </section>
+
+          {animal.luckyNumber && (
+            <section className="mb-10 p-6 bg-amber-50 rounded-3xl border border-amber-100">
+              <h3 className="text-xl font-bold text-amber-800 mb-2 flex items-center gap-2">
+                <Sparkles className="text-amber-500" size={24} />
+                Número da Sorte
+              </h3>
+              <p className="text-3xl font-mono font-bold text-amber-600 tracking-widest">
+                {animal.luckyNumber}
+              </p>
+              <p className="text-xs text-amber-700 mt-2 font-medium">
+                Este é o número da sorte associado ao {animal.name} para hoje.
+              </p>
+            </section>
+          )}
+
+          {animal.dreamMeaning && (
+            <section className="mb-10">
+              <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <Sparkles className="text-purple-500" size={24} />
+                O que significa sonhar com {animal.name}?
+              </h3>
+              <div className="p-6 bg-purple-50 rounded-3xl border border-purple-100">
+                <p className="text-slate-700 leading-relaxed italic">
+                  "{animal.dreamMeaning}"
+                </p>
+              </div>
+            </section>
+          )}
+
+          <section className="mb-10">
+            <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <Zap className="text-emerald-500" size={24} />
+              Dicas Adicionais para o {animal.name}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
+                <h4 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px]">1</div>
+                  Horário de Sorte
+                </h4>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  O {animal.name} costuma aparecer com mais frequência nos sorteios da tarde (PT-RJ) e da noite (Corujinha).
+                </p>
+              </div>
+              <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
+                <h4 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px]">2</div>
+                  Combinação Ideal
+                </h4>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Tente combinar o {animal.name} com o {animal.puxadas?.[0]} em um Duque de Grupo para aumentar suas chances.
+                </p>
+              </div>
             </div>
           </section>
 
@@ -805,6 +861,42 @@ function PalpitesPage() {
         </motion.div>
       </div>
 
+      <div className="mt-12">
+        <h3 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+            <Zap size={20} />
+          </div>
+          Dicas Adicionais para seus Palpites
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              title: 'Combine com Sonhos',
+              desc: 'Se um dos animais da sorte aparecer em seu sonho, a chance de acerto pode ser maior segundo a tradição.'
+            },
+            {
+              title: 'Use as Dezenas',
+              desc: 'Além do grupo, as dezenas são fundamentais para apostas em centenas e milhares. Fique atento aos finais.'
+            },
+            {
+              title: 'Cercar pelos Cinco',
+              desc: 'Considere "cercar" do 1º ao 5º prêmio para aumentar suas chances de ganhar, mesmo com prêmio menor.'
+            },
+            {
+              title: 'Persistência',
+              desc: 'Muitos apostadores mantêm o mesmo palpite por alguns dias, a famosa estratégia da "teimosinha".'
+            }
+          ].map((tip, i) => (
+            <div key={i} className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+              <h4 className="font-bold text-slate-800 mb-2 text-sm">{tip.title}</h4>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                {tip.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="mt-8 p-6 bg-slate-100 rounded-3xl border border-slate-200">
         <h4 className="font-bold text-slate-700 mb-2 flex items-center gap-2">
           <Info size={18} /> Dica de Ouro
@@ -845,6 +937,15 @@ function BetCalculator() {
       <p className="text-sm text-slate-500 mb-6">
         Calcule o retorno potencial para apostas do 1º ao 5º prêmio.
       </p>
+
+      <div className="mb-6 p-4 bg-amber-50 rounded-2xl border border-amber-100">
+        <h4 className="text-xs font-bold text-amber-800 uppercase mb-2 flex items-center gap-1">
+          <Info size={14} /> Como usar:
+        </h4>
+        <p className="text-[11px] text-amber-700 leading-relaxed">
+          Insira o valor que deseja apostar e selecione a modalidade. O sistema calculará automaticamente o prêmio bruto estimado para o 1º prêmio.
+        </p>
+      </div>
       
       <div className="space-y-4">
         <div>
@@ -973,9 +1074,17 @@ function StatisticsPage() {
           {/* Calculadora de Inversões */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
             <h3 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Inversões</h3>
-            <p className="text-sm text-slate-500 mb-6">
+            <p className="text-sm text-slate-500 mb-4">
               Gere todas as combinações possíveis de centenas e milhares invertidas.
             </p>
+            <div className="mb-6 p-4 bg-purple-50 rounded-2xl border border-purple-100">
+              <h4 className="text-xs font-bold text-purple-800 uppercase mb-2 flex items-center gap-1">
+                <Info size={14} /> Como usar:
+              </h4>
+              <p className="text-[11px] text-purple-700 leading-relaxed">
+                Digite uma sequência de 3 ou 4 números. A ferramenta listará todas as permutações (inversões) para aumentar suas chances de acerto.
+              </p>
+            </div>
             <div className="flex gap-2">
               <input 
                 type="text" 
@@ -1032,6 +1141,45 @@ function StatisticsPage() {
           </p>
         </div>
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/20 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+      </div>
+
+      <div className="mt-12">
+        <h3 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+            <Zap size={20} />
+          </div>
+          Dicas Adicionais para Apostadores
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            {
+              title: 'Aposte com Moderação',
+              desc: 'O jogo deve ser uma forma de entretenimento, nunca comprometa sua renda essencial ou dinheiro destinado a contas básicas.'
+            },
+            {
+              title: 'Estude as Puxadas',
+              desc: 'As puxadas são baseadas em observações históricas de décadas. Use-as para filtrar seus palpites e não apenas como regra absoluta.'
+            },
+            {
+              title: 'Fique de Olho na Federal',
+              desc: 'Os sorteios da Loteria Federal (quartas e sábados) são os mais importantes e costumam ditar as tendências para os dias seguintes.'
+            },
+            {
+              title: 'Diversifique suas Apostas',
+              desc: 'Em vez de apostar um valor alto em um único bicho, experimente cercar grupos ou usar o Duque de Grupo para diluir o risco.'
+            }
+          ].map((tip, i) => (
+            <div key={i} className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+              <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs text-slate-500">{i + 1}</div>
+                {tip.title}
+              </h4>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                {tip.desc}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
