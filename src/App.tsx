@@ -217,7 +217,7 @@ function Layout({ children }: { children: ReactNode }) {
                 B
               </div>
             </div>
-            <h1 className="text-xl font-bold tracking-tight">Puxadas do Bicho</h1>
+            <span className="text-xl font-bold tracking-tight">Puxadas do Bicho</span>
           </Link>
           
             <div className="hidden md:flex items-center gap-6 text-[11px] font-bold tracking-wider uppercase">
@@ -359,7 +359,7 @@ function HomePage() {
       />
       <section className="bg-emerald-700 text-white py-12 px-4">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-4">Guia de Puxadas do Jogo do Bicho</h2>
+          <h1 className="text-4xl font-bold mb-4">Guia de Puxadas do Jogo do Bicho</h1>
           <p className="text-emerald-100 text-lg opacity-90 max-w-2xl mx-auto">
             Selecione um animal abaixo para descobrir quais bichos ele "puxa" e aumentar suas chances.
           </p>
@@ -413,7 +413,7 @@ function PuxadasPage() {
       />
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-slate-800 mb-2">Guia de Puxadas</h2>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Guia de Puxadas</h1>
           <p className="text-slate-500">Clique em um animal para ver quais bichos ele "puxa" e conhecer sua história.</p>
         </div>
         
@@ -748,9 +748,9 @@ function PalpitesPage() {
       />
       <div className="bg-emerald-600 rounded-3xl p-8 text-white mb-8 relative overflow-hidden">
         <div className="relative z-10">
-          <h2 className="text-3xl font-bold mb-2 flex items-center gap-2">
+          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
             <Sparkles size={32} /> Palpites do Dia
-          </h2>
+          </h1>
           <p className="text-emerald-100 opacity-90">Sorte do dia {new Date().toLocaleDateString('pt-BR')}. Gere novos palpites agora!</p>
           <button 
             onClick={() => setSeed(s => s + 1)}
@@ -1006,7 +1006,7 @@ function StatisticsPage() {
       />
       
       <div className="mb-12 text-center max-w-3xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Estatísticas e Ferramentas</h2>
+        <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Estatísticas e Ferramentas</h1>
         <p className="text-slate-600 leading-relaxed">
           Confira as principais estatísticas do jogo do bicho e loteria federal, cálculos, consultas, 
           tabelas, inversões e muito mais ferramentas para lhe auxiliar em seus eventuais jogos.
