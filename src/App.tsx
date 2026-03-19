@@ -1,7 +1,7 @@
 import React, { useState, ReactNode, useEffect, useMemo, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { ANIMALS, MOCK_RESULTS } from './constants';
-import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle } from 'lucide-react';
+import { ANIMALS } from './constants';
+import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // --- SEO Manager ---
@@ -473,6 +473,25 @@ function AnimalDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
   const animal = ANIMALS.find(a => a.slug === name?.toLowerCase());
+  const [results, setResults] = useState<any[]>([]);
+  const [isLoadingResults, setIsLoadingResults] = useState(true);
+
+  useEffect(() => {
+    async function fetchResults() {
+      try {
+        const response = await fetch('/api/results');
+        if (response.ok) {
+          const data = await response.json();
+          setResults(data);
+        }
+      } catch (error) {
+        console.error("Error fetching results:", error);
+      } finally {
+        setIsLoadingResults(false);
+      }
+    }
+    fetchResults();
+  }, []);
 
   if (!animal) {
     return (
@@ -677,11 +696,16 @@ function AnimalDetailPage() {
               Apareceu Recentemente em:
             </h2>
             <div className="space-y-4">
-              {MOCK_RESULTS.filter(result => 
-                result.numbers.some(num => num.animal.toLowerCase() === animal.name.toLowerCase())
+              {isLoadingResults ? (
+                <div className="flex flex-col items-center justify-center py-12 text-slate-400">
+                  <Loader2 className="animate-spin mb-2" size={32} />
+                  <p className="text-sm font-medium">Buscando resultados atualizados...</p>
+                </div>
+              ) : results.filter(result => 
+                result.numbers.some((num: any) => num.animal.toLowerCase() === animal.name.toLowerCase())
               ).length > 0 ? (
-                MOCK_RESULTS.filter(result => 
-                  result.numbers.some(num => num.animal.toLowerCase() === animal.name.toLowerCase())
+                results.filter(result => 
+                  result.numbers.some((num: any) => num.animal.toLowerCase() === animal.name.toLowerCase())
                 ).map((result) => (
                   <div key={result.id} className="p-4 rounded-2xl border border-slate-100 bg-slate-50">
                     <div className="flex justify-between items-center mb-2">
@@ -689,7 +713,7 @@ function AnimalDetailPage() {
                       <span className="text-xs text-slate-500">{result.date}</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {result.numbers.map((num, idx) => (
+                      {result.numbers.map((num: any, idx: number) => (
                         <div 
                           key={idx} 
                           className={`px-3 py-1 rounded-lg text-sm font-bold ${
@@ -705,7 +729,7 @@ function AnimalDetailPage() {
                   </div>
                 ))
               ) : (
-                <p className="text-slate-400 text-sm italic">Nenhum resultado recente encontrado para este animal.</p>
+                <p className="text-slate-400 text-sm italic">Nenhum resultado recente encontrado para este animal nos sorteios de hoje.</p>
               )}
             </div>
           </section>

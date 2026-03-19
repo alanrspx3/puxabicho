@@ -204,36 +204,3 @@ export const ANIMALS: Animal[] = [
     pageTitle: 'puxada da vaca'
   }
 ];
-
-export const MOCK_RESULTS = [
-  {
-    id: '1',
-    time: '11:20',
-    name: 'PTM-RJ',
-    date: '16/03/2026',
-    numbers: [
-      { position: 1, value: '4582', animal: 'Touro' },
-      { position: 2, value: '1293', animal: 'Veado' },
-      { position: 3, value: '0941', animal: 'Cavalo' },
-      { position: 4, value: '7765', animal: 'Macaco' },
-      { position: 5, value: '3321', animal: 'Cabra' },
-      { position: 6, value: '7902', animal: 'Avestruz' },
-      { position: 7, value: '902', animal: 'Avestruz' },
-    ]
-  },
-  {
-    id: '2',
-    time: '14:20',
-    name: 'PT-RJ',
-    date: '16/03/2026',
-    numbers: [
-      { position: 1, value: '8812', animal: 'Burro' },
-      { position: 2, value: '4534', animal: 'Cobra' },
-      { position: 3, value: '2219', animal: 'Cachorro' },
-      { position: 4, value: '0098', animal: 'Vaca' },
-      { position: 5, value: '6543', animal: 'Cavalo' },
-      { position: 6, value: '2206', animal: 'Águia' },
-      { position: 7, value: '206', animal: 'Águia' },
-    ]
-  }
-];
