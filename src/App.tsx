@@ -526,10 +526,10 @@ function AnimalDetailPage() {
 
         <div className="p-8">
           <section className="mb-10">
-            <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Zap className="text-amber-500" size={24} />
               O que o {animal.name} puxa?
-            </h3>
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {animal.puxadas?.map((puxadaName) => {
                 const puxadaAnimal = ANIMALS.find(a => a.name === puxadaName);
@@ -552,10 +552,10 @@ function AnimalDetailPage() {
           </section>
 
           <section className="mb-10">
-            <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Info className="text-emerald-500" size={24} />
               História e Significado
-            </h3>
+            </h2>
             <div className="prose prose-slate max-w-none">
               <p className="text-slate-600 leading-relaxed text-lg">
                 {animal.history}
@@ -565,10 +565,10 @@ function AnimalDetailPage() {
 
           {animal.luckyNumber && (
             <section className="mb-10 p-6 bg-amber-50 rounded-3xl border border-amber-100">
-              <h3 className="text-xl font-bold text-amber-800 mb-2 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-amber-800 mb-2 flex items-center gap-2">
                 <Sparkles className="text-amber-500" size={24} />
                 Número da Sorte
-              </h3>
+              </h2>
               <p className="text-3xl font-mono font-bold text-amber-600 tracking-widest">
                 {animal.luckyNumber}
               </p>
@@ -580,10 +580,10 @@ function AnimalDetailPage() {
 
           {animal.dreamMeaning && (
             <section className="mb-10">
-              <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
                 <Sparkles className="text-purple-500" size={24} />
                 O que significa sonhar com {animal.name}?
-              </h3>
+              </h2>
               <div className="p-6 bg-purple-50 rounded-3xl border border-purple-100">
                 <p className="text-slate-700 leading-relaxed italic">
                   "{animal.dreamMeaning}"
@@ -593,25 +593,25 @@ function AnimalDetailPage() {
           )}
 
           <section className="mb-10">
-            <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
               <Zap className="text-emerald-500" size={24} />
               Dicas Adicionais para o {animal.name}
-            </h3>
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                <h4 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <h3 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px]">1</div>
                   Horário de Sorte
-                </h4>
+                </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
                   O {animal.name} costuma aparecer com mais frequência nos sorteios da tarde (PT-RJ) e da noite (Corujinha).
                 </p>
               </div>
               <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                <h4 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <h3 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px]">2</div>
                   Combinação Ideal
-                </h4>
+                </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
                   Tente combinar o {animal.name} com o {animal.puxadas?.[0]} em um Duque de Grupo para aumentar suas chances.
                 </p>
@@ -620,10 +620,10 @@ function AnimalDetailPage() {
           </section>
 
           <section className="mb-10">
-            <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Sparkles className="text-amber-500" size={24} />
               Puxadas Recomendadas
-            </h3>
+            </h2>
             <div className="flex overflow-x-auto gap-4 pb-4 -mx-2 px-2 scrollbar-hide">
               {recommendedPuxadas.map((recAnimal) => {
                 return (
@@ -646,7 +646,7 @@ function AnimalDetailPage() {
           </section>
 
           <section className="mb-10">
-            <h3 className="text-xl font-bold text-slate-800 mb-4">Dezenas do Grupo</h3>
+            <h2 className="text-xl font-bold text-slate-800 mb-4">Dezenas do Grupo</h2>
             <div className="flex gap-3">
               {animal.numbers.map(n => (
                 <div key={n} className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center font-mono font-bold text-slate-700 text-lg">
@@ -662,7 +662,7 @@ function AnimalDetailPage() {
                 <User size={24} />
               </div>
               <div>
-                <h4 className="font-bold text-slate-800 mb-1">Escrito por Especialista em Estatística</h4>
+                <h3 className="font-bold text-slate-800 mb-1">Escrito por Especialista em Estatística</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">
                   Conteúdo revisado e validado com base nas tabelas tradicionais e estatísticas históricas do Jogo do Bicho. 
                   Saiba mais sobre nossa <Link to="/metodologia" className="text-emerald-600 hover:underline">metodologia de análise</Link>.
@@ -672,10 +672,10 @@ function AnimalDetailPage() {
           </section>
 
           <section>
-            <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Calendar className="text-blue-500" size={24} />
               Apareceu Recentemente em:
-            </h3>
+            </h2>
             <div className="space-y-4">
               {MOCK_RESULTS.filter(result => 
                 result.numbers.some(num => num.animal.toLowerCase() === animal.name.toLowerCase())
