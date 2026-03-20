@@ -36,6 +36,17 @@ function SEO({ title, description }: { title: string; description?: string }) {
   return null;
 }
 
+// --- Scroll To Top ---
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 // --- Animal Media Component ---
 function AnimalMedia({ animal, className, emojiClassName }: { animal: any; className?: string; emojiClassName?: string }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -357,33 +368,61 @@ function HomePage() {
         title="Puxada do Bicho: Guia Completo das Puxadas dos 25 Animais" 
         description="Guia de puxadas do jogo do bicho com tabela completa dos 25 animais. Descubra qual bicho puxa outro e veja as combinações mais usadas."
       />
-      <section className="bg-emerald-700 text-white py-12 px-4">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-4">Guia de Puxadas do Jogo do Bicho</h1>
-          <p className="text-emerald-100 text-lg opacity-90 max-w-2xl mx-auto">
-            Selecione um animal abaixo para descobrir quais bichos ele "puxa" e aumentar suas chances.
+      <section className="bg-emerald-700 text-white py-16 px-4 relative overflow-hidden">
+        <div className="max-w-5xl mx-auto text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-block mb-6 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest"
+          >
+            O Guia Nº 1 do Brasil
+          </motion.div>
+          <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">
+            Guia de Puxadas do <br />
+            <span className="text-emerald-300">Jogo do Bicho</span>
+          </h1>
+          <p className="text-emerald-100 text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
+            Descubra quais animais "puxam" outros e aumente suas chances com nossa tabela estatística atualizada.
           </p>
+        </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-10">
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-emerald-400 rounded-full blur-3xl"></div>
         </div>
       </section>
 
-      <div className="max-w-5xl w-full mx-auto px-4 py-12">
+      <div className="max-w-5xl w-full mx-auto px-4 py-20">
+        <div className="flex items-center gap-3 mb-10">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+            <List size={24} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-slate-800">Tabela de Puxadas</h2>
+            <p className="text-slate-500 text-sm">Selecione um animal para ver suas combinações.</p>
+          </div>
+        </div>
+        
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {ANIMALS.map((animal) => (
             <Link 
               to={`/puxadas/${animal.slug}`} 
               key={animal.id}
-              className="group bg-white p-6 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all text-center flex flex-col items-center"
+              className="group bg-white p-6 rounded-[2rem] border border-slate-200 hover:border-emerald-500 hover:shadow-2xl transition-all text-center flex flex-col items-center relative overflow-hidden"
             >
-              <motion.div whileHover={{ scale: 1.1 }} className="flex flex-col items-center">
+              <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-50 rounded-bl-[2rem] -mr-8 -mt-8 group-hover:bg-emerald-500 transition-colors"></div>
+              
+              <motion.div whileHover={{ scale: 1.05 }} className="flex flex-col items-center relative z-10">
                 <AnimalMedia 
                   animal={animal} 
-                  className="w-24 h-24 rounded-2xl bg-slate-50 mb-4 shadow-sm group-hover:shadow-md transition-all" 
+                  className="w-24 h-24 rounded-3xl bg-slate-50 mb-4 shadow-sm group-hover:shadow-lg transition-all border border-slate-100" 
                   emojiClassName="text-6xl"
                 />
-                <div className="font-bold text-xl text-slate-800 group-hover:text-emerald-600 transition-colors">
+                <div className="font-black text-xl text-slate-800 group-hover:text-emerald-600 transition-colors uppercase tracking-tight">
                   {animal.name}
                 </div>
-                <div className="text-xs text-slate-400 font-bold uppercase mt-2 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
+                <div className="text-[10px] text-slate-400 font-black uppercase mt-3 bg-slate-50 px-4 py-1.5 rounded-full border border-slate-100 group-hover:bg-emerald-100 group-hover:text-emerald-700 group-hover:border-emerald-200 transition-all">
                   Grupo {animal.id.toString().padStart(2, '0')}
                 </div>
               </motion.div>
@@ -1572,6 +1611,7 @@ function ContactPage() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
