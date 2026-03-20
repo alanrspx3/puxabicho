@@ -3,7 +3,7 @@ import { Animal } from './types';
 export const ANIMALS: Animal[] = [
   { 
     id: 1, name: 'Avestruz', slug: 'avestruz', numbers: [1, 2, 3, 4], emoji: '🐦',
-    imageUrl: 'https://images.unsplash.com/photo-1551085254-e96b210db58a?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&q=80&w=800',
     puxadas: ['Vaca', 'Pavão', 'Peru', 'Touro'],
     history: 'O Avestruz é o primeiro bicho da tabela. No jogo do bicho, ele representa o início e a sorte renovada. É uma ave de grande porte que não voa, mas corre muito rápido.',
     luckyNumber: '1234',
@@ -20,7 +20,7 @@ export const ANIMALS: Animal[] = [
   },
   { 
     id: 3, name: 'Burro', slug: 'burro', numbers: [9, 10, 11, 12], emoji: '🫏',
-    imageUrl: 'https://images.unsplash.com/photo-1534840639741-624819cb279c?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1570118600012-1b656df1b0d1?auto=format&fit=crop&q=80&w=800',
     puxadas: ['Cavalo', 'Elefante', 'Touro', 'Vaca'],
     history: 'O Burro representa o trabalho duro e a persistência. Apesar da fama injusta, é um animal extremamente inteligente e resiliente.',
     luckyNumber: '9012',
