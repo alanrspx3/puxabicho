@@ -555,8 +555,8 @@ function AnimalDetailPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <SEO 
-        title={`${animal.pageTitle || `Puxadas do ${animal.name}`} - Grupo ${animal.id.toString().padStart(2, '0')}`} 
-        description={`Descubra o que o ${animal.name} puxa no jogo do bicho. Veja as dezenas do grupo ${animal.id.toString().padStart(2, '0')} e a história do animal.`}
+        title={`Puxada do ${animal.name} - Grupo ${animal.id.toString().padStart(2, '0')} | Tabela de Puxadas`} 
+        description={`Veja a puxada do ${animal.name} e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}. Descubra quais bichos o ${animal.name} puxa no jogo do bicho e aumente suas chances.`}
       />
       <button 
         onClick={() => navigate('/puxadas')} 
@@ -576,7 +576,7 @@ function AnimalDetailPage() {
             className="w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-lg" 
             emojiClassName="text-7xl text-white"
           />
-          <h1 className="text-4xl font-black uppercase tracking-tight">{animal.pageTitle || animal.name}</h1>
+          <h1 className="text-4xl font-black uppercase tracking-tight">Puxada do {animal.name}</h1>
           <div className="mt-2 inline-block px-4 py-1 bg-emerald-700/50 rounded-full text-sm font-bold">
             Grupo {animal.id.toString().padStart(2, '0')}
           </div>
@@ -595,14 +595,19 @@ function AnimalDetailPage() {
                   <Link 
                     to={`/puxadas/${puxadaAnimal?.slug || puxadaName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`}
                     key={puxadaName}
-                    className="p-4 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group flex flex-col items-center"
+                    className="rounded-2xl overflow-hidden"
                   >
-                    <AnimalMedia 
-                      animal={puxadaAnimal || { emoji: '❓', name: puxadaName }} 
-                      className="w-12 h-12 rounded-lg bg-white mb-1 group-hover:scale-110 transition-transform" 
-                      emojiClassName="text-3xl"
-                    />
-                    <div className="font-bold text-slate-700 group-hover:text-emerald-700">{puxadaName}</div>
+                    <motion.div 
+                      whileTap={{ scale: 0.95, backgroundColor: "#ecfdf5" }}
+                      className="p-4 border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group flex flex-col items-center h-full"
+                    >
+                      <AnimalMedia 
+                        animal={puxadaAnimal || { emoji: '❓', name: puxadaName }} 
+                        className="w-12 h-12 rounded-lg bg-white mb-1 group-hover:scale-110 transition-transform" 
+                        emojiClassName="text-3xl"
+                      />
+                      <div className="font-bold text-slate-700 group-hover:text-emerald-700">{puxadaName}</div>
+                    </motion.div>
                   </Link>
                 );
               })}
@@ -688,15 +693,20 @@ function AnimalDetailPage() {
                   <Link 
                     to={`/puxadas/${recAnimal.slug}`}
                     key={recAnimal.name}
-                    className="flex-shrink-0 w-36 p-5 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group shadow-sm hover:shadow-md flex flex-col items-center"
+                    className="flex-shrink-0 w-36 rounded-2xl overflow-hidden"
                   >
-                    <AnimalMedia 
-                      animal={recAnimal} 
-                      className="w-16 h-16 rounded-xl bg-white mb-3 group-hover:scale-110 transition-transform" 
-                      emojiClassName="text-4xl"
-                    />
-                    <div className="font-bold text-slate-700 group-hover:text-emerald-700">{recAnimal.name}</div>
-                    <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {recAnimal.id.toString().padStart(2, '0')}</div>
+                    <motion.div 
+                      whileTap={{ scale: 0.95, backgroundColor: "#ecfdf5" }}
+                      className="p-5 border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group shadow-sm hover:shadow-md flex flex-col items-center h-full"
+                    >
+                      <AnimalMedia 
+                        animal={recAnimal} 
+                        className="w-16 h-16 rounded-xl bg-white mb-3 group-hover:scale-110 transition-transform" 
+                        emojiClassName="text-4xl"
+                      />
+                      <div className="font-bold text-slate-700 group-hover:text-emerald-700">{recAnimal.name}</div>
+                      <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {recAnimal.id.toString().padStart(2, '0')}</div>
+                    </motion.div>
                   </Link>
                 );
               })}
