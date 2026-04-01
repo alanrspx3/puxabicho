@@ -71,20 +71,24 @@ function AnimalMedia({ animal, className, emojiClassName }: { animal: any; class
   }, []);
 
   return (
-    <div ref={ref} className={`${className} flex items-center justify-center overflow-hidden`}>
+    <div 
+      ref={ref} 
+      className={`${className} flex items-center justify-center overflow-hidden`}
+      aria-busy={!isVisible}
+    >
       {isVisible ? (
         animal.imageUrl ? (
           <img 
             src={animal.imageUrl} 
-            alt={animal.name} 
+            alt={`Ilustração do animal ${animal.name}`} 
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
         ) : (
-          <span className={emojiClassName}>{animal.emoji}</span>
+          <span className={emojiClassName} role="img" aria-label={animal.name}>{animal.emoji}</span>
         )
       ) : (
-        <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[1em]" />
+        <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[1em]" aria-hidden="true" />
       )}
     </div>
   );
@@ -117,9 +121,9 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="fixed inset-y-0 right-0 w-[280px] bg-white z-[70] shadow-2xl flex flex-col md:hidden"
           >
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-emerald-600 text-white">
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-emerald-700 text-white">
               <div className="flex items-center gap-2 font-bold text-lg">
-                <div className="w-8 h-8 bg-white text-emerald-600 rounded-lg flex items-center justify-center" aria-hidden="true">B</div>
+                <div className="w-8 h-8 bg-white text-emerald-700 rounded-lg flex items-center justify-center" aria-hidden="true">B</div>
                 Menu
               </div>
               <button 
@@ -171,14 +175,14 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
               <div className="px-4">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Redes Sociais</h4>
                 <div className="flex gap-2 px-2">
-                  <button aria-label="Facebook" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
-                    <Facebook size={20} />
+                  <button aria-label="Facebook" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-700 transition-all">
+                    <Facebook size={20} aria-hidden="true" />
                   </button>
-                  <button aria-label="Instagram" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
-                    <Instagram size={20} />
+                  <button aria-label="Instagram" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-700 transition-all">
+                    <Instagram size={20} aria-hidden="true" />
                   </button>
-                  <button aria-label="WhatsApp" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-all">
-                    <MessageCircle size={20} />
+                  <button aria-label="WhatsApp" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-700 transition-all">
+                    <MessageCircle size={20} aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -218,13 +222,19 @@ function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-emerald-700 focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:font-bold"
+      >
+        Pular para o conteúdo
+      </a>
       <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
-      <header className="bg-emerald-600 text-white shadow-md sticky top-0 z-50">
+      <header className="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="bg-white p-1.5 rounded-lg shadow-inner">
-              <div className="w-8 h-8 bg-emerald-600 rounded flex items-center justify-center font-bold text-xl">
+          <Link to="/" className="flex items-center gap-3" aria-label="Puxadas do Bicho - Início">
+            <div className="bg-white p-1.5 rounded-lg shadow-inner" aria-hidden="true">
+              <div className="w-8 h-8 bg-emerald-700 rounded flex items-center justify-center font-bold text-xl">
                 B
               </div>
             </div>
@@ -241,24 +251,24 @@ function Layout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2">
             <button 
               aria-label="Pesquisar"
-              className="p-2 hover:bg-emerald-500 rounded-full transition-colors hidden md:block"
+              className="p-2 hover:bg-emerald-600 rounded-full transition-colors hidden md:block"
             >
-              <Search size={20} />
+              <Search size={20} aria-hidden="true" />
             </button>
             <button 
               onClick={handleOpenDrawer}
               aria-label="Abrir menu"
               aria-expanded={isDrawerOpen}
               aria-controls="mobile-menu"
-              className="p-2 hover:bg-emerald-500 rounded-full transition-colors"
+              className="p-2 hover:bg-emerald-600 rounded-full transition-colors"
             >
-              <Menu size={24} />
+              <Menu size={24} aria-hidden="true" />
             </button>
           </div>
         </div>
       </header>
 
-      <main className="flex-grow pb-20 md:pb-0">
+      <main id="main-content" className="flex-grow pb-20 md:pb-0" tabIndex={-1}>
         {children}
       </main>
 
@@ -267,7 +277,7 @@ function Layout({ children }: { children: ReactNode }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 text-white font-bold text-lg mb-4">
-                <div className="w-6 h-6 bg-emerald-500 rounded flex items-center justify-center text-xs">B</div>
+                <div className="w-6 h-6 bg-emerald-500 rounded flex items-center justify-center text-xs" aria-hidden="true">B</div>
                 Puxadas do Bicho
               </div>
               <p className="text-sm leading-relaxed">
@@ -287,12 +297,14 @@ function Layout({ children }: { children: ReactNode }) {
             </div>
             <div>
               <h4 className="text-white font-bold mb-4">Institucional</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link to="/metodologia" className="hover:text-emerald-400 transition-colors">Nossa Metodologia</Link></li>
-                <li><Link to="/sobre" className="hover:text-emerald-400 transition-colors">Sobre Nós</Link></li>
-                <li><Link to="/contato" className="hover:text-emerald-400 transition-colors">Contato</Link></li>
-                <li><Link to="/jogo-responsavel" className="hover:text-emerald-400 transition-colors flex items-center gap-1"><ShieldCheck size={14} /> Jogo Responsável</Link></li>
-              </ul>
+              <nav aria-label="Links institucionais">
+                <ul className="space-y-2 text-sm">
+                  <li><Link to="/metodologia" className="hover:text-emerald-400 transition-colors">Nossa Metodologia</Link></li>
+                  <li><Link to="/sobre" className="hover:text-emerald-400 transition-colors">Sobre Nós</Link></li>
+                  <li><Link to="/contato" className="hover:text-emerald-400 transition-colors">Contato</Link></li>
+                  <li><Link to="/jogo-responsavel" className="hover:text-emerald-400 transition-colors flex items-center gap-1"><ShieldCheck size={14} aria-hidden="true" /> Jogo Responsável</Link></li>
+                </ul>
+              </nav>
             </div>
             <div>
               <h4 className="text-white font-bold mb-4">Legal</h4>
@@ -344,14 +356,15 @@ function Layout({ children }: { children: ReactNode }) {
         </Link>
         <button 
           onClick={handleOpenDrawer}
-          aria-label="Abrir menu"
+          aria-label="Mais opções"
           aria-expanded={isDrawerOpen}
           aria-controls="mobile-menu"
+          aria-haspopup="dialog"
           className="flex flex-col items-center gap-1 px-4 py-1 rounded-2xl text-slate-400 hover:text-slate-600 transition-all"
         >
           <div className="relative">
             <Menu size={22} aria-hidden="true" />
-            <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full border-2 border-white"></div>
+            <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full border-2 border-white" aria-hidden="true"></div>
           </div>
           <span className="text-[10px] font-bold uppercase tracking-tight">Mais</span>
         </button>
@@ -368,7 +381,7 @@ function HomePage() {
         title="Puxada do Bicho: Guia Completo das Puxadas dos 25 Animais" 
         description="Guia de puxadas do jogo do bicho com tabela completa dos 25 animais. Descubra qual bicho puxa outro e veja as combinações mais usadas."
       />
-      <section className="bg-emerald-700 text-white py-16 px-4 relative overflow-hidden">
+      <section className="bg-emerald-800 text-white py-16 px-4 relative overflow-hidden">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -379,7 +392,7 @@ function HomePage() {
           </motion.div>
           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">
             Guia de Puxadas do <br />
-            <span className="text-emerald-300">Jogo do Bicho</span>
+            <span className="text-emerald-200">Jogo do Bicho</span>
           </h1>
           <p className="text-emerald-100 text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
             Descubra quais animais "puxam" outros e aumente suas chances com nossa tabela estatística atualizada.
@@ -457,8 +470,10 @@ function PuxadasPage() {
         </div>
         
         <div className="relative w-full md:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <label htmlFor="animal-search" className="sr-only">Buscar animal</label>
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} aria-hidden="true" />
           <input
+            id="animal-search"
             type="text"
             placeholder="Buscar animal..."
             value={searchTerm}
@@ -570,14 +585,14 @@ function AnimalDetailPage() {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
       >
-        <div className="bg-emerald-600 p-8 text-center text-white flex flex-col items-center">
+        <div className="bg-emerald-700 p-8 text-center text-white flex flex-col items-center">
           <AnimalMedia 
             animal={animal} 
             className="w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-lg" 
             emojiClassName="text-7xl text-white"
           />
           <h1 className="text-4xl font-black uppercase tracking-tight">Puxada do {animal.name}</h1>
-          <div className="mt-2 inline-block px-4 py-1 bg-emerald-700/50 rounded-full text-sm font-bold">
+          <div className="mt-2 inline-block px-4 py-1 bg-emerald-800/50 rounded-full text-sm font-bold">
             Grupo {animal.id.toString().padStart(2, '0')}
           </div>
         </div>
@@ -585,7 +600,7 @@ function AnimalDetailPage() {
         <div className="p-8">
           <section className="mb-10">
             <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Zap className="text-amber-500" size={24} />
+              <Zap className="text-amber-500" size={24} aria-hidden="true" />
               O que o {animal.name} puxa?
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -616,7 +631,7 @@ function AnimalDetailPage() {
 
           <section className="mb-10">
             <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Info className="text-emerald-500" size={24} />
+              <Info className="text-emerald-500" size={24} aria-hidden="true" />
               História e Significado
             </h2>
             <div className="prose prose-slate max-w-none">
@@ -629,7 +644,7 @@ function AnimalDetailPage() {
           {animal.luckyNumber && (
             <section className="mb-10 p-6 bg-amber-50 rounded-3xl border border-amber-100">
               <h2 className="text-xl font-bold text-amber-800 mb-2 flex items-center gap-2">
-                <Sparkles className="text-amber-500" size={24} />
+                <Sparkles className="text-amber-500" size={24} aria-hidden="true" />
                 Número da Sorte
               </h2>
               <p className="text-3xl font-mono font-bold text-amber-600 tracking-widest">
@@ -644,7 +659,7 @@ function AnimalDetailPage() {
           {animal.dreamMeaning && (
             <section className="mb-10">
               <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <Sparkles className="text-purple-500" size={24} />
+                <Sparkles className="text-purple-500" size={24} aria-hidden="true" />
                 O que significa sonhar com {animal.name}?
               </h2>
               <div className="p-6 bg-purple-50 rounded-3xl border border-purple-100">
@@ -657,7 +672,7 @@ function AnimalDetailPage() {
 
           <section className="mb-10">
             <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-              <Zap className="text-emerald-500" size={24} />
+              <Zap className="text-emerald-500" size={24} aria-hidden="true" />
               Dicas Adicionais para o {animal.name}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -684,7 +699,7 @@ function AnimalDetailPage() {
 
           <section className="mb-10">
             <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Sparkles className="text-amber-500" size={24} />
+              <Sparkles className="text-amber-500" size={24} aria-hidden="true" />
               Puxadas Recomendadas
             </h2>
             <div className="flex overflow-x-auto gap-4 pb-4 -mx-2 px-2 scrollbar-hide">
@@ -741,7 +756,7 @@ function AnimalDetailPage() {
 
           <section>
             <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Calendar className="text-blue-500" size={24} />
+              <Calendar className="text-blue-500" size={24} aria-hidden="true" />
               Apareceu Recentemente em:
             </h2>
             <div className="space-y-4">
@@ -819,17 +834,17 @@ function PalpitesPage() {
         title="Palpites do Dia - Jogo do Bicho" 
         description="Receba palpites diários para o jogo do bicho. Sugestões de grupos, centenas e milhares baseadas em algoritmos de sorte."
       />
-      <div className="bg-emerald-600 rounded-3xl p-8 text-white mb-8 relative overflow-hidden">
+      <div className="bg-emerald-700 rounded-3xl p-8 text-white mb-8 relative overflow-hidden">
         <div className="relative z-10">
           <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-            <Sparkles size={32} /> Palpites do Dia
+            <Sparkles size={32} aria-hidden="true" /> Palpites do Dia
           </h1>
           <p className="text-emerald-100 opacity-90">Sorte do dia {new Date().toLocaleDateString('pt-BR')}. Gere novos palpites agora!</p>
           <button 
             onClick={() => setSeed(s => s + 1)}
-            className="mt-6 bg-white text-emerald-700 px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-50 transition-colors shadow-lg"
+            className="mt-6 bg-white text-emerald-800 px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-50 transition-colors shadow-lg"
           >
-            <RefreshCw size={18} /> Gerar Novos Palpites
+            <RefreshCw size={18} aria-hidden="true" /> Gerar Novos Palpites
           </button>
         </div>
         <div className="absolute -right-10 -bottom-10 opacity-10 rotate-12">
@@ -846,7 +861,7 @@ function PalpitesPage() {
           className="md:col-span-3 bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
           <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-2 h-8 bg-emerald-500 rounded-full"></div>
+            <div className="w-2 h-8 bg-emerald-500 rounded-full" aria-hidden="true"></div>
             Animais da Sorte
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -879,7 +894,7 @@ function PalpitesPage() {
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
           <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-1.5 h-6 bg-amber-500 rounded-full"></div>
+            <div className="w-1.5 h-6 bg-amber-500 rounded-full" aria-hidden="true"></div>
             Grupos Sugeridos
           </h3>
           <div className="flex flex-wrap gap-3">
@@ -900,7 +915,7 @@ function PalpitesPage() {
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
           <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-1.5 h-6 bg-blue-500 rounded-full"></div>
+            <div className="w-1.5 h-6 bg-blue-500 rounded-full" aria-hidden="true"></div>
             Centenas Sugeridas
           </h3>
           <div className="grid grid-cols-2 gap-3">
@@ -921,7 +936,7 @@ function PalpitesPage() {
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
           <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-1.5 h-6 bg-purple-500 rounded-full"></div>
+            <div className="w-1.5 h-6 bg-purple-500 rounded-full" aria-hidden="true"></div>
             Milhares Sugeridos
           </h3>
           <div className="grid grid-cols-2 gap-3">
@@ -936,7 +951,7 @@ function PalpitesPage() {
 
       <div className="mt-12">
         <h3 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600" aria-hidden="true">
             <Zap size={20} />
           </div>
           Dicas Adicionais para seus Palpites
@@ -972,7 +987,7 @@ function PalpitesPage() {
 
       <div className="mt-8 p-6 bg-slate-100 rounded-3xl border border-slate-200">
         <h4 className="font-bold text-slate-700 mb-2 flex items-center gap-2">
-          <Info size={18} /> Dica de Ouro
+          <Info size={18} aria-hidden="true" /> Dica de Ouro
         </h4>
         <p className="text-sm text-slate-500 leading-relaxed">
           Os palpites são gerados aleatoriamente com base em estatísticas de frequência e puxadas tradicionais. 
@@ -1003,7 +1018,7 @@ function BetCalculator() {
 
   return (
     <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-      <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6">
+      <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6" aria-hidden="true">
         <Scale size={24} />
       </div>
       <h3 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Prêmios</h3>
@@ -1013,7 +1028,7 @@ function BetCalculator() {
 
       <div className="mb-6 p-4 bg-amber-50 rounded-2xl border border-amber-100">
         <h4 className="text-xs font-bold text-amber-800 uppercase mb-2 flex items-center gap-1">
-          <Info size={14} /> Como usar:
+          <Info size={14} aria-hidden="true" /> Como usar:
         </h4>
         <p className="text-[11px] text-amber-700 leading-relaxed">
           Insira o valor que deseja apostar e selecione a modalidade. O sistema calculará automaticamente o prêmio bruto estimado para o 1º prêmio.
@@ -1022,8 +1037,9 @@ function BetCalculator() {
       
       <div className="space-y-4">
         <div>
-          <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Valor da Aposta (R$)</label>
+          <label htmlFor="bet-amount" className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Valor da Aposta (R$)</label>
           <input 
+            id="bet-amount"
             type="text" 
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
@@ -1033,11 +1049,14 @@ function BetCalculator() {
         </div>
 
         <div>
-          <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Tipo de Aposta</label>
-          <div className="grid grid-cols-3 gap-2">
+          <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Tipo de Aposta</span>
+          <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Tipo de aposta">
             {(['duque', 'terno', 'quadra'] as const).map((t) => (
               <button
                 key={t}
+                type="button"
+                role="radio"
+                aria-checked={type === t}
                 onClick={() => setType(t)}
                 className={`py-2 rounded-xl text-[10px] font-bold uppercase transition-all border ${
                   type === t 
@@ -1088,7 +1107,7 @@ function StatisticsPage() {
 
       <div className="mb-12">
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600" aria-hidden="true">
             <BarChart3 size={20} />
           </div>
           <h3 className="text-2xl font-bold text-slate-800">Estatísticas de Frequência</h3>
@@ -1135,7 +1154,7 @@ function StatisticsPage() {
 
       <div className="mb-12">
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600">
+          <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600" aria-hidden="true">
             <Sparkles size={20} />
           </div>
           <h3 className="text-2xl font-bold text-slate-800">Ferramentas de Cálculo</h3>
@@ -1152,14 +1171,16 @@ function StatisticsPage() {
             </p>
             <div className="mb-6 p-4 bg-purple-50 rounded-2xl border border-purple-100">
               <h4 className="text-xs font-bold text-purple-800 uppercase mb-2 flex items-center gap-1">
-                <Info size={14} /> Como usar:
+                <Info size={14} aria-hidden="true" /> Como usar:
               </h4>
               <p className="text-[11px] text-purple-700 leading-relaxed">
                 Digite uma sequência de 3 ou 4 números. A ferramenta listará todas as permutações (inversões) para aumentar suas chances de acerto.
               </p>
             </div>
             <div className="flex gap-2">
+              <label htmlFor="inversion-input" className="sr-only">Sequência para inversão</label>
               <input 
+                id="inversion-input"
                 type="text" 
                 placeholder="Ex: 1234" 
                 className="flex-grow px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -1532,42 +1553,51 @@ function ContactPage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Nome</label>
+                <label htmlFor="contact-name" className="block text-sm font-bold text-slate-700 mb-1">Nome</label>
                 <input 
+                  id="contact-name"
                   type="text" 
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "name-error" : undefined}
                   className={`w-full px-4 py-2 rounded-xl border ${errors.name ? 'border-red-500 bg-red-50' : 'border-slate-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
                   placeholder="Seu nome completo"
                 />
-                {errors.name && <p className="text-red-500 text-xs mt-1 font-medium">{errors.name}</p>}
+                {errors.name && <p id="name-error" className="text-red-500 text-xs mt-1 font-medium" role="alert">{errors.name}</p>}
               </div>
               
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">E-mail</label>
+                <label htmlFor="contact-email" className="block text-sm font-bold text-slate-700 mb-1">E-mail</label>
                 <input 
+                  id="contact-email"
                   type="email" 
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                   className={`w-full px-4 py-2 rounded-xl border ${errors.email ? 'border-red-500 bg-red-50' : 'border-slate-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
                   placeholder="seu@email.com"
                 />
-                {errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>}
+                {errors.email && <p id="email-error" className="text-red-500 text-xs mt-1 font-medium" role="alert">{errors.email}</p>}
               </div>
               
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Mensagem</label>
+                <label htmlFor="contact-message" className="block text-sm font-bold text-slate-700 mb-1">Mensagem</label>
                 <textarea 
+                  id="contact-message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   rows={4}
+                  aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? "message-error" : undefined}
                   className={`w-full px-4 py-2 rounded-xl border ${errors.message ? 'border-red-500 bg-red-50' : 'border-slate-200'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all resize-none`}
                   placeholder="Como podemos ajudar?"
                 />
-                {errors.message && <p className="text-red-500 text-xs mt-1 font-medium">{errors.message}</p>}
+                {errors.message && <p id="message-error" className="text-red-500 text-xs mt-1 font-medium" role="alert">{errors.message}</p>}
               </div>
               
               <button 
