@@ -11,6 +11,29 @@ function SEO({ title, description, schema }: { title: string; description?: stri
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
   const canonicalUrl = `${cleanBaseUrl}${location.pathname}`;
 
+  // SECURITY FIX: Sanitize schema to prevent XSS in JSON-LD
+  const sanitizeSchema = (obj: any): any => {
+    if (typeof obj === 'string') {
+      return obj
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+    }
+    if (Array.isArray(obj)) {
+      return obj.map(sanitizeSchema);
+    }
+    if (obj !== null && typeof obj === 'object') {
+      const sanitized: any = {};
+      for (const key in obj) {
+        sanitized[key] = sanitizeSchema(obj[key]);
+      }
+      return sanitized;
+    }
+    return obj;
+  };
+
   useEffect(() => {
     document.title = title;
     
@@ -43,7 +66,8 @@ function SEO({ title, description, schema }: { title: string; description?: stri
       const script = document.createElement('script');
       script.id = 'dynamic-schema';
       script.type = 'application/ld+json';
-      script.text = JSON.stringify(schema);
+      // SECURITY FIX: Use sanitized schema
+      script.text = JSON.stringify(sanitizeSchema(schema));
       document.head.appendChild(script);
     }
   }, [title, description, canonicalUrl, schema]);
