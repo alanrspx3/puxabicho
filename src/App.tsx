@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 // --- SEO Manager ---
 function SEO({ title, description, schema }: { title: string; description?: string; schema?: any }) {
   const location = useLocation();
-  const baseUrl = process.env.APP_URL || window.location.origin;
+  const baseUrl = window.location.origin;
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
   const canonicalUrl = `${cleanBaseUrl}${location.pathname}`;
 
