@@ -200,6 +200,67 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
   );
 }
 
+// --- Breadcrumbs Component ---
+function Breadcrumbs() {
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
+
+  if (location.pathname === '/') return null;
+
+  const routeNames: { [key: string]: string } = {
+    'puxadas': 'Puxadas',
+    'palpites': 'Palpites',
+    'estatisticas': 'Estatísticas',
+    'sobre': 'Sobre Nós',
+    'o-que-e-puxada': 'O que são Puxadas?',
+    'metodologia': 'Metodologia',
+    'contato': 'Contato',
+    'termos': 'Termos de Uso',
+    'privacidade': 'Privacidade',
+    'jogo-responsavel': 'Jogo Responsável',
+  };
+
+  return (
+    <nav aria-label="Breadcrumb" className="max-w-5xl mx-auto px-4 py-4">
+      <ol className="flex items-center flex-wrap gap-2 text-xs font-medium text-slate-500">
+        <li>
+          <Link to="/" className="hover:text-emerald-600 flex items-center gap-1 transition-colors">
+            <Home size={14} aria-hidden="true" />
+            <span>Início</span>
+          </Link>
+        </li>
+        {pathnames.map((value, index) => {
+          const last = index === pathnames.length - 1;
+          const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+          
+          let name = routeNames[value] || value;
+          
+          // Handle animal slugs
+          if (pathnames[index - 1] === 'puxadas') {
+            const animal = ANIMALS.find(a => a.slug === value);
+            if (animal) name = animal.name;
+          }
+
+          return (
+            <li key={to} className="flex items-center gap-2">
+              <ChevronRight size={12} className="text-slate-300" aria-hidden="true" />
+              {last ? (
+                <span className="text-slate-800 font-bold" aria-current="page">
+                  {name}
+                </span>
+              ) : (
+                <Link to={to} className="hover:text-emerald-600 transition-colors capitalize">
+                  {name}
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
 // --- Layout Component ---
 function Layout({ children }: { children: ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -267,6 +328,8 @@ function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
+
+      <Breadcrumbs />
 
       <main id="main-content" className="flex-grow pb-20 md:pb-0" tabIndex={-1}>
         {children}
