@@ -5,7 +5,7 @@ import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, A
 import { motion, AnimatePresence } from 'motion/react';
 
 // --- SEO Manager ---
-function SEO({ title, description }: { title: string; description?: string }) {
+function SEO({ title, description, schema }: { title: string; description?: string; schema?: any }) {
   const location = useLocation();
   const baseUrl = process.env.APP_URL || window.location.origin;
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
@@ -24,6 +24,7 @@ function SEO({ title, description }: { title: string; description?: string }) {
       metaDesc.setAttribute('content', description);
     }
 
+    // Canonical
     let link: HTMLLinkElement | null = document.querySelector("link[rel='canonical']");
     if (!link) {
       link = document.createElement("link");
@@ -31,7 +32,21 @@ function SEO({ title, description }: { title: string; description?: string }) {
       document.head.appendChild(link);
     }
     link.setAttribute("href", canonicalUrl);
-  }, [title, description, canonicalUrl]);
+
+    // JSON-LD Schema
+    const existingSchema = document.getElementById('dynamic-schema');
+    if (existingSchema) {
+      existingSchema.remove();
+    }
+
+    if (schema) {
+      const script = document.createElement('script');
+      script.id = 'dynamic-schema';
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(schema);
+      document.head.appendChild(script);
+    }
+  }, [title, description, canonicalUrl, schema]);
 
   return null;
 }
@@ -621,6 +636,87 @@ function AnimalDetailPage() {
     );
   }
 
+  // Generate dynamic JSON-LD Schema
+  const dynamicSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `https://puxabicho.com/puxadas/${animal.slug}`,
+        "url": `https://puxabicho.com/puxadas/${animal.slug}`,
+        "name": `Puxadas do ${animal.name} - Jogo do Bicho | Puxabicho`,
+        "description": `Descubra o que o ${animal.name} puxa no jogo do bicho. Confira a lista completa de puxadas (${animal.puxadas.join(', ')}) e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}.`,
+        "inLanguage": "pt-BR",
+        "isPartOf": { "@id": "https://puxabicho.com" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Início",
+            "item": "https://puxabicho.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Puxadas",
+            "item": "https://puxabicho.com/puxadas"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": animal.name,
+            "item": `https://puxabicho.com/puxadas/${animal.slug}`
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": `O que o ${animal.name} puxa no jogo do bicho?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `O ${animal.name} puxa os seguintes animais: ${animal.puxadas.join(', ')}.`
+            }
+          },
+          {
+            "@type": "Question",
+            "name": `Qual o número do ${animal.name} no jogo do bicho?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `O ${animal.name} pertence ao Grupo ${animal.id.toString().padStart(2, '0')} e seus números (dezenas) são ${animal.numbers.join(', ')}.`
+            }
+          },
+          {
+            "@type": "Question",
+            "name": `As puxadas do ${animal.name} são garantidas?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `As puxadas do ${animal.name} são baseadas em observações populares e estatísticas históricas do folclore do jogo do bicho, não sendo uma garantia de resultados futuros ou ganhos financeiros.`
+            }
+          }
+        ]
+      },
+      {
+        "@type": "Dataset",
+        "name": `Puxadas do ${animal.name} - Jogo do Bicho`,
+        "description": `Dados estatísticos e tradicionais sobre as puxadas do animal ${animal.name} no jogo do bicho.`,
+        "url": `https://puxabicho.com/puxadas/${animal.slug}`,
+        "inLanguage": "pt-BR",
+        "keywords": [`puxadas do ${animal.slug}`, `${animal.slug} jogo do bicho`, `${animal.slug} puxa`, `grupo ${animal.id.toString().padStart(2, '0')}`],
+        "creator": {
+          "@type": "WebSite",
+          "@id": "https://puxabicho.com",
+          "name": "Puxabicho"
+        }
+      }
+    ]
+  };
+
   const recommendedPuxadas = useMemo(() => {
     const existingPuxadas = animal.puxadas || [];
     // Get animals that are NOT the current one and NOT in the current puxadas list
@@ -635,6 +731,7 @@ function AnimalDetailPage() {
       <SEO 
         title={animal.pageTitle || `Puxada do ${animal.name} - Grupo ${animal.id.toString().padStart(2, '0')} | Tabela de Puxadas`} 
         description={animal.metaDescription || `Veja a puxada do ${animal.name} e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}. Descubra quais bichos o ${animal.name} puxa no jogo do bicho e aumente suas chances.`}
+        schema={dynamicSchema}
       />
       <button 
         onClick={() => navigate('/puxadas')} 
