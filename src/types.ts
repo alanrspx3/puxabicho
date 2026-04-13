@@ -10,6 +10,7 @@ export interface Animal {
   luckyNumber?: string;
   dreamMeaning?: string;
   pageTitle?: string;
+  metaDescription?: string;
 }
 
 export interface DrawResult {

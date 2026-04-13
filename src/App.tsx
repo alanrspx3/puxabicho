@@ -570,8 +570,8 @@ function AnimalDetailPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <SEO 
-        title={`Puxada do ${animal.name} - Grupo ${animal.id.toString().padStart(2, '0')} | Tabela de Puxadas`} 
-        description={`Veja a puxada do ${animal.name} e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}. Descubra quais bichos o ${animal.name} puxa no jogo do bicho e aumente suas chances.`}
+        title={animal.pageTitle || `Puxada do ${animal.name} - Grupo ${animal.id.toString().padStart(2, '0')} | Tabela de Puxadas`} 
+        description={animal.metaDescription || `Veja a puxada do ${animal.name} e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}. Descubra quais bichos o ${animal.name} puxa no jogo do bicho e aumente suas chances.`}
       />
       <button 
         onClick={() => navigate('/puxadas')} 
