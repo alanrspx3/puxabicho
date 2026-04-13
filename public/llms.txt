@@ -1,42 +1,46 @@
-# Puxadas do Bicho
+# Puxabicho
 
-O portal especializado em puxadas do Jogo do Bicho. Entenda as tendências e estatísticas de quais animais costumam aparecer após o sorteio de outros.
+> Puxabicho é o guia completo de puxadas, resultados e palpites do jogo do bicho no Brasil. O site reúne, de forma organizada e atualizada, as puxadas do dia, resultados das extrações (PT, PTM, PTV, PTN, Federal e Corujinha) e informações educativas sobre o jogo do bicho.
 
-## Core Pages
+O site é estritamente informativo. Não tem vínculo com operadores do jogo do bicho, não realiza apostas e não incentiva a prática. Os resultados e estatísticas são formados a partir de informações coletadas em órgãos de imprensa escrita e falada.
 
-- [Home](https://puxabicho.com/): Resultados em tempo real e visão geral.
-- [Guia de Puxadas](https://puxabicho.com/puxadas): Lista completa dos 25 animais e suas respectivas puxadas.
-- [Palpites do Dia](https://puxabicho.com/palpites): Sugestões de grupos, centenas e milhares baseadas em algoritmos de sorte.
-- [Estatísticas](https://puxabicho.com/estatisticas): Análise de frequência, correlação com a Federal e calculadora de inversões.
-- [O que são Puxadas?](https://puxabicho.com/o-que-e-puxada): Guia educativo completo sobre o conceito de puxadas.
-- [Metodologia](https://puxabicho.com/metodologia): Explicação técnica sobre como os dados são processados.
+## O que é o jogo do bicho
 
-## Animal Details
+O jogo do bicho é uma forma de loteria popular no Brasil, com origem no século XIX. É baseado em uma tabela de 25 grupos, cada um representado por um animal e associado a quatro números (de 00 a 99). Os participantes apostam em animais ou combinações numéricas. Os sorteios ocorrem diariamente em múltiplas extrações.
 
-Informações detalhadas, história e o que cada animal "puxa":
+## O que são puxadas do bicho
 
-- [Avestruz](https://puxabicho.com/puxadas/avestruz)
-- [Águia](https://puxabicho.com/puxadas/aguia)
-- [Burro](https://puxabicho.com/puxadas/burro)
-- [Borboleta](https://puxabicho.com/puxadas/borboleta)
-- [Cachorro](https://puxabicho.com/puxadas/cachorro)
-- [Cabra](https://puxabicho.com/puxadas/cabra)
-- [Carneiro](https://puxabicho.com/puxadas/carneiro)
-- [Camelo](https://puxabicho.com/puxadas/camelo)
-- [Cobra](https://puxabicho.com/puxadas/cobra)
-- [Coelho](https://puxabicho.com/puxadas/coelho)
-- [Cavalo](https://puxabicho.com/puxadas/cavalo)
-- [Elefante](https://puxabicho.com/puxadas/elefante)
-- [Galo](https://puxabicho.com/puxadas/galo)
-- [Gato](https://puxabicho.com/puxadas/gato)
-- [Jacaré](https://puxabicho.com/puxadas/jacare)
-- [Leão](https://puxabicho.com/puxadas/leao)
-- [Macaco](https://puxabicho.com/puxadas/macaco)
-- [Porco](https://puxabicho.com/puxadas/porco)
-- [Pavão](https://puxabicho.com/puxadas/pavao)
-- [Peru](https://puxabicho.com/puxadas/peru)
-- [Touro](https://puxabicho.com/puxadas/touro)
-- [Tigre](https://puxabicho.com/puxadas/tigre)
-- [Urso](https://puxabicho.com/puxadas/urso)
-- [Veado](https://puxabicho.com/puxadas/veado)
-- [Vaca](https://puxabicho.com/puxadas/vaca)
+Puxadas do bicho são associações tradicionais e populares entre os 25 animais da tabela — indica-se que, quando um determinado animal é sorteado, outros animais tendem a aparecer nos sorteios seguintes. Essas puxadas fazem parte do folclore do jogo e são amplamente usadas por apostadores como referência cultural e estratégica. Não constituem garantia de resultados.
+
+## Extrações do jogo do bicho
+
+- **PT (Primeira da Tarde)** — extração do início da tarde
+- **PTM (Segunda da Tarde)** — extração do meio da tarde  
+- **PTV (Terceira da Tarde)** — extração do fim da tarde
+- **PTN (Noturna)** — extração noturna
+- **Federal** — extração baseada na Loteria Federal da Caixa Econômica
+- **Corujinha / Coruja** — extração da madrugada
+
+## Conteúdo disponível no site
+
+- [Puxadas do dia](https://puxabicho.com/puxadas): tabela completa de puxadas dos 25 bichos atualizada diariamente
+- [Resultados](https://puxabicho.com/resultados): resultados das extrações PT, PTM, PTV, PTN, Federal e Corujinha
+- [Palpites](https://puxabicho.com/palpites): palpites do jogo do bicho para as extrações do dia
+- [Tabela do bicho](https://puxabicho.com/tabela): tabela completa dos 25 animais com seus respectivos números (00–99)
+- [Guia completo](https://puxabicho.com/guia): como funciona o jogo do bicho, tipos de apostas e glossário
+
+## Tabela dos 25 bichos (resumo)
+
+01 Avestruz (01–04), 02 Águia (05–08), 03 Burro (09–12), 04 Borboleta (13–16), 05 Cachorro (17–20), 06 Cabra (21–24), 07 Carneiro (25–28), 08 Camelo (29–32), 09 Cobra (33–36), 10 Coelho (37–40), 11 Cavalo (41–44), 12 Elefante (45–48), 13 Galo (49–52), 14 Gato (53–56), 15 Jacaré (57–60), 16 Leão (61–64), 17 Macaco (65–68), 18 Porco (69–72), 19 Pavão (73–76), 20 Peru (77–80), 21 Touro (81–84), 22 Tigre (85–88), 23 Urso (89–92), 24 Veado (93–96), 25 Vaca (97–00).
+
+## Sobre o site
+
+- **URL**: https://puxabicho.com
+- **Idioma**: Português brasileiro
+- **Público-alvo**: Apostadores e interessados no jogo do bicho no Brasil
+- **Atualização**: Diária, acompanhando as extrações do dia
+- **Natureza**: Informativo e educativo — sem vínculo com bancas ou operadores
+
+## Aviso legal
+
+Este site não tem vínculo com o serviço ou pessoas que operem o denominado "Jogo do Bicho". Os resultados e estatísticas são coletados de órgãos de imprensa. O site não realiza, promove ou intermedeia apostas de nenhuma espécie.

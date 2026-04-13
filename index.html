@@ -10,53 +10,22 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph":[
-        {
-          "@type":"Organization",
-          "@id":"https://puxabicho.com/#organization",
-          "name":"Puxa Bicho",
-          "url":"https://puxabicho.com",
-          "logo":{
-            "@type":"ImageObject",
-            "url":"https://puxabicho.com/logo.png"
-          },
-          "sameAs":[
-            "https://www.instagram.com/puxabicho"
-          ]
-        },
-        {
-          "@type":"WebSite",
-          "@id":"https://puxabicho.com/#website",
-          "url":"https://puxabicho.com",
-          "name":"Puxa Bicho",
-          "description":"Resultado do jogo do bicho, puxada dos bichos, tabela completa dos 25 animais e resultados atualizados das extrações.",
-          "publisher":{
-            "@id":"https://puxabicho.com/#organization"
-          },
-          "potentialAction":{
-            "@type":"SearchAction",
-            "target":"https://puxabicho.com/?s={search_term_string}",
-            "query-input":"required name=search_term_string"
-          }
-        },
-        {
-          "@type":"WebPage",
-          "@id":"https://puxabicho.com/#webpage",
-          "url":"https://puxabicho.com",
-          "name":"Guia de puxadas do jogo do bicho com tabela completa",
-          "description":"Guia de puxadas do jogo do bicho com tabela completa dos 25 animais. Descubra qual bicho puxa outro e veja as combinações mais usadas.",
-          "isPartOf":{
-            "@id":"https://puxabicho.com/#website"
-          },
-          "about":{
-            "@type":"Thing",
-            "name":"Puxada do Bicho"
-          },
-          "inLanguage":"pt-BR"
-        }
-      ]
+      "@type": "WebSite",
+      "name": "Puxabicho",
+      "url": "https://puxabicho.com",
+      "description": "Resultados e puxadas do jogo do bicho",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://puxabicho.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     }
     </script>
+    <meta property="og:title" content="Puxadas do Bicho - Resultados de Hoje">
+    <meta property="og:description" content="Confira as puxadas do bicho do dia, resultados e palpites atualizados.">
+    <meta property="og:image" content="https://plus.unsplash.com/premium_photo-1724438107938-3ba8b1790b6b?q=80&w=1112&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <meta property="og:url" content="https://puxabicho.com">
+    <meta property="og:type" content="website">
   </head>
   <body>
     <div id="root"></div>
