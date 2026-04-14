@@ -1,7 +1,7 @@
 import React, { useState, ReactNode, useEffect, useMemo, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ANIMALS } from './constants';
-import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle, Loader2 } from 'lucide-react';
+import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle, Loader2, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Markdown from 'react-markdown';
 
@@ -18,6 +18,16 @@ interface BlogPost {
   category: string;
   image: string;
   relatedSlugs: string[];
+  emoji?: string;
+  tags?: string[];
+  readTime?: number;
+  relatedAnimals?: {
+    name: string;
+    slug: string;
+    emoji: string;
+    group: string;
+    numbers: string;
+  }[];
 }
 
 const BLOG_POSTS: BlogPost[] = [
@@ -283,7 +293,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-07',
     author: 'Sueli Estatística',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/leao/800/450',
+    image: 'https://images.unsplash.com/photo-1590668468552-d87c3a011afb',
     relatedSlugs: ['puxadas-do-grupo-15-jacare', 'puxadas-do-grupo-17-macaco'],
     content: ''
   },
@@ -445,6 +455,27 @@ const BLOG_POSTS: BlogPost[] = [
 
 // Add content to posts (simulated for brevity, but detailed enough for SEO)
 BLOG_POSTS.forEach(post => {
+  post.readTime = 5;
+  post.tags = [post.category, 'Jogo do Bicho', 'Puxadas'];
+  
+  // Map animals for specific posts
+  if (post.category === 'Tabelas' || post.category === 'animais') {
+    const animalName = post.title.split(': ')[1] || post.title.split('Grupo')[1]?.trim();
+    if (animalName) {
+      const animal = ANIMALS.find(a => a.name.toLowerCase() === animalName.toLowerCase() || post.slug.includes(a.slug));
+      if (animal) {
+        post.emoji = animal.emoji;
+        post.relatedAnimals = [{
+          name: animal.name,
+          slug: animal.slug,
+          emoji: animal.emoji,
+          group: String(animal.id),
+          numbers: animal.numbers.join(', ')
+        }];
+      }
+    }
+  }
+
   post.content = `
 # ${post.title}
 
@@ -474,62 +505,86 @@ Esperamos que este guia sobre **${post.title}** ajude você a ter melhores resul
   `;
 });
 
+function formatDate(dateStr: string): string {
+  const [year, month, day] = dateStr.split('-');
+  return `${day}/${month}/${year}`;
+}
+
 function BlogCard({ post }: { post: BlogPost }) {
   return (
-    <Link to={`/blog/${post.slug}`} className="group">
-      <motion.div 
-        whileHover={{ y: -5 }}
-        className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all h-full flex flex-col"
-      >
-        <div className="aspect-video overflow-hidden relative">
-          <img 
-            src={post.image} 
-            alt={post.title} 
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute top-4 left-4 bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-            {post.category}
-          </div>
+    <Link to={`/blog/${post.slug}`}
+      className="group bg-white border border-slate-100 rounded-2xl overflow-hidden hover:border-emerald-200 hover:shadow-sm transition-all flex flex-col">
+
+      {/* Capa com gradiente */}
+      <div className="h-36 bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700 flex items-center justify-center relative">
+        <span className="text-5xl opacity-25 group-hover:opacity-40 transition-opacity">
+          {post.emoji || '🐾'}
+        </span>
+        <span className="absolute top-3 left-3 text-xs px-2.5 py-1 rounded-full bg-emerald-800 border border-emerald-600 text-emerald-300 capitalize">
+          {post.category}
+        </span>
+      </div>
+
+      {/* Conteúdo */}
+      <div className="p-4 flex flex-col flex-1">
+        <h2 className="text-sm font-bold text-slate-800 leading-snug mb-2 group-hover:text-emerald-700 transition-colors line-clamp-2">
+          {post.title}
+        </h2>
+        <p className="text-xs text-slate-500 leading-relaxed mb-4 flex-1 line-clamp-2">
+          {post.excerpt}
+        </p>
+        <div className="flex items-center justify-between text-xs text-slate-400 mt-auto pt-3 border-t border-slate-50">
+          <span>{formatDate(post.date)}</span>
+          <span>{post.readTime} min</span>
         </div>
-        <div className="p-6 flex-grow flex flex-col">
-          <div className="text-xs text-slate-400 font-medium mb-2 flex items-center gap-2">
-            <Calendar size={12} /> {new Date(post.date).toLocaleDateString('pt-BR')}
-          </div>
-          <h3 className="text-lg font-bold text-slate-800 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">
-            {post.title}
-          </h3>
-          <p className="text-sm text-slate-500 line-clamp-3 mb-4 flex-grow">
-            {post.excerpt}
-          </p>
-          <div className="flex items-center justify-between pt-4 border-t border-slate-50">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Ler Artigo</span>
-            <ChevronRight size={16} className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
-          </div>
-        </div>
-      </motion.div>
+      </div>
     </Link>
   );
 }
 
 function BlogListPage() {
+  const [activeCategory, setActiveCategory] = useState('Todos');
+
+  const filteredPosts = useMemo(() => {
+    if (activeCategory === 'Todos') return BLOG_POSTS;
+    return BLOG_POSTS.filter(post => post.category.toLowerCase() === activeCategory.toLowerCase());
+  }, [activeCategory]);
+
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
+    <div className="bg-slate-50 min-h-screen">
       <SEO 
         title="Blog Puxabicho - Dicas, Puxadas e Estratégias do Jogo do Bicho" 
         description="Acompanhe as melhores dicas, tabelas de puxadas atualizadas e estratégias para ganhar no jogo do bicho em nosso blog oficial."
       />
-      <div className="text-center mb-16">
-        <h1 className="text-4xl font-black text-slate-800 mb-4 tracking-tight">Blog do Puxabicho</h1>
-        <p className="text-slate-500 max-w-2xl mx-auto text-lg">
-          Sua fonte definitiva de conhecimento sobre puxadas, estatísticas e a cultura do jogo do bicho no Brasil.
-        </p>
+      
+      <section className="bg-emerald-900 py-14 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+            Blog — Guias e Dicas sobre Puxadas do Bicho
+          </h1>
+          <p className="text-emerald-300 text-sm">
+            Aprenda sobre puxadas, animais, sonhos e estratégias do jogo do bicho.
+          </p>
+        </div>
+      </section>
+
+      <div className="max-w-5xl mx-auto px-4 py-6 flex items-center gap-2 flex-wrap">
+        {['Todos', 'sonhos', 'animais', 'guias', 'listas', 'duvidas', 'Tabelas', 'Estratégia', 'Fundamentos', 'Tradição', 'Mística'].map(cat => (
+          <button
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            className={`text-xs px-4 py-1.5 rounded-full border font-medium transition-colors capitalize
+              ${activeCategory === cat
+                ? 'bg-emerald-700 border-emerald-700 text-white'
+                : 'bg-white border-slate-200 text-slate-600 hover:border-emerald-300'
+              }`}>
+            {cat}
+          </button>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {BLOG_POSTS.map(post => (
-          <BlogCard key={post.id} post={post} />
-        ))}
+      <div className="max-w-5xl mx-auto px-4 pb-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {filteredPosts.map(post => <BlogCard key={post.slug} post={post} />)}
       </div>
     </div>
   );
@@ -539,6 +594,18 @@ function BlogPostPage() {
   const { slug } = useParams();
   const post = BLOG_POSTS.find(p => p.slug === slug);
   const navigate = useNavigate();
+
+  const relatedPosts = useMemo(() =>
+    post?.relatedSlugs
+      .map(slug => BLOG_POSTS.find(p => p.slug === slug))
+      .filter(Boolean) as BlogPost[] || []
+  , [post]);
+
+  const tableOfContents = useMemo(() => {
+    if (!post) return [];
+    const matches = post.content.match(/<h2[^>]*>(.*?)<\/h2>/gi) || [];
+    return matches.map(m => m.replace(/<[^>]+>/g, '').trim());
+  }, [post]);
 
   if (!post) {
     return (
@@ -550,8 +617,6 @@ function BlogPostPage() {
       </div>
     );
   }
-
-  const relatedPosts = BLOG_POSTS.filter(p => post.relatedSlugs.includes(p.slug));
 
   const blogSchema = {
     "@context": "https://schema.org",
@@ -575,60 +640,153 @@ function BlogPostPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="bg-slate-50 min-h-screen">
       <SEO 
         title={post.metaTitle} 
         description={post.metaDescription}
         schema={blogSchema}
       />
-      
-      <button 
-        onClick={() => navigate('/blog')} 
-        className="mb-8 text-slate-500 hover:text-emerald-600 font-medium flex items-center gap-2 transition-colors"
-      >
-        <ArrowLeft size={20} /> Voltar para o Blog
-      </button>
 
-      <article className="bg-white rounded-[40px] shadow-sm border border-slate-200 overflow-hidden">
-        <div className="aspect-[21/9] overflow-hidden">
-          <img 
-            src={post.image} 
-            alt={post.title} 
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-        </div>
+      <section className="bg-emerald-900 relative overflow-hidden">
+        <div className="rounded-full bg-emerald-800 opacity-40 absolute -top-20 -left-20 w-64 h-64 blur-3xl" />
+        <div className="rounded-full bg-emerald-800 opacity-40 absolute -bottom-20 -right-20 w-64 h-64 blur-3xl" />
         
-        <div className="p-8 md:p-12">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-              {post.category}
-            </span>
-            <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
-              <Calendar size={14} /> {new Date(post.date).toLocaleDateString('pt-BR')}
-            </span>
-            <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
-              <User size={14} /> {post.author}
-            </span>
+        <div className="max-w-3xl mx-auto px-6 py-14 relative z-10">
+          <nav className="flex items-center gap-2 mb-5 text-xs text-emerald-300">
+            <Link to="/">Home</Link>
+            <span className="opacity-50">›</span>
+            <Link to="/blog">Blog</Link>
+            <span className="opacity-50">›</span>
+            <span>{post.category}</span>
+          </nav>
+
+          <div className="inline-flex items-center gap-2 bg-emerald-800 border border-emerald-500 text-emerald-300 text-xs font-medium px-3 py-1 rounded-full mb-4">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            {post.category}
           </div>
 
-          <div className="prose prose-slate max-w-none prose-headings:text-slate-800 prose-headings:font-black prose-p:text-slate-600 prose-p:leading-relaxed prose-strong:text-emerald-700">
-            <Markdown>{post.content}</Markdown>
-          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-5 tracking-tight">
+            {post.title}
+          </h1>
 
-          <div className="mt-12 pt-12 border-t border-slate-100">
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="text-2xl font-bold text-slate-800">Artigos Relacionados</h3>
-              <Link to="/blog" className="text-emerald-600 font-bold text-sm hover:underline">Ver todos</Link>
+          <div className="flex items-center gap-4 flex-wrap text-xs text-emerald-300">
+            <span className="flex items-center gap-1.5">
+              <Clock size={13} /> {post.readTime} min de leitura
+            </span>
+            <div className="w-1 h-1 rounded-full bg-emerald-500 opacity-50" />
+            <span className="flex items-center gap-1.5">
+              <Calendar size={13} /> {formatDate(post.date)}
+            </span>
+            <div className="w-1 h-1 rounded-full bg-emerald-500 opacity-50" />
+            <span className="flex items-center gap-1.5">
+              <User size={13} /> {post.author}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
+        <div className="flex flex-col gap-8">
+          <article className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+            <div className="w-full h-52 bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700 flex items-center justify-center">
+              <span className="text-7xl opacity-30">{post.emoji || '🐾'}</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {relatedPosts.map(p => (
-                <BlogCard key={p.id} post={p} />
+
+            <div className="px-8 py-8">
+              <div
+                className="prose prose-slate max-w-none
+                  prose-h2:text-xl prose-h2:font-bold prose-h2:text-slate-800
+                  prose-h2:border-b-2 prose-h2:border-emerald-100 prose-h2:pb-2 prose-h2:mt-8 prose-h2:mb-3
+                  prose-h3:text-base prose-h3:font-semibold prose-h3:text-emerald-800 prose-h3:mt-5 prose-h3:mb-2
+                  prose-p:text-slate-600 prose-p:leading-relaxed prose-p:text-sm
+                  prose-table:text-sm prose-th:bg-emerald-900 prose-th:text-white prose-th:font-medium
+                  prose-td:text-slate-600 prose-td:border-slate-100
+                  prose-blockquote:border-l-4 prose-blockquote:border-emerald-500
+                  prose-blockquote:bg-emerald-50 prose-blockquote:rounded-r-lg prose-blockquote:py-1"
+              >
+                <Markdown>{post.content}</Markdown>
+              </div>
+
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-slate-100">
+                  {post.tags.map(tag => (
+                    <span key={tag} className="text-xs px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {relatedPosts.length > 0 && (
+              <div className="px-8 py-6 bg-slate-50 border-t border-slate-100">
+                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">
+                  Artigos relacionados
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {relatedPosts.map(related => (
+                    <Link to={`/blog/${related.slug}`} key={related.slug}
+                      className="bg-white border border-slate-100 rounded-xl p-3 hover:border-emerald-200 hover:bg-emerald-50 transition-colors">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 inline-block mb-2">
+                        {related.category}
+                      </span>
+                      <p className="text-xs font-medium text-slate-800 leading-snug line-clamp-2">{related.title}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </article>
+        </div>
+
+        <aside className="flex flex-col gap-4">
+          {tableOfContents.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">
+                Neste artigo
+              </p>
+              {tableOfContents.map((item, i) => (
+                <div key={i} className="flex gap-3 py-2.5 border-b border-slate-50 last:border-0">
+                  <span className="text-xs font-bold text-emerald-500 min-w-[18px]">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="text-xs text-slate-600 leading-snug">{item}</span>
+                </div>
               ))}
             </div>
+          )}
+
+          {post.relatedAnimals && post.relatedAnimals.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">
+                Animais puxados
+              </p>
+              {post.relatedAnimals.map(animal => (
+                <Link to={`/puxadas/${animal.slug}`} key={animal.slug}
+                  className="flex items-center gap-3 p-2.5 rounded-xl border border-slate-100 mb-2 last:mb-0 hover:border-emerald-200 hover:bg-emerald-50 transition-colors">
+                  <span className="text-2xl w-9 text-center">{animal.emoji}</span>
+                  <div className="flex-1">
+                    <p className="text-xs font-semibold text-slate-800">{animal.name}</p>
+                    <p className="text-xs text-slate-400">Grupo {animal.group} · {animal.numbers}</p>
+                  </div>
+                  <span className="text-emerald-500 text-xs">→</span>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          <div className="bg-emerald-900 rounded-2xl p-5 shadow-sm">
+            <p className="text-sm font-bold text-white mb-2">Ver tabela completa</p>
+            <p className="text-xs text-emerald-300 leading-relaxed mb-4">
+              Consulte as puxadas de todos os 25 animais atualizadas.
+            </p>
+            <Link to="/puxadas"
+              className="block text-center bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-bold py-2.5 rounded-lg transition-colors">
+              Acessar tabela →
+            </Link>
           </div>
-        </div>
-      </article>
+        </aside>
+      </div>
     </div>
   );
 }
@@ -815,9 +973,6 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                   <Link to="/palpites" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <Sparkles size={20} className="text-emerald-500" aria-hidden="true" /> Palpites do Dia
                   </Link>
-                  <Link to="/blog" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
-                    <BookOpen size={20} className="text-emerald-500" aria-hidden="true" /> Blog Oficial
-                  </Link>
                   <Link to="/o-que-e-puxada" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <BookOpen size={20} className="text-emerald-500" aria-hidden="true" /> O que são Puxadas?
                   </Link>
@@ -976,7 +1131,6 @@ function Layout({ children }: { children: ReactNode }) {
               <Link to="/puxadas" className={`transition-colors ${isActive('/puxadas') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Puxadas</Link>
               <Link to="/palpites" className={`transition-colors ${isActive('/palpites') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Palpites</Link>
               <Link to="/estatisticas" className={`transition-colors ${isActive('/estatisticas') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Estatísticas</Link>
-              <Link to="/blog" className={`transition-colors ${isActive('/blog') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Blog</Link>
             </div>
 
           <div className="flex items-center gap-2">
