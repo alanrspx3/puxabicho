@@ -176,7 +176,7 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
             <div className="flex-grow overflow-y-auto py-4">
               <nav className="px-4 mb-6" aria-label="Navegação Principal">
-                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Navegação Principal</h4>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Navegação Principal</p>
                 <div className="space-y-1">
                   <Link to="/" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <Home size={20} className="text-emerald-500" aria-hidden="true" /> Início
@@ -197,7 +197,6 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
               </nav>
 
               <div className="px-4 mb-6">
-                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Ferramentas</h4>
                 <div className="space-y-1">
                   <Link to="/estatisticas" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors">
                     <BarChart3 size={20} className="text-blue-500" aria-hidden="true" /> Estatísticas
@@ -212,7 +211,7 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
               </div>
 
               <div className="px-4">
-                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Redes Sociais</h4>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Redes Sociais</p>
                 <div className="flex gap-2 px-2">
                   <button aria-label="Facebook" className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-emerald-100 hover:text-emerald-700 transition-all">
                     <Facebook size={20} aria-hidden="true" />
@@ -389,7 +388,6 @@ function Layout({ children }: { children: ReactNode }) {
               </p>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Ferramentas</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link to="/puxadas" className="hover:text-emerald-400 transition-colors">Tabela de Puxadas</Link></li>
                 <li><Link to="/palpites" className="hover:text-emerald-400 transition-colors">Palpites do Dia</Link></li>
@@ -398,7 +396,6 @@ function Layout({ children }: { children: ReactNode }) {
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Institucional</h4>
               <nav aria-label="Links institucionais">
                 <ul className="space-y-2 text-sm">
                   <li><Link to="/metodologia" className="hover:text-emerald-400 transition-colors">Nossa Metodologia</Link></li>
@@ -409,7 +406,6 @@ function Layout({ children }: { children: ReactNode }) {
               </nav>
             </div>
             <div>
-              <h4 className="text-white font-bold mb-4">Legal</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link to="/termos" className="hover:text-emerald-400 transition-colors">Termos de Uso</Link></li>
                 <li><Link to="/privacidade" className="hover:text-emerald-400 transition-colors">Privacidade</Link></li>
@@ -493,8 +489,8 @@ function HomePage() {
             O Guia Nº 1 do Brasil
           </motion.div>
           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">
-            Guia de Puxadas do <br />
-            <span className="text-emerald-200">Jogo do Bicho</span>
+            Puxadas do Bicho — <br />
+            <span className="text-emerald-200">Tabela Completa dos 25 Animais</span>
           </h1>
           <p className="text-emerald-100 text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
             Descubra quais animais "puxam" outros e aumente suas chances com nossa tabela estatística atualizada.
@@ -546,6 +542,91 @@ function HomePage() {
         </div>
       </div>
     </>
+  );
+}
+
+// --- Category Puxadas Data ---
+const CATEGORIES = [
+  { 
+    id: 'do-dia', 
+    name: 'Puxadas do Dia', 
+    path: '/puxadas-do-dia', 
+    title: 'Puxadas do Dia - Melhores Puxadas para Hoje',
+    description: 'Confira as puxadas do dia para o jogo do bicho. Tabela atualizada com as melhores tendências e puxadas para as extrações de hoje.'
+  },
+  { 
+    id: 'de-hoje', 
+    name: 'Puxadas de Hoje', 
+    path: '/puxadas-de-hoje', 
+    title: 'Puxadas de Hoje - Tabela de Puxadas Atualizada',
+    description: 'Veja as puxadas de hoje no jogo do bicho. Saiba quais animais estão mais propensos a sair baseados nas puxadas das últimas extrações.'
+  },
+  { 
+    id: 'boas', 
+    name: 'Puxadas Boas', 
+    path: '/puxadas-boas', 
+    title: 'Puxadas Boas - As Melhores Puxadas do Jogo do Bicho',
+    description: 'Descubra quais são as puxadas boas para o jogo do bicho. Uma seleção das associações mais assertivas para você montar seus palpites.'
+  },
+  { 
+    id: 'certeira', 
+    name: 'Puxada Certeira', 
+    path: '/puxada-certeira', 
+    title: 'Puxada Certeira - O Guia Definitivo de Puxadas',
+    description: 'Encontre a puxada certeira para o jogo do bicho. Tabela completa com as melhores puxadas para aumentar suas chances de acerto.'
+  }
+];
+
+// --- Category Puxada Page ---
+function CategoryPuxadaPage({ categoryId }: { categoryId: string }) {
+  const category = CATEGORIES.find(c => c.id === categoryId);
+  
+  if (!category) return null;
+
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEO title={category.title} description={category.description} />
+      <div className="mb-8">
+        <Link to="/puxadas" className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:gap-3 transition-all mb-4">
+          <ArrowLeft size={20} />
+          Voltar para Puxadas
+        </Link>
+        <h1 className="text-4xl font-bold text-slate-800 mb-4">{category.name} — Tabela Completa do Jogo do Bicho</h1>
+        <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">
+          Confira as {category.name.toLowerCase()} para o jogo do bicho. Esta tabela é atualizada frequentemente para refletir as tendências mais recentes e ajudar você a montar seus palpites com mais embasamento.
+        </p>
+      </div>
+      
+      <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
+        <div className="flex items-center gap-3 mb-8 text-emerald-600">
+          <Zap size={24} />
+          <h2 className="text-xl font-bold">Tabela de {category.name} Atualizada</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {ANIMALS.map((animal) => (
+            <div key={animal.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 transition-all gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl">
+                  {animal.emoji}
+                </div>
+                <div>
+                  <div className="font-bold text-slate-800">{animal.name}</div>
+                  <div className="text-[10px] text-slate-400 font-bold uppercase">Grupo {animal.id.toString().padStart(2, '0')}</div>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {animal.puxadas.map((puxada, idx) => (
+                  <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
+                    {puxada}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -602,7 +683,7 @@ function ExpertPuxadaPage({ expertId }: { expertId: string }) {
           <ArrowLeft size={20} />
           Voltar para Puxadas
         </Link>
-        <h1 className="text-4xl font-bold text-slate-800 mb-4">{expert.name}</h1>
+        <h1 className="text-4xl font-bold text-slate-800 mb-4">{expert.name} — Tabela Completa do Jogo do Bicho</h1>
         <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">
           Confira a tabela completa de {expert.name.toLowerCase()}. Esta seleção foi baseada em estudos estatísticos e na tradição do jogo do bicho, sendo uma das ferramentas mais utilizadas por apostadores experientes.
         </p>
@@ -611,7 +692,7 @@ function ExpertPuxadaPage({ expertId }: { expertId: string }) {
       <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-8 text-emerald-600">
           <Zap size={24} />
-          <h2 className="text-xl font-bold">Tabela de Puxadas {expert.name.split(' ').pop()}</h2>
+          <h2 className="text-xl font-bold">Tabela de {expert.name} Atualizada</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -639,10 +720,10 @@ function ExpertPuxadaPage({ expertId }: { expertId: string }) {
       </div>
 
       <div className="mt-12 bg-slate-800 rounded-3xl p-8 text-white">
-        <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
           <Info size={24} className="text-emerald-400" />
-          Como usar as {expert.name}
-        </h3>
+          Como usar as {expert.name} para apostar hoje
+        </h2>
         <p className="text-slate-300 leading-relaxed mb-6">
           As {expert.name.toLowerCase()} funcionam como um guia de tendências. Quando um animal é sorteado, a tradição diz que ele "puxa" outros animais para os sorteios seguintes. O método do {expert.name.split(' ').pop()} é reconhecido por sua alta taxa de assertividade ao longo dos anos.
         </p>
@@ -683,7 +764,7 @@ function PuxadasPage() {
       />
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">Guia de Puxadas</h1>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Puxadas do Jogo do Bicho — Guia Completo Atualizado</h1>
           <p className="text-slate-500">Clique em um animal para ver quais bichos ele "puxa" e conhecer sua história.</p>
         </div>
         
@@ -725,32 +806,60 @@ function PuxadasPage() {
 
           {/* Expert Puxadas Section */}
           {!searchTerm && (
-            <div className="mt-16">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                  <Sparkles className="text-emerald-500" size={24} />
-                  Puxadas de Especialistas
-                </h2>
+            <>
+              <div className="mt-16">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                    <Zap className="text-emerald-500" size={24} />
+                    Tabela de Puxadas Populares do Dia
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {CATEGORIES.map((category) => (
+                    <Link 
+                      to={category.path} 
+                      key={category.id}
+                      className="bg-white p-6 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all flex flex-col gap-4 group"
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <Zap size={24} />
+                      </div>
+                      <div>
+                        <div className="font-bold text-slate-800">{category.name}</div>
+                        <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">Ver Tabela</div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {EXPERTS.map((expert) => (
-                  <Link 
-                    to={expert.path} 
-                    key={expert.id}
-                    className="bg-white p-6 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all flex items-center gap-4 group"
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                      <User size={24} />
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-800">{expert.name}</div>
-                      <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">Tabela Completa</div>
-                    </div>
-                    <ChevronRight className="ml-auto text-slate-300 group-hover:text-emerald-500 transition-colors" size={20} />
-                  </Link>
-                ))}
+
+              <div className="mt-16">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                    <Sparkles className="text-emerald-500" size={24} />
+                    Puxadas de Especialistas: Sueli, Ju e Capitão
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {EXPERTS.map((expert) => (
+                    <Link 
+                      to={expert.path} 
+                      key={expert.id}
+                      className="bg-white p-6 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all flex items-center gap-4 group"
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <User size={24} />
+                      </div>
+                      <div>
+                        <div className="font-bold text-slate-800">{expert.name}</div>
+                        <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">Tabela Completa</div>
+                      </div>
+                      <ChevronRight className="ml-auto text-slate-300 group-hover:text-emerald-500 transition-colors" size={20} />
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            </>
           )}
         </>
       ) : (
@@ -923,7 +1032,7 @@ function AnimalDetailPage() {
             className="w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-lg" 
             emojiClassName="text-7xl text-white"
           />
-          <h1 className="text-4xl font-black uppercase tracking-tight">Puxada do {animal.name}</h1>
+          <h1 className="text-4xl font-black tracking-tight">Puxadas do {animal.name} no Jogo do Bicho</h1>
           <div className="mt-2 inline-block px-4 py-1 bg-emerald-800/50 rounded-full text-sm font-bold">
             Grupo {animal.id.toString().padStart(2, '0')}
           </div>
@@ -933,7 +1042,7 @@ function AnimalDetailPage() {
           <section className="mb-10">
             <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Zap className="text-amber-500" size={24} aria-hidden="true" />
-              O que o {animal.name} puxa?
+              O que o {animal.name} puxa? — Tabela Completa
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {animal.puxadas?.map((puxadaName) => {
@@ -962,10 +1071,10 @@ function AnimalDetailPage() {
           </section>
 
           <section className="mb-10">
-            <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Info className="text-emerald-500" size={24} aria-hidden="true" />
-              História e Significado
-            </h2>
+              História do {animal.name} no jogo do bicho
+            </h3>
             <div className="prose prose-slate max-w-none">
               <p className="text-slate-600 leading-relaxed text-lg">
                 {animal.history}
@@ -975,10 +1084,10 @@ function AnimalDetailPage() {
 
           {animal.luckyNumber && (
             <section className="mb-10 p-6 bg-amber-50 rounded-3xl border border-amber-100">
-              <h2 className="text-xl font-bold text-amber-800 mb-2 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-amber-800 mb-2 flex items-center gap-2">
                 <Sparkles className="text-amber-500" size={24} aria-hidden="true" />
-                Número da Sorte
-              </h2>
+                Número da sorte do {animal.name}
+              </h3>
               <p className="text-3xl font-mono font-bold text-amber-600 tracking-widest">
                 {animal.luckyNumber}
               </p>
@@ -1003,10 +1112,10 @@ function AnimalDetailPage() {
           )}
 
           <section className="mb-10">
-            <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+            <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
               <Zap className="text-emerald-500" size={24} aria-hidden="true" />
               Dicas Adicionais para o {animal.name}
-            </h2>
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
                 <h3 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
@@ -1032,7 +1141,7 @@ function AnimalDetailPage() {
           <section className="mb-10">
             <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Sparkles className="text-amber-500" size={24} aria-hidden="true" />
-              Puxadas Recomendadas
+              Outros bichos puxados pelo {animal.name}
             </h2>
             <div className="flex overflow-x-auto gap-4 pb-4 -mx-2 px-2 scrollbar-hide">
               {recommendedPuxadas.map((recAnimal) => {
@@ -1061,7 +1170,7 @@ function AnimalDetailPage() {
           </section>
 
           <section className="mb-10">
-            <h2 className="text-xl font-bold text-slate-800 mb-4">Dezenas do Grupo</h2>
+            <h2 className="text-xl font-bold text-slate-800 mb-4">Dezenas e Grupo do {animal.name}</h2>
             <div className="flex gap-3">
               {animal.numbers.map(n => (
                 <div key={n} className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center font-mono font-bold text-slate-700 text-lg">
@@ -1169,7 +1278,7 @@ function PalpitesPage() {
       <div className="bg-emerald-700 rounded-3xl p-8 text-white mb-8 relative overflow-hidden">
         <div className="relative z-10">
           <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-            <Sparkles size={32} aria-hidden="true" /> Palpites do Dia
+            <Sparkles size={32} aria-hidden="true" /> Palpites do Jogo do Bicho para Hoje
           </h1>
           <p className="text-emerald-100 opacity-90">Sorte do dia {new Date().toLocaleDateString('pt-BR')}. Gere novos palpites agora!</p>
           <button 
@@ -1192,10 +1301,10 @@ function PalpitesPage() {
           animate={{ opacity: 1, x: 0 }}
           className="md:col-span-3 bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
-          <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
             <div className="w-2 h-8 bg-emerald-500 rounded-full" aria-hidden="true"></div>
-            Animais da Sorte
-          </h3>
+            Animais da Sorte de Hoje
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {palpites.animals.map((animal) => (
                 <Link 
@@ -1225,10 +1334,10 @@ function PalpitesPage() {
           transition={{ delay: 0.1 }}
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
-          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             <div className="w-1.5 h-6 bg-amber-500 rounded-full" aria-hidden="true"></div>
             Grupos Sugeridos
-          </h3>
+          </h2>
           <div className="flex flex-wrap gap-3">
             {palpites.grupos.map((g, i) => (
               <div key={i} className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center font-bold text-amber-700 text-xl shadow-sm">
@@ -1246,10 +1355,10 @@ function PalpitesPage() {
           transition={{ delay: 0.2 }}
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
-          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             <div className="w-1.5 h-6 bg-blue-500 rounded-full" aria-hidden="true"></div>
             Centenas Sugeridas
-          </h3>
+          </h2>
           <div className="grid grid-cols-2 gap-3">
             {palpites.centenas.map((c, i) => (
               <div key={i} className="py-3 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center font-mono font-bold text-blue-700 text-xl shadow-sm">
@@ -1267,10 +1376,10 @@ function PalpitesPage() {
           transition={{ delay: 0.3 }}
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
-          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             <div className="w-1.5 h-6 bg-purple-500 rounded-full" aria-hidden="true"></div>
             Milhares Sugeridos
-          </h3>
+          </h2>
           <div className="grid grid-cols-2 gap-3">
             {palpites.milhares.map((m, i) => (
               <div key={i} className="py-3 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center font-mono font-bold text-purple-700 text-xl shadow-sm">
@@ -1282,12 +1391,12 @@ function PalpitesPage() {
       </div>
 
       <div className="mt-12">
-        <h3 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+        <h2 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600" aria-hidden="true">
             <Zap size={20} />
           </div>
-          Dicas Adicionais para seus Palpites
-        </h3>
+          Grupos, Dezenas e Centenas Sugeridas
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             {
@@ -1430,7 +1539,7 @@ function StatisticsPage() {
       />
       
       <div className="mb-12 text-center max-w-3xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Estatísticas e Ferramentas</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Estatísticas do Jogo do Bicho — Frequência dos Animais</h1>
         <p className="text-slate-600 leading-relaxed">
           Confira as principais estatísticas do jogo do bicho e loteria federal, cálculos, consultas, 
           tabelas, inversões e muito mais ferramentas para lhe auxiliar em seus eventuais jogos.
@@ -1442,7 +1551,7 @@ function StatisticsPage() {
           <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600" aria-hidden="true">
             <BarChart3 size={20} />
           </div>
-          <h3 className="text-2xl font-bold text-slate-800">Estatísticas de Frequência</h3>
+          <h2 className="text-2xl font-bold text-slate-800">Frequência de Saída dos Animais</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Frequência de Animais */}
@@ -1489,7 +1598,7 @@ function StatisticsPage() {
           <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600" aria-hidden="true">
             <Sparkles size={20} />
           </div>
-          <h3 className="text-2xl font-bold text-slate-800">Ferramentas de Cálculo</h3>
+          <h2 className="text-2xl font-bold text-slate-800">Ferramentas para Apostadores</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Calculadora de Prêmios */}
@@ -1615,7 +1724,7 @@ function MethodologyPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Metodologia - Puxadas do Bicho" description="Entenda como calculamos as puxadas e a base estatística do nosso portal." />
-      <h2 className="text-3xl font-bold text-slate-800 mb-6">Nossa Metodologia</h2>
+      <h1 className="text-3xl font-bold text-slate-800 mb-6">Metodologia do Puxabicho — Como Calculamos as Puxadas</h1>
       <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-6">
         <p>
           No <strong>Puxadas do Bicho</strong>, levamos a sério a precisão das informações. Nossa metodologia de compilação de dados baseia-se em três pilares fundamentais:
@@ -1657,11 +1766,11 @@ function GuidePage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="O que são Puxadas? Guia Completo - Puxadas do Bicho" description="Aprenda tudo sobre as puxadas do jogo do bicho: o que são, como funcionam e como usar a tabela a seu favor." />
-      <h2 className="text-3xl font-bold text-slate-800 mb-6">Guia Completo: O que são Puxadas?</h2>
+      <h1 className="text-3xl font-bold text-slate-800 mb-6">O que são Puxadas do Bicho? Guia Completo</h1>
       
       <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-8">
         <section>
-          <h3 className="text-2xl font-bold text-slate-800 mb-4">Definição de Puxada</h3>
+          <h2 className="text-2xl font-bold text-slate-800 mb-4">Definição: o que é uma puxada no jogo do bicho</h2>
           <p>
             No universo do Jogo do Bicho, a <strong>"puxada"</strong> é uma crença popular baseada na observação de que, quando um determinado animal é sorteado, há uma probabilidade maior de que outros animais específicos apareçam nos sorteios seguintes.
           </p>
@@ -1671,7 +1780,7 @@ function GuidePage() {
         </section>
 
         <div className="bg-slate-100 p-8 rounded-3xl border border-slate-200">
-          <h4 className="font-bold text-slate-800 mb-4">Como funciona na prática?</h4>
+          <h2 className="text-xl font-bold text-slate-800 mb-4">Como funciona na prática?</h2>
           <p className="mb-4">Imagine que o animal sorteado no 1º prêmio foi o <strong>Avestruz</strong>. Segundo a tabela tradicional de puxadas:</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>O Avestruz "puxa" a Vaca, o Pavão e o Peru.</li>
@@ -1680,14 +1789,14 @@ function GuidePage() {
         </div>
 
         <section>
-          <h3 className="text-2xl font-bold text-slate-800 mb-4">Por que as pessoas usam puxadas?</h3>
+          <h2 className="text-2xl font-bold text-slate-800 mb-4">Por que as pessoas usam puxadas?</h2>
           <p>
             As puxadas servem como uma ferramenta de estratégia. Em vez de escolher um animal aleatoriamente, o jogador utiliza o resultado anterior para guiar sua próxima escolha. É uma forma de tentar "ler" o ritmo do sorteio.
           </p>
         </section>
 
         <section>
-          <h3 className="text-2xl font-bold text-slate-800 mb-4">Dicas para usar nosso portal</h3>
+          <h2 className="text-2xl font-bold text-slate-800 mb-4">Dicas para usar nosso portal</h2>
           <ol className="list-decimal pl-6 space-y-4">
             <li>
               <strong>Consulte a Tabela:</strong> Vá até nossa página de <Link to="/puxadas" className="text-emerald-600 hover:underline">Puxadas</Link> e clique no animal que acabou de sair.
@@ -1702,7 +1811,7 @@ function GuidePage() {
         </section>
 
         <div className="bg-emerald-600 text-white p-8 rounded-3xl shadow-lg shadow-emerald-100">
-          <h4 className="font-bold text-xl mb-2">Conclusão</h4>
+          <p className="font-bold text-xl mb-2">Conclusão</p>
           <p className="opacity-90 leading-relaxed">
             Entender as puxadas é mergulhar na cultura e na mística do Jogo do Bicho. Use nosso guia como uma bússola estatística, mas lembre-se sempre de manter o jogo como uma diversão saudável.
           </p>
@@ -1716,7 +1825,7 @@ function AboutPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Sobre Nós - Puxadas do Bicho" description="Conheça a equipe por trás do Puxadas do Bicho e nossa missão de informar com precisão." />
-      <h2 className="text-3xl font-bold text-slate-800 mb-6">Sobre o Puxadas do Bicho</h2>
+      <h1 className="text-3xl font-bold text-slate-800 mb-6">Sobre o Puxabicho.com — O Portal de Puxadas do Bicho</h1>
       <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-4">
         <p>
           O <strong>Puxadas do Bicho</strong> nasceu da necessidade de centralizar informações históricas e estatísticas sobre uma das tradições mais antigas do Brasil: o Jogo do Bicho.
@@ -1745,7 +1854,7 @@ function ResponsibleGamingPage() {
       <SEO title="Jogo Responsável - Puxadas do Bicho" description="Informações sobre como manter o jogo como uma atividade saudável e divertida." />
       <div className="flex items-center gap-3 mb-6 text-amber-600">
         <AlertTriangle size={32} />
-        <h2 className="text-3xl font-bold">Jogo Responsável</h2>
+        <h1 className="text-3xl font-bold">Jogo Responsável — Aposte com Consciência</h1>
       </div>
       <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-6">
         <p className="text-lg font-medium">
@@ -1779,7 +1888,7 @@ function TermsPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Termos de Uso - Puxadas do Bicho" />
-      <h2 className="text-3xl font-bold text-slate-800 mb-6">Termos de Uso</h2>
+      <h1 className="text-3xl font-bold text-slate-800 mb-6">Termos de Uso — Puxabicho.com</h1>
       <div className="prose prose-slate max-w-none text-slate-600 text-sm space-y-4">
         <p>Ao acessar o site Puxadas do Bicho, você concorda em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis.</p>
         <h3 className="font-bold text-slate-800">1. Uso de Licença</h3>
@@ -1795,7 +1904,7 @@ function PrivacyPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Política de Privacidade - Puxadas do Bicho" />
-      <h2 className="text-3xl font-bold text-slate-800 mb-6">Política de Privacidade</h2>
+      <h1 className="text-3xl font-bold text-slate-800 mb-6">Política de Privacidade — Puxabicho.com</h1>
       <div className="prose prose-slate max-w-none text-slate-600 text-sm space-y-4">
         <p>A sua privacidade é importante para nós. É política do Puxadas do Bicho respeitar a sua privacidade em relação a qualquer informação que possamos coletar no site.</p>
         <p>Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento.</p>
@@ -1858,7 +1967,7 @@ function ContactPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Contato - Puxadas do Bicho" />
-      <h2 className="text-3xl font-bold text-slate-800 mb-6">Entre em Contato</h2>
+      <h1 className="text-3xl font-bold text-slate-800 mb-6">Entre em Contato com o Puxabicho.com</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
@@ -1980,6 +2089,17 @@ function ContactPage() {
   );
 }
 
+// --- RESUMO DAS MUDANÇAS DE SEO (HEADINGS) ---
+// 1. HOME: H1 atualizado para keyword principal. H4 da sidebar removido (substituído por p).
+// 2. PUXADAS: H1 e H2 otimizados com keywords secundárias.
+// 3. ANIMAL: H1 sem uppercase e com keyword. Hierarquia corrigida (H2 rebaixados para H3 onde apropriado).
+// 4. PALPITES: H1 otimizado. H3 elevados para H2 para manter hierarquia linear.
+// 5. ESTATÍSTICAS: H1 otimizado. H3 elevados para H2.
+// 6. GUIA: Adicionado H1. H4 elevado para H2. Removido heading de conclusão.
+// 7. ESPECIALISTAS: H1 e H2 otimizados. H3 elevado para H2.
+// 8. INSTITUCIONAIS: Adicionado H1 em todas as páginas (convertido do primeiro H2).
+// 9. GERAL: Garantido 1 H1 por página, hierarquia linear H1->H2->H3, e keywords nas primeiras palavras do H1.
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -1989,6 +2109,10 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/puxadas" element={<PuxadasPage />} />
           <Route path="/puxadas/:name" element={<AnimalDetailPage />} />
+          <Route path="/puxadas-do-dia" element={<CategoryPuxadaPage categoryId="do-dia" />} />
+          <Route path="/puxadas-de-hoje" element={<CategoryPuxadaPage categoryId="de-hoje" />} />
+          <Route path="/puxadas-boas" element={<CategoryPuxadaPage categoryId="boas" />} />
+          <Route path="/puxada-certeira" element={<CategoryPuxadaPage categoryId="certeira" />} />
           <Route path="/puxadas-da-sueli" element={<ExpertPuxadaPage expertId="sueli" />} />
           <Route path="/puxadas-da-ju" element={<ExpertPuxadaPage expertId="ju" />} />
           <Route path="/puxadas-do-capitao" element={<ExpertPuxadaPage expertId="capitao" />} />
