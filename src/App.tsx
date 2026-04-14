@@ -489,8 +489,7 @@ function HomePage() {
             O Guia Nº 1 do Brasil
           </motion.div>
           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">
-            Puxadas do Bicho — <br />
-            <span className="text-emerald-200">Tabela Completa dos 25 Animais</span>
+            Puxadas do Jogo do Bicho — Tabela Completa e Atualizada
           </h1>
           <p className="text-emerald-100 text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
             Descubra quais animais "puxam" outros e aumente suas chances com nossa tabela estatística atualizada.
@@ -1556,7 +1555,7 @@ function StatisticsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Frequência de Animais */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-            <h3 className="text-xl font-bold text-slate-800 mb-3">Frequência de Animais</h3>
+            <h2 className="text-xl font-bold text-slate-800 mb-3">Frequência de Animais</h2>
             <p className="text-sm text-slate-500 mb-6">
               Análise dos animais que mais saíram nos últimos 30 dias em todos os sorteios nacionais.
             </p>
@@ -1579,7 +1578,7 @@ function StatisticsPage() {
 
           {/* Correlação Federal */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-            <h3 className="text-xl font-bold text-slate-800 mb-3">Correlação Federal</h3>
+            <h2 className="text-xl font-bold text-slate-800 mb-3">Correlação Federal</h2>
             <p className="text-sm text-slate-500 mb-6">
               Como os resultados da Loteria Federal influenciam as puxadas do dia seguinte.
             </p>
@@ -1606,7 +1605,7 @@ function StatisticsPage() {
 
           {/* Calculadora de Inversões */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-            <h3 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Inversões</h3>
+            <h2 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Inversões</h2>
             <p className="text-sm text-slate-500 mb-4">
               Gere todas as combinações possíveis de centenas e milhares invertidas.
             </p>
@@ -1891,9 +1890,9 @@ function TermsPage() {
       <h1 className="text-3xl font-bold text-slate-800 mb-6">Termos de Uso — Puxabicho.com</h1>
       <div className="prose prose-slate max-w-none text-slate-600 text-sm space-y-4">
         <p>Ao acessar o site Puxadas do Bicho, você concorda em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis.</p>
-        <h3 className="font-bold text-slate-800">1. Uso de Licença</h3>
+        <h2 className="font-bold text-slate-800">1. Uso de Licença</h2>
         <p>O conteúdo deste site é apenas para fins informativos. É concedida permissão para baixar temporariamente uma cópia dos materiais para visualização pessoal e não comercial apenas.</p>
-        <h3 className="font-bold text-slate-800">2. Isenção de Responsabilidade</h3>
+        <h2 className="font-bold text-slate-800">2. Isenção de Responsabilidade</h2>
         <p>Os materiais no site são fornecidos 'como estão'. Não oferecemos garantias de ganhos ou precisão absoluta, pois o jogo é baseado em sorte.</p>
       </div>
     </div>
@@ -1971,7 +1970,7 @@ function ContactPage() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
-          <h3 className="text-xl font-bold text-slate-800 mb-6">Envie uma Mensagem</h3>
+          <h2 className="text-xl font-bold text-slate-800 mb-6">Envie uma Mensagem</h2>
           
           {submitted ? (
             <motion.div 
@@ -2053,7 +2052,7 @@ function ContactPage() {
 
         <div className="space-y-6">
           <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
-            <h3 className="text-xl font-bold text-slate-800 mb-6">Informações Diretas</h3>
+            <h2 className="text-xl font-bold text-slate-800 mb-6">Informações Diretas</h2>
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
@@ -2077,7 +2076,7 @@ function ContactPage() {
           </div>
           
           <div className="bg-emerald-600 rounded-3xl p-8 text-white shadow-lg shadow-emerald-100">
-            <h4 className="font-bold mb-2">Atendimento</h4>
+            <h3 className="font-bold mb-2">Atendimento</h3>
             <p className="text-sm text-emerald-50 leading-relaxed">
               Nossa equipe responde em até 24 horas úteis. 
               Para parcerias ou dúvidas técnicas, utilize preferencialmente o e-mail.
