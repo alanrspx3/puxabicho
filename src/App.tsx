@@ -549,6 +549,122 @@ function HomePage() {
   );
 }
 
+// --- Expert Puxadas Data ---
+const EXPERTS = [
+  { 
+    id: 'sueli', 
+    name: 'Puxadas da Sueli', 
+    path: '/puxadas-da-sueli', 
+    title: 'Puxadas da Sueli - Tabela Completa do Jogo do Bicho',
+    description: 'Confira a famosa tabela de puxadas da Sueli. Veja quais animais puxam outros segundo o método da Sueli para o jogo do bicho.'
+  },
+  { 
+    id: 'ju', 
+    name: 'Puxadas da Ju', 
+    path: '/puxadas-da-ju', 
+    title: 'Puxadas da Ju - Melhores Puxadas do Jogo do Bicho',
+    description: 'Veja as puxadas da Ju (ou Juh) para hoje. Tabela atualizada com os melhores palpites e puxadas baseadas no método da Ju.'
+  },
+  { 
+    id: 'capitao', 
+    name: 'Puxadas do Capitão', 
+    path: '/puxadas-do-capitao', 
+    title: 'Puxadas do Capitão - Tabela de Puxadas do Jogo do Bicho',
+    description: 'Acesse a tabela de puxadas do Capitão. Melhore seus palpites com as puxadas mais tradicionais do Capitão para o jogo do bicho.'
+  },
+  { 
+    id: 'magrao', 
+    name: 'Puxadas do Magrão', 
+    path: '/puxadas-do-magrao', 
+    title: 'Puxadas do Magrão - Guia de Puxadas do Jogo do Bicho',
+    description: 'Confira as puxadas do Magrão. Uma das tabelas mais procuradas para quem busca ganhar no jogo do bicho através de puxadas.'
+  },
+  { 
+    id: 'kaledri', 
+    name: 'Puxadas do Kaledri', 
+    path: '/puxadas-do-kaledri', 
+    title: 'Puxadas do Kaledri - Tabela e Palpites do Jogo do Bicho',
+    description: 'Veja a tabela de puxadas do Kaledri. Os melhores palpites e associações de animais segundo o renomado Kaledri.'
+  }
+];
+
+// --- Expert Puxada Page ---
+function ExpertPuxadaPage({ expertId }: { expertId: string }) {
+  const expert = EXPERTS.find(e => e.id === expertId);
+  
+  if (!expert) return null;
+
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      <SEO title={expert.title} description={expert.description} />
+      <div className="mb-8">
+        <Link to="/puxadas" className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:gap-3 transition-all mb-4">
+          <ArrowLeft size={20} />
+          Voltar para Puxadas
+        </Link>
+        <h1 className="text-4xl font-bold text-slate-800 mb-4">{expert.name}</h1>
+        <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">
+          Confira a tabela completa de {expert.name.toLowerCase()}. Esta seleção foi baseada em estudos estatísticos e na tradição do jogo do bicho, sendo uma das ferramentas mais utilizadas por apostadores experientes.
+        </p>
+      </div>
+      
+      <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
+        <div className="flex items-center gap-3 mb-8 text-emerald-600">
+          <Zap size={24} />
+          <h2 className="text-xl font-bold">Tabela de Puxadas {expert.name.split(' ').pop()}</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {ANIMALS.map((animal) => (
+            <div key={animal.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 transition-all gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl">
+                  {animal.emoji}
+                </div>
+                <div>
+                  <div className="font-bold text-slate-800">{animal.name}</div>
+                  <div className="text-[10px] text-slate-400 font-bold uppercase">Grupo {animal.id.toString().padStart(2, '0')}</div>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {animal.puxadas.map((puxada, idx) => (
+                  <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
+                    {puxada}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-12 bg-slate-800 rounded-3xl p-8 text-white">
+        <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <Info size={24} className="text-emerald-400" />
+          Como usar as {expert.name}
+        </h3>
+        <p className="text-slate-300 leading-relaxed mb-6">
+          As {expert.name.toLowerCase()} funcionam como um guia de tendências. Quando um animal é sorteado, a tradição diz que ele "puxa" outros animais para os sorteios seguintes. O método do {expert.name.split(' ').pop()} é reconhecido por sua alta taxa de assertividade ao longo dos anos.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-slate-700/50 p-4 rounded-2xl border border-slate-600">
+            <div className="font-bold text-emerald-400 mb-1">Passo 1</div>
+            <div className="text-sm">Identifique o bicho que saiu no último sorteio.</div>
+          </div>
+          <div className="bg-slate-700/50 p-4 rounded-2xl border border-slate-600">
+            <div className="font-bold text-emerald-400 mb-1">Passo 2</div>
+            <div className="text-sm">Consulte nesta tabela quais bichos ele puxa.</div>
+          </div>
+          <div className="bg-slate-700/50 p-4 rounded-2xl border border-slate-600">
+            <div className="font-bold text-emerald-400 mb-1">Passo 3</div>
+            <div className="text-sm">Utilize essas puxadas para seus próximos palpites.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // --- Puxadas Page ---
 function PuxadasPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -586,25 +702,57 @@ function PuxadasPage() {
       </div>
 
       {filteredAnimals.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {filteredAnimals.map((animal) => (
-            <Link 
-              to={`/puxadas/${animal.slug}`} 
-              key={animal.id}
-              className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-lg transition-all text-center"
-            >
-              <motion.div whileHover={{ scale: 1.1 }}>
-                <AnimalMedia 
-                  animal={animal} 
-                  className="w-16 h-16 rounded-xl bg-slate-50 mx-auto mb-3" 
-                  emojiClassName="text-4xl"
-                />
-                <div className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{animal.name}</div>
-                <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {animal.id.toString().padStart(2, '0')}</div>
-              </motion.div>
-            </Link>
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {filteredAnimals.map((animal) => (
+              <Link 
+                to={`/puxadas/${animal.slug}`} 
+                key={animal.id}
+                className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-lg transition-all text-center"
+              >
+                <motion.div whileHover={{ scale: 1.1 }}>
+                  <AnimalMedia 
+                    animal={animal} 
+                    className="w-16 h-16 rounded-xl bg-slate-50 mx-auto mb-3" 
+                    emojiClassName="text-4xl"
+                  />
+                  <div className="font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">{animal.name}</div>
+                  <div className="text-[10px] text-slate-400 font-bold uppercase mt-1">Grupo {animal.id.toString().padStart(2, '0')}</div>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Expert Puxadas Section */}
+          {!searchTerm && (
+            <div className="mt-16">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                  <Sparkles className="text-emerald-500" size={24} />
+                  Puxadas de Especialistas
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {EXPERTS.map((expert) => (
+                  <Link 
+                    to={expert.path} 
+                    key={expert.id}
+                    className="bg-white p-6 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all flex items-center gap-4 group"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                      <User size={24} />
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-800">{expert.name}</div>
+                      <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">Tabela Completa</div>
+                    </div>
+                    <ChevronRight className="ml-auto text-slate-300 group-hover:text-emerald-500 transition-colors" size={20} />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       ) : (
         <div className="py-20 text-center">
           <div className="text-slate-300 mb-4 flex justify-center">
@@ -1841,6 +1989,11 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/puxadas" element={<PuxadasPage />} />
           <Route path="/puxadas/:name" element={<AnimalDetailPage />} />
+          <Route path="/puxadas-da-sueli" element={<ExpertPuxadaPage expertId="sueli" />} />
+          <Route path="/puxadas-da-ju" element={<ExpertPuxadaPage expertId="ju" />} />
+          <Route path="/puxadas-do-capitao" element={<ExpertPuxadaPage expertId="capitao" />} />
+          <Route path="/puxadas-do-magrao" element={<ExpertPuxadaPage expertId="magrao" />} />
+          <Route path="/puxadas-do-kaledri" element={<ExpertPuxadaPage expertId="kaledri" />} />
           <Route path="/palpites" element={<PalpitesPage />} />
           <Route path="/estatisticas" element={<StatisticsPage />} />
           <Route path="/sobre" element={<AboutPage />} />
