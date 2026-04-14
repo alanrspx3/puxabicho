@@ -459,6 +459,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Saiba como funcionam as puxadas do bicho em São Paulo e entenda os horários das principais extrações para melhorar seus palpites hoje.',
     excerpt: 'Entenda a dinâmica das extrações paulistas e como as puxadas influenciam os resultados em SP. Guia completo para apostadores.',
     date: '2026-01-15',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d',
     readTime: 6,
     category: 'estado',
     emoji: '🗺️',
@@ -494,6 +496,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Descubra a tradição das puxadas do bicho no Rio de Janeiro. Conheça as extrações PTM, PT, PTV, PTN e Corujinha e como elas se conectam.',
     excerpt: 'O Rio de Janeiro é o berço do jogo do bicho. Aprenda como as puxadas funcionam na Cidade Maravilhosa e domine as extrações diárias.',
     date: '2026-01-18',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1596838132731-dd9651537c38',
     readTime: 7,
     category: 'estado',
     emoji: '📍',
@@ -529,6 +533,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Aprenda a ler o resultado do deu no poste hoje. Entenda o que são os prêmios, milhares, centenas e como identificar o bicho ganhador.',
     excerpt: 'Viu o resultado mas não entendeu nada? Aprenda a ler o "deu no poste" como um profissional e identifique seus acertos rapidamente.',
     date: '2026-01-21',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420',
     readTime: 5,
     category: 'estado',
     emoji: '📊',
@@ -564,6 +570,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Confira como funcionam as puxadas do jogo do bicho em Minas Gerais. Saiba os horários das extrações mineiras e melhore seus palpites.',
     excerpt: 'Minas Gerais tem uma tradição forte no bicho. Conheça as particularidades das puxadas mineiras e os horários das extrações locais.',
     date: '2026-01-24',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1553481187-be93c21490a9',
     readTime: 6,
     category: 'estado',
     emoji: '📍',
@@ -599,6 +607,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Entenda o que significam as siglas PTM, PT, PTV e PTN do jogo do bicho. Confira os horários das extrações e saiba como usar nas suas puxadas.',
     excerpt: 'Confuso com as siglas do bicho? Descubra o que significa PTM, PT, PTV e PTN e saiba exatamente em qual horário cada sorteio acontece.',
     date: '2026-01-27',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d',
     readTime: 5,
     category: 'estado',
     emoji: '🕒',
@@ -666,6 +676,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Saiba as diferenças entre as extrações Federal, Corujinha e Noturna do jogo do bicho. Entenda horários e como cada uma afeta as puxadas.',
     excerpt: 'Nem todo sorteio é igual. Entenda por que a Federal é tão importante e como a Corujinha e a Noturna fecham o dia de apostas.',
     date: '2026-01-30',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1596838132731-dd9651537c38',
     readTime: 6,
     category: 'estado',
     emoji: '🌙',
@@ -701,6 +713,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Aprenda a identificar rapidamente qual bicho saiu no último sorteio. Veja a relação entre dezenas e grupos e confira seu resultado agora.',
     excerpt: 'Acabou de sair o resultado e você está na dúvida? Aprenda a identificar o bicho ganhador através das dezenas de forma simples e rápida.',
     date: '2026-02-02',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420',
     readTime: 4,
     category: 'resultados',
     emoji: '🔍',
@@ -736,6 +750,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Descubra a origem do termo "Deu no Poste" e aprenda a interpretar os resultados do jogo do bicho como um especialista. Guia completo.',
     excerpt: 'Você sabe por que dizemos "deu no poste"? Conheça a história por trás do termo e aprenda a ler os resultados diários com facilidade.',
     date: '2026-02-05',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1553481187-be93c21490a9',
     readTime: 5,
     category: 'resultados',
     emoji: '📖',
@@ -771,6 +787,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Saiba onde consultar o resultado do bicho de hoje com rapidez e segurança. Aprenda a entender os números e melhore suas puxadas agora.',
     excerpt: 'Procurando o resultado do bicho de hoje? Saiba quais são as fontes mais confiáveis e aprenda a decifrar os números sorteados.',
     date: '2026-02-08',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d',
     readTime: 5,
     category: 'resultados',
     emoji: '📊',
@@ -806,6 +824,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Aprenda o passo a passo de como verificar se acertei no jogo do bicho. Entenda modalidades, prêmios e como conferir sua pule com segurança.',
     excerpt: 'Dúvida se ganhou? Aprenda a conferir sua pule do jogo do bicho em todas as modalidades e saiba exatamente como verificar seus acertos.',
     date: '2026-02-11',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1596838132731-dd9651537c38',
     readTime: 5,
     category: 'resultados',
     emoji: '✅',
@@ -848,6 +868,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Entenda o conceito de bicho atrasado no jogo do bicho. Aprenda a identificar animais que não saem há tempos e use isso em suas puxadas.',
     excerpt: 'O bicho está sumido? Aprenda a usar a estratégia do bicho atrasado para prever quando ele finalmente vai aparecer na cabeça.',
     date: '2026-02-14',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420',
     readTime: 6,
     category: 'estrategia',
     emoji: '⏳',
@@ -883,6 +905,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Entenda como os resultados da Loteria Federal influenciam as puxadas do jogo do bicho durante toda a semana. Estratégia vencedora.',
     excerpt: 'A Federal manda no jogo. Aprenda a usar o resultado de quarta e sábado para prever os bichos que vão dominar a semana seguinte.',
     date: '2026-02-17',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1553481187-be93c21490a9',
     readTime: 6,
     category: 'estrategia',
     emoji: '🏛️',
@@ -918,6 +942,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Compare as famosas tabelas de puxadas da Sueli e do Capitão. Entenda as diferenças, origens e descubra qual delas é mais assertiva para seus palpites.',
     excerpt: 'Duelo de gigantes! Conheça as diferenças entre as puxadas da Sueli e do Capitão e descubra qual tabela combina melhor com seu estilo de jogo.',
     date: '2026-02-20',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d',
     readTime: 7,
     category: 'comparativos',
     emoji: '⚔️',
@@ -967,6 +993,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Compare a dezena simples e o duque de dezena no jogo do bicho. Saiba qual modalidade paga mais, as chances de ganhar e como apostar.',
     excerpt: 'Quer ganhar mais? Entenda a diferença entre apostar em uma dezena simples ou no duque de dezena e veja qual traz o melhor retorno.',
     date: '2026-02-23',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1596838132731-dd9651537c38',
     readTime: 5,
     category: 'comparativos',
     emoji: '💰',
@@ -1016,6 +1044,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Descubra as diferenças entre as puxadas tradicionais (tabelas) e as puxadas estatísticas modernas. Saiba qual método é mais eficaz hoje.',
     excerpt: 'Velha guarda ou tecnologia? Entenda a diferença entre as tabelas de puxadas clássicas e as novas análises estatísticas de resultados.',
     date: '2026-02-26',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420',
     readTime: 6,
     category: 'estrategia',
     emoji: '📈',
@@ -1065,6 +1095,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Descubra as probabilidades reais de ganhar no jogo do bicho nas modalidades milhar, centena e dezena. Entenda o risco e a recompensa de cada uma.',
     excerpt: 'Qual a chance de acertar a milhar na cabeça? Entenda a matemática por trás do jogo do bicho e escolha a modalidade certa para seu perfil.',
     date: '2026-03-01',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1553481187-be93c21490a9',
     readTime: 5,
     category: 'estrategia',
     emoji: '🎲',
@@ -1107,6 +1139,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Aprenda a diferença entre puxadas e palpites do dia e saiba como combinar essas duas ferramentas para criar apostas imbatíveis no jogo do bicho.',
     excerpt: 'Puxada ou palpite? Entenda a diferença e aprenda a cruzar as informações para encontrar o bicho certo para a próxima extração.',
     date: '2026-03-04',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d',
     readTime: 5,
     category: 'estrategia',
     emoji: '💡',
@@ -1148,6 +1182,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Entenda a diferença entre apostar em grupo simples e grupo combinado no jogo do bicho. Saiba como funcionam os prêmios e as chances de ganhar.',
     excerpt: 'Bicho único ou vários? Aprenda a diferença entre o grupo simples e o combinado e descubra qual estratégia protege melhor sua banca.',
     date: '2026-03-07',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1596838132731-dd9651537c38',
     readTime: 6,
     category: 'estrategia',
     emoji: '👥',
@@ -1197,6 +1233,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Descubra a verdade sobre as milhares viciadas no jogo do bicho. Entenda como padrões de repetição podem ajudar nas suas puxadas e palpites.',
     excerpt: 'Existem números que saem mais que outros? Entenda o conceito de milhares viciadas e saiba como usar a estatística a seu favor.',
     date: '2026-03-10',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420',
     readTime: 5,
     category: 'estrategia',
     emoji: '🕵️',
@@ -1235,6 +1273,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Aprenda como funciona a inversão de números no jogo do bicho. Saiba como apostar em milhares e centenas invertidas e aumente suas chances.',
     excerpt: 'Quer aumentar suas chances? Entenda como funciona a inversão de milhares e centenas e aprenda a cercar o resultado de todos os lados.',
     date: '2026-03-13',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1553481187-be93c21490a9',
     readTime: 5,
     category: 'estrategia',
     emoji: '🔄',
@@ -1270,6 +1310,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Aprenda o passo a passo de como jogar no duque de dezena. Saiba como funcionam as combinações e quanto essa modalidade paga nas bancas.',
     excerpt: 'Quer um prêmio maior? Aprenda a jogar no duque de dezena e descubra como combinar dois números para multiplicar seus ganhos.',
     date: '2026-03-16',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d',
     readTime: 5,
     category: 'estrategia',
     emoji: '🥈',
@@ -1305,6 +1347,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Descubra como funciona o terno de grupo no jogo do bicho. Aprenda a calcular o prêmio, entenda as chances de ganhar e veja dicas de puxadas.',
     excerpt: 'Três bichos, um prêmio! Aprenda a jogar no terno de grupo e saiba como calcular quanto você vai receber por esse acerto triplo.',
     date: '2026-03-19',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1596838132731-dd9651537c38',
     readTime: 6,
     category: 'estrategia',
     emoji: '🥉',
@@ -1346,6 +1390,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Aprenda a criar uma sequência de puxadas para planejar suas apostas durante toda a semana. Melhore sua constância e gestão de banca.',
     excerpt: 'Não jogue ao acaso! Aprenda a planejar sua semana de apostas usando a lógica das sequências de puxadas e aumente sua constância.',
     date: '2026-03-22',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420',
     readTime: 7,
     category: 'estrategia',
     emoji: '📅',
@@ -1381,6 +1427,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Confira a lista atualizada dos animais mais atrasados no jogo do bicho. Aprenda a usar o atraso a seu favor e saiba quando o bicho vai sair.',
     excerpt: 'Quem está sumido? Veja a lista dos animais que não aparecem na cabeça há tempos e aprenda a estratégia para ganhar na quebra do atraso.',
     date: '2026-03-25',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1553481187-be93c21490a9',
     readTime: 5,
     category: 'estrategia',
     emoji: '🐢',
@@ -1422,6 +1470,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Conheça a fascinante história do jogo do bicho no Brasil. Saiba como o Barão de Drummond criou o jogo para salvar um zoológico no Rio de Janeiro.',
     excerpt: 'De uma rifa de zoológico a um fenômeno cultural. Conheça a história completa do jogo do bicho e como ele se tornou parte da identidade brasileira.',
     date: '2026-03-28',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d',
     readTime: 8,
     category: 'cultura',
     emoji: '📜',
@@ -1457,6 +1507,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Entenda as razões culturais e sociais que tornam o jogo do bicho um fenômeno de popularidade no Brasil há mais de um século. Saiba mais.',
     excerpt: 'O que faz milhões de brasileiros apostarem no bicho todos os dias? Descubra os segredos por trás da popularidade desse jogo centenário.',
     date: '2026-03-31',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1596838132731-dd9651537c38',
     readTime: 6,
     category: 'cultura',
     emoji: '🇧🇷',
@@ -1492,6 +1544,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Conheça a vida e a obra de João Batista Viana Drummond, o Barão de Drummond, o criador do jogo do bicho. Saiba como tudo começou no Rio.',
     excerpt: 'Conheça o homem por trás do bicho. Saiba quem foi o Barão de Drummond e como sua ideia para salvar um zoológico mudou o Brasil para sempre.',
     date: '2026-04-03',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420',
     readTime: 5,
     category: 'cultura',
     emoji: '🎩',
@@ -1527,6 +1581,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Explore a relação entre o jogo do bicho e as superstições brasileiras. Saiba como sonhos, eventos e sinais influenciam os palpites e puxadas.',
     excerpt: 'Sonhou com o quê? Descubra como as superstições e tradições moldam o jeito brasileiro de jogar no bicho e influenciam as puxadas.',
     date: '2026-04-06',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1553481187-be93c21490a9',
     readTime: 6,
     category: 'cultura',
     emoji: '🔮',
@@ -1562,6 +1618,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Aprenda a usar o livro dos sonhos para ganhar no jogo do bicho. Descubra o significado dos sonhos mais comuns e veja em qual bicho apostar hoje.',
     excerpt: 'Sonhou com cobra, dente ou dinheiro? Aprenda a interpretar seus sonhos usando o guia clássico do jogo do bicho e encontre seu bicho da sorte.',
     date: '2026-04-09',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d',
     readTime: 7,
     category: 'cultura',
     emoji: '💤',
@@ -1604,6 +1662,8 @@ const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Conheça as figuras históricas e os personagens mais famosos que moldaram o jogo do bicho no Brasil. De bicheiros a bicheiras lendárias.',
     excerpt: 'Quem são as lendas do bicho? Conheça os personagens mais marcantes, de Castor de Andrade ao Barão de Drummond, e suas histórias incríveis.',
     date: '2026-04-14',
+    author: 'Equipe Puxabicho',
+    image: 'https://images.unsplash.com/photo-1596838132731-dd9651537c38',
     readTime: 6,
     category: 'cultura',
     emoji: '👤',
@@ -1657,31 +1717,32 @@ BLOG_POSTS.filter(p => p.id <= 30).forEach(post => {
   }
 
   post.content = `
-# ${post.title}
+<article>
+  <h2>${post.title}</h2>
+  <p>A técnica das <strong>puxadas no jogo do bicho</strong> é uma das mais tradicionais e respeitadas pelos apostadores brasileiros. Neste artigo, vamos explorar profundamente como o ${post.slug.includes('grupo') ? 'Grupo ' + post.slug.split('-')[3] : 'conceito de puxada'} funciona na prática.</p>
 
-A técnica das **puxadas no jogo do bicho** é uma das mais tradicionais e respeitadas pelos apostadores brasileiros. Neste artigo, vamos explorar profundamente como o ${post.slug.includes('grupo') ? 'Grupo ' + post.slug.split('-')[3] : 'conceito de puxada'} funciona na prática.
+  <h2>Por que as Puxadas são importantes?</h2>
+  <p>Muitos jogadores acreditam que os resultados do jogo do bicho não são puramente aleatórios, mas seguem padrões cíclicos. Quando um animal sai no primeiro prêmio, ele "puxa" outros animais para os sorteios seguintes.</p>
 
-## Por que as Puxadas são importantes?
+  <h3>Como usar esta informação?</h3>
+  <ol>
+    <li><strong>Observe o resultado anterior:</strong> Veja qual animal saiu na cabeça (1º prêmio).</li>
+    <li><strong>Consulte a tabela:</strong> Verifique quais animais são puxados por ele.</li>
+    <li><strong>Faça seu palpite:</strong> Escolha um ou mais animais da lista de puxadas para sua próxima aposta.</li>
+  </ol>
 
-Muitos jogadores acreditam que os resultados do jogo do bicho não são puramente aleatórios, mas seguem padrões cíclicos. Quando um animal sai no primeiro prêmio, ele "puxa" outros animais para os sorteios seguintes.
+  <h2>Detalhes do Conteúdo</h2>
+  <p>As puxadas são baseadas em décadas de observação. Por exemplo, o <strong>Avestruz</strong> é conhecido por puxar a <strong>Vaca</strong>, o <strong>Pavão</strong> e o <strong>Peru</strong>. Essa relação mística e estatística é o que guia milhares de apostadores todos os dias.</p>
 
-### Como usar esta informação?
+  <h3>Dicas de Ouro</h3>
+  <ul>
+    <li><strong>Não aposte tudo em um só bicho:</strong> Diversifique seus palpites dentro da lista de puxadas.</li>
+    <li><strong>Acompanhe a Federal:</strong> Os sorteios da Loteria Federal costumam ditar as puxadas mais fortes da semana.</li>
+    <li><strong>Siga sua intuição:</strong> As puxadas são um guia, mas sua sorte pessoal também conta.</li>
+  </ul>
 
-1. **Observe o resultado anterior:** Veja qual animal saiu na cabeça (1º prêmio).
-2. **Consulte a tabela:** Verifique quais animais são puxados por ele.
-3. **Faça seu palpite:** Escolha um ou mais animais da lista de puxadas para sua próxima aposta.
-
-## Detalhes do Conteúdo
-
-As puxadas são baseadas em décadas de observação. Por exemplo, o **Avestruz** é conhecido por puxar a **Vaca**, o **Pavão** e o **Peru**. Essa relação mística e estatística é o que guia milhares de apostadores todos os dias.
-
-### Dicas de Ouro
-
-* **Não aposte tudo em um só bicho:** Diversifique seus palpites dentro da lista de puxadas.
-* **Acompanhe a Federal:** Os sorteios da Loteria Federal costumam ditar as puxadas mais fortes da semana.
-* **Siga sua intuição:** As puxadas são um guia, mas sua sorte pessoal também conta.
-
-Esperamos que este guia sobre **${post.title}** ajude você a ter melhores resultados em suas apostas. Lembre-se sempre de jogar com responsabilidade!
+  <p>Esperamos que este guia sobre <strong>${post.title}</strong> ajude você a ter melhores resultados em suas apostas. Lembre-se sempre de jogar com responsabilidade!</p>
+</article>
   `;
 });
 
@@ -1883,9 +1944,8 @@ function BlogPostPage() {
                   prose-td:text-slate-600 prose-td:border-slate-100
                   prose-blockquote:border-l-4 prose-blockquote:border-emerald-500
                   prose-blockquote:bg-emerald-50 prose-blockquote:rounded-r-lg prose-blockquote:py-1"
-              >
-                <Markdown>{post.content}</Markdown>
-              </div>
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
 
               {post.tags && post.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-slate-100">
