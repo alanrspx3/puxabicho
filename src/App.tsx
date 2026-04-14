@@ -31,7 +31,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-20',
     author: 'Equipe Puxabicho',
     category: 'Fundamentos',
-    image: 'https://picsum.photos/seed/puxada/800/450',
+    image: 'https://images.unsplash.com/photo-1703812587632-d626f288b1f4?q=80&w=1141&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     relatedSlugs: ['como-ganhar-no-jogo-do-bicho-usando-puxadas', 'as-puxadas-mais-famosas-avestruz-e-vaca'],
     content: ''
   },
@@ -45,7 +45,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-21',
     author: 'Capitão do Bicho',
     category: 'Estratégia',
-    image: 'https://picsum.photos/seed/ganhar/800/450',
+    image: 'https://images.unsplash.com/photo-1589656966895-2f33e7653819',
     relatedSlugs: ['o-que-e-a-puxada-do-jogo-do-bicho', 'dicas-de-especialistas-para-puxadas-certeiras'],
     content: ''
   },
@@ -59,7 +59,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-22',
     author: 'Sueli Estatística',
     category: 'Tradição',
-    image: 'https://picsum.photos/seed/famosas/800/450',
+    image: 'https://images.unsplash.com/photo-1507103011901-e954d6ec0988',
     relatedSlugs: ['puxadas-do-grupo-01-avestruz', 'puxadas-do-grupo-25-vaca'],
     content: ''
   },
@@ -73,7 +73,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-23',
     author: 'Ju dos Palpites',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/avestruz/800/450',
+    image: 'https://images.unsplash.com/photo-1704805566048-c87c39bbcf11',
     relatedSlugs: ['as-puxadas-mais-famosas-avestruz-e-vaca', 'puxadas-do-grupo-02-aguia'],
     content: ''
   },
@@ -87,7 +87,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-24',
     author: 'Equipe Puxabicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/aguia/800/450',
+    image: 'https://plus.unsplash.com/premium_photo-1661823662989-9d441b95d906',
     relatedSlugs: ['puxadas-do-grupo-01-avestruz', 'puxadas-do-grupo-03-burro'],
     content: ''
   },
@@ -101,7 +101,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-25',
     author: 'Capitão do Bicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/burro/800/450',
+    image: 'https://images.unsplash.com/photo-1707189705512-30cef101df10',
     relatedSlugs: ['puxadas-do-grupo-02-aguia', 'puxadas-do-grupo-04-borboleta'],
     content: ''
   },
@@ -115,7 +115,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-26',
     author: 'Sueli Estatística',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/borboleta/800/450',
+    image: 'https://plus.unsplash.com/premium_photo-1710462716386-08fe07bb3c61',
     relatedSlugs: ['puxadas-do-grupo-03-burro', 'puxadas-do-grupo-05-cachorro'],
     content: ''
   },
@@ -129,7 +129,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-27',
     author: 'Ju dos Palpites',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/cachorro/800/450',
+    image: 'https://images.unsplash.com/photo-1561037404-61cd46aa615b',
     relatedSlugs: ['puxadas-do-grupo-04-borboleta', 'puxadas-do-grupo-06-cabra'],
     content: ''
   },
@@ -143,7 +143,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-28',
     author: 'Equipe Puxabicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/cabra/800/450',
+    image: 'https://images.unsplash.com/photo-1524024973431-2ad916746881',
     relatedSlugs: ['puxadas-do-grupo-05-cachorro', 'puxadas-do-grupo-07-carneiro'],
     content: ''
   },
@@ -157,7 +157,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-29',
     author: 'Capitão do Bicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/carneiro/800/450',
+    image: 'https://images.unsplash.com/photo-1640650762530-39ef8b1066ac',
     relatedSlugs: ['puxadas-do-grupo-06-cabra', 'puxadas-do-grupo-08-camelo'],
     content: ''
   },
@@ -171,7 +171,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-30',
     author: 'Sueli Estatística',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/camelo/800/450',
+    image: 'https://images.unsplash.com/photo-1599475504246-11c1217748c2',
     relatedSlugs: ['puxadas-do-grupo-07-carneiro', 'puxadas-do-grupo-09-cobra'],
     content: ''
   },
@@ -185,7 +185,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-03-31',
     author: 'Ju dos Palpites',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/cobra/800/450',
+    image: 'https://plus.unsplash.com/premium_photo-1661854791838-6997f74a678c',
     relatedSlugs: ['puxadas-do-grupo-08-camelo', 'puxadas-do-grupo-10-coelho'],
     content: ''
   },
@@ -199,7 +199,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-01',
     author: 'Equipe Puxabicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/coelho/800/450',
+    image: 'https://images.unsplash.com/photo-1591561582301-7ce6588cc286',
     relatedSlugs: ['puxadas-do-grupo-09-cobra', 'puxadas-do-grupo-11-cavalo'],
     content: ''
   },
@@ -213,7 +213,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-02',
     author: 'Capitão do Bicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/cavalo/800/450',
+    image: 'https://images.unsplash.com/photo-1606107869722-d5cbadabe2f0',
     relatedSlugs: ['puxadas-do-grupo-10-coelho', 'puxadas-do-grupo-12-elefante'],
     content: ''
   },
@@ -227,7 +227,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-03',
     author: 'Sueli Estatística',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/elefante/800/450',
+    image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46',
     relatedSlugs: ['puxadas-do-grupo-11-cavalo', 'puxadas-do-grupo-13-galo'],
     content: ''
   },
@@ -241,7 +241,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-04',
     author: 'Ju dos Palpites',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/galo/800/450',
+    image: 'https://images.unsplash.com/photo-1643299812896-431b89343951',
     relatedSlugs: ['puxadas-do-grupo-12-elefante', 'puxadas-do-grupo-14-gato'],
     content: ''
   },
@@ -255,7 +255,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-05',
     author: 'Equipe Puxabicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/gato/800/450',
+    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba',
     relatedSlugs: ['puxadas-do-grupo-13-galo', 'puxadas-do-grupo-15-jacare'],
     content: ''
   },
@@ -269,7 +269,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-06',
     author: 'Capitão do Bicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/jacare/800/450',
+    image: 'https://plus.unsplash.com/premium_photo-1712949001279-6298151e4627',
     relatedSlugs: ['puxadas-do-grupo-14-gato', 'puxadas-do-grupo-16-leao'],
     content: ''
   },
@@ -297,7 +297,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-08',
     author: 'Ju dos Palpites',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/macaco/800/450',
+    image: 'https://images.unsplash.com/photo-1471421455671-b9e8a4114185',
     relatedSlugs: ['puxadas-do-grupo-16-leao', 'puxadas-do-grupo-18-porco'],
     content: ''
   },
@@ -311,7 +311,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-09',
     author: 'Equipe Puxabicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/porco/800/450',
+    image: 'https://images.unsplash.com/photo-1516467508483-a7212febe31a',
     relatedSlugs: ['puxadas-do-grupo-17-macaco', 'puxadas-do-grupo-19-pavao'],
     content: ''
   },
@@ -325,7 +325,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-10',
     author: 'Capitão do Bicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/pavao/800/450',
+    image: 'https://images.unsplash.com/photo-1703812587632-d626f288b1f4',
     relatedSlugs: ['puxadas-do-grupo-18-porco', 'puxadas-do-grupo-20-peru'],
     content: ''
   },
@@ -339,7 +339,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-11',
     author: 'Sueli Estatística',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/peru/800/450',
+    image: 'https://images.unsplash.com/photo-1706742796787-49106ac88700',
     relatedSlugs: ['puxadas-do-grupo-19-pavao', 'puxadas-do-grupo-21-touro'],
     content: ''
   },
@@ -353,7 +353,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-12',
     author: 'Ju dos Palpites',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/touro/800/450',
+    image: 'https://images.unsplash.com/photo-1562360742-318972306207',
     relatedSlugs: ['puxadas-do-grupo-20-peru', 'puxadas-do-grupo-22-tigre'],
     content: ''
   },
@@ -367,7 +367,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-13',
     author: 'Equipe Puxabicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/tigre/800/450',
+    image: 'https://images.unsplash.com/photo-1500463959177-e0869687df26',
     relatedSlugs: ['puxadas-do-grupo-21-touro', 'puxadas-do-grupo-23-urso'],
     content: ''
   },
@@ -381,7 +381,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-14',
     author: 'Capitão do Bicho',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/urso/800/450',
+    image: 'https://images.unsplash.com/photo-1551792714-9a8b35338793',
     relatedSlugs: ['puxadas-do-grupo-22-tigre', 'puxadas-do-grupo-24-veado'],
     content: ''
   },
@@ -395,7 +395,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-15',
     author: 'Sueli Estatística',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/veado/800/450',
+    image: 'https://plus.unsplash.com/premium_photo-1661819541230-034d07819c9b',
     relatedSlugs: ['puxadas-do-grupo-23-urso', 'puxadas-do-grupo-25-vaca'],
     content: ''
   },
@@ -409,7 +409,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-16',
     author: 'Ju dos Palpites',
     category: 'Tabelas',
-    image: 'https://picsum.photos/seed/vaca/800/450',
+    image: 'https://images.unsplash.com/photo-1528143582951-ef14e49f4381',
     relatedSlugs: ['puxadas-do-grupo-24-veado', 'as-puxadas-mais-famosas-avestruz-e-vaca'],
     content: ''
   },
@@ -423,7 +423,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-17',
     author: 'Equipe Puxabicho',
     category: 'Mística',
-    image: 'https://picsum.photos/seed/sonhos/800/450',
+    image: 'https://images.unsplash.com/photo-1526226128118-9ef71fc2f34b',
     relatedSlugs: ['o-que-e-a-puxada-do-jogo-do-bicho', 'dicas-de-especialistas-para-puxadas-certeiras'],
     content: ''
   },
@@ -437,7 +437,7 @@ const BLOG_POSTS: BlogPost[] = [
     date: '2026-04-18',
     author: 'Capitão do Bicho',
     category: 'Estratégia',
-    image: 'https://picsum.photos/seed/especialista/800/450',
+    image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d',
     relatedSlugs: ['como-ganhar-no-jogo-do-bicho-usando-puxadas', 'significado-dos-sonhos-e-as-puxadas'],
     content: ''
   }
