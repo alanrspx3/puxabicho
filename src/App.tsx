@@ -3,8 +3,636 @@ import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation
 import { ANIMALS } from './constants';
 import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import Markdown from 'react-markdown';
 
-// --- SEO Manager ---
+interface BlogPost {
+  id: number;
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  author: string;
+  category: string;
+  image: string;
+  relatedSlugs: string[];
+}
+
+const BLOG_POSTS: BlogPost[] = [
+  {
+    id: 1,
+    slug: 'o-que-e-a-puxada-do-jogo-do-bicho',
+    title: 'O que é a Puxada do Jogo do Bicho? Guia Completo',
+    metaTitle: 'O que é Puxada do Jogo do Bicho? Entenda como funciona',
+    metaDescription: 'Descubra o que são as puxadas do jogo do bicho, como elas surgiram e como você pode usar essa técnica para melhorar seus palpites.',
+    excerpt: 'Entenda o conceito fundamental das puxadas e como essa tradição centenária influencia os apostadores até hoje.',
+    date: '2026-03-20',
+    author: 'Equipe Puxabicho',
+    category: 'Fundamentos',
+    image: 'https://picsum.photos/seed/puxada/800/450',
+    relatedSlugs: ['como-ganhar-no-jogo-do-bicho-usando-puxadas', 'as-puxadas-mais-famosas-avestruz-e-vaca'],
+    content: ''
+  },
+  {
+    id: 2,
+    slug: 'como-ganhar-no-jogo-do-bicho-usando-puxadas',
+    title: 'Como Ganhar no Jogo do Bicho usando Puxadas',
+    metaTitle: 'Como Ganhar no Jogo do Bicho com Puxadas | Dicas e Estratégias',
+    metaDescription: 'Aprenda estratégias práticas para utilizar a tabela de puxadas a seu favor e aumentar suas chances de acerto no jogo do bicho.',
+    excerpt: 'Dicas práticas e estratégias para quem quer levar o jogo do bicho a sério usando a lógica das puxadas.',
+    date: '2026-03-21',
+    author: 'Capitão do Bicho',
+    category: 'Estratégia',
+    image: 'https://picsum.photos/seed/ganhar/800/450',
+    relatedSlugs: ['o-que-e-a-puxada-do-jogo-do-bicho', 'dicas-de-especialistas-para-puxadas-certeiras'],
+    content: ''
+  },
+  {
+    id: 3,
+    slug: 'as-puxadas-mais-famosas-avestruz-e-vaca',
+    title: 'As Puxadas mais Famosas: Avestruz e Vaca',
+    metaTitle: 'Puxadas Famosas: Avestruz e Vaca no Jogo do Bicho',
+    metaDescription: 'Conheça as puxadas mais tradicionais do jogo do bicho, focando no Avestruz (Grupo 01) e na Vaca (Grupo 25).',
+    excerpt: 'Explore as conexões históricas entre o primeiro e o último animal da tabela do bicho.',
+    date: '2026-03-22',
+    author: 'Sueli Estatística',
+    category: 'Tradição',
+    image: 'https://picsum.photos/seed/famosas/800/450',
+    relatedSlugs: ['puxadas-do-grupo-01-avestruz', 'puxadas-do-grupo-25-vaca'],
+    content: ''
+  },
+  {
+    id: 4,
+    slug: 'puxadas-do-grupo-01-avestruz',
+    title: 'Puxadas do Grupo 01: Avestruz',
+    metaTitle: 'Puxadas do Avestruz (Grupo 01) - Jogo do Bicho',
+    metaDescription: 'Veja o que o Avestruz puxa no jogo do bicho. Dezenas 01, 02, 03 e 04. Confira a tabela completa.',
+    excerpt: 'Tudo sobre o Grupo 01. Descubra quais animais o Avestruz atrai nos sorteios seguintes.',
+    date: '2026-03-23',
+    author: 'Ju dos Palpites',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/avestruz/800/450',
+    relatedSlugs: ['as-puxadas-mais-famosas-avestruz-e-vaca', 'puxadas-do-grupo-02-aguia'],
+    content: ''
+  },
+  {
+    id: 5,
+    slug: 'puxadas-do-grupo-02-aguia',
+    title: 'Puxadas do Grupo 02: Águia',
+    metaTitle: 'Puxadas da Águia (Grupo 02) - Jogo do Bicho',
+    metaDescription: 'Descubra o que a Águia puxa. Dezenas 05, 06, 07 e 08. Melhore seus palpites com a tabela da Águia.',
+    excerpt: 'A visão aguçada da Águia nos sorteios. Veja quais são as puxadas clássicas deste grupo.',
+    date: '2026-03-24',
+    author: 'Equipe Puxabicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/aguia/800/450',
+    relatedSlugs: ['puxadas-do-grupo-01-avestruz', 'puxadas-do-grupo-03-burro'],
+    content: ''
+  },
+  {
+    id: 6,
+    slug: 'puxadas-do-grupo-03-burro',
+    title: 'Puxadas do Grupo 03: Burro',
+    metaTitle: 'Puxadas do Burro (Grupo 03) - Jogo do Bicho',
+    metaDescription: 'Confira as puxadas do Burro. Dezenas 09, 10, 11 e 12. Saiba quais animais seguir quando o Burro sai.',
+    excerpt: 'Não subestime o Burro. Conheça as puxadas estratégicas para o Grupo 03.',
+    date: '2026-03-25',
+    author: 'Capitão do Bicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/burro/800/450',
+    relatedSlugs: ['puxadas-do-grupo-02-aguia', 'puxadas-do-grupo-04-borboleta'],
+    content: ''
+  },
+  {
+    id: 7,
+    slug: 'puxadas-do-grupo-04-borboleta',
+    title: 'Puxadas do Grupo 04: Borboleta',
+    metaTitle: 'Puxadas da Borboleta (Grupo 04) - Jogo do Bicho',
+    metaDescription: 'O que a Borboleta puxa? Dezenas 13, 14, 15 e 16. Veja as conexões da Borboleta no jogo do bicho.',
+    excerpt: 'A leveza da Borboleta traz sorte. Veja quais animais ela costuma puxar nos resultados.',
+    date: '2026-03-26',
+    author: 'Sueli Estatística',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/borboleta/800/450',
+    relatedSlugs: ['puxadas-do-grupo-03-burro', 'puxadas-do-grupo-05-cachorro'],
+    content: ''
+  },
+  {
+    id: 8,
+    slug: 'puxadas-do-grupo-05-cachorro',
+    title: 'Puxadas do Grupo 05: Cachorro',
+    metaTitle: 'Puxadas do Cachorro (Grupo 05) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Cachorro no jogo do bicho. Dezenas 17, 18, 19 e 20. O melhor amigo do apostador.',
+    excerpt: 'O Cachorro é fiel nos palpites. Descubra o que ele puxa para os próximos sorteios.',
+    date: '2026-03-27',
+    author: 'Ju dos Palpites',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/cachorro/800/450',
+    relatedSlugs: ['puxadas-do-grupo-04-borboleta', 'puxadas-do-grupo-06-cabra'],
+    content: ''
+  },
+  {
+    id: 9,
+    slug: 'puxadas-do-grupo-06-cabra',
+    title: 'Puxadas do Grupo 06: Cabra',
+    metaTitle: 'Puxadas da Cabra (Grupo 06) - Jogo do Bicho',
+    metaDescription: 'Veja o que a Cabra puxa. Dezenas 21, 22, 23 e 24. Confira a tabela de puxadas da Cabra.',
+    excerpt: 'A Cabra sobe montanhas e traz resultados. Veja quais animais ela puxa no bicho.',
+    date: '2026-03-28',
+    author: 'Equipe Puxabicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/cabra/800/450',
+    relatedSlugs: ['puxadas-do-grupo-05-cachorro', 'puxadas-do-grupo-07-carneiro'],
+    content: ''
+  },
+  {
+    id: 10,
+    slug: 'puxadas-do-grupo-07-carneiro',
+    title: 'Puxadas do Grupo 07: Carneiro',
+    metaTitle: 'Puxadas do Carneiro (Grupo 07) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Carneiro. Dezenas 25, 26, 27 e 28. Saiba o que apostar quando o Carneiro aparece.',
+    excerpt: 'O Carneiro lidera o rebanho da sorte. Confira suas puxadas tradicionais.',
+    date: '2026-03-29',
+    author: 'Capitão do Bicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/carneiro/800/450',
+    relatedSlugs: ['puxadas-do-grupo-06-cabra', 'puxadas-do-grupo-08-camelo'],
+    content: ''
+  },
+  {
+    id: 11,
+    slug: 'puxadas-do-grupo-08-camelo',
+    title: 'Puxadas do Grupo 08: Camelo',
+    metaTitle: 'Puxadas do Camelo (Grupo 08) - Jogo do Bicho',
+    metaDescription: 'O que o Camelo puxa? Dezenas 29, 30, 31 e 32. Atravesse o deserto da sorte com o Camelo.',
+    excerpt: 'Resistência e sorte com o Camelo. Veja quais animais ele atrai nos sorteios.',
+    date: '2026-03-30',
+    author: 'Sueli Estatística',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/camelo/800/450',
+    relatedSlugs: ['puxadas-do-grupo-07-carneiro', 'puxadas-do-grupo-09-cobra'],
+    content: ''
+  },
+  {
+    id: 12,
+    slug: 'puxadas-do-grupo-09-cobra',
+    title: 'Puxadas do Grupo 09: Cobra',
+    metaTitle: 'Puxadas da Cobra (Grupo 09) - Jogo do Bicho',
+    metaDescription: 'Puxadas da Cobra no jogo do bicho. Dezenas 33, 34, 35 e 36. Cuidado com o bote da sorte.',
+    excerpt: 'A Cobra é astuta nos resultados. Descubra suas puxadas mais perigosas e certeiras.',
+    date: '2026-03-31',
+    author: 'Ju dos Palpites',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/cobra/800/450',
+    relatedSlugs: ['puxadas-do-grupo-08-camelo', 'puxadas-do-grupo-10-coelho'],
+    content: ''
+  },
+  {
+    id: 13,
+    slug: 'puxadas-do-grupo-10-coelho',
+    title: 'Puxadas do Grupo 10: Coelho',
+    metaTitle: 'Puxadas do Coelho (Grupo 10) - Jogo do Bicho',
+    metaDescription: 'O que o Coelho puxa? Dezenas 37, 38, 39 e 40. Pule para a vitória com as puxadas do Coelho.',
+    excerpt: 'A rapidez do Coelho nos palpites. Veja quais animais ele puxa na tabela.',
+    date: '2026-04-01',
+    author: 'Equipe Puxabicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/coelho/800/450',
+    relatedSlugs: ['puxadas-do-grupo-09-cobra', 'puxadas-do-grupo-11-cavalo'],
+    content: ''
+  },
+  {
+    id: 14,
+    slug: 'puxadas-do-grupo-11-cavalo',
+    title: 'Puxadas do Grupo 11: Cavalo',
+    metaTitle: 'Puxadas do Cavalo (Grupo 11) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Cavalo. Dezenas 41, 42, 43 e 44. Galope rumo ao prêmio com o Cavalo.',
+    excerpt: 'A força do Cavalo nos sorteios. Conheça os animais que ele puxa tradicionalmente.',
+    date: '2026-04-02',
+    author: 'Capitão do Bicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/cavalo/800/450',
+    relatedSlugs: ['puxadas-do-grupo-10-coelho', 'puxadas-do-grupo-12-elefante'],
+    content: ''
+  },
+  {
+    id: 15,
+    slug: 'puxadas-do-grupo-12-elefante',
+    title: 'Puxadas do Grupo 12: Elefante',
+    metaTitle: 'Puxadas do Elefante (Grupo 12) - Jogo do Bicho',
+    metaDescription: 'O que o Elefante puxa? Dezenas 45, 46, 47 e 48. O peso da sorte com o Elefante.',
+    excerpt: 'O Elefante nunca esquece um palpite. Veja quais são suas puxadas clássicas.',
+    date: '2026-04-03',
+    author: 'Sueli Estatística',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/elefante/800/450',
+    relatedSlugs: ['puxadas-do-grupo-11-cavalo', 'puxadas-do-grupo-13-galo'],
+    content: ''
+  },
+  {
+    id: 16,
+    slug: 'puxadas-do-grupo-13-galo',
+    title: 'Puxadas do Grupo 13: Galo',
+    metaTitle: 'Puxadas do Galo (Grupo 13) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Galo no jogo do bicho. Dezenas 49, 50, 51 e 52. Acorde para a sorte com o Galo.',
+    excerpt: 'O Galo canta a vitória. Descubra quais animais ele atrai nos resultados.',
+    date: '2026-04-04',
+    author: 'Ju dos Palpites',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/galo/800/450',
+    relatedSlugs: ['puxadas-do-grupo-12-elefante', 'puxadas-do-grupo-14-gato'],
+    content: ''
+  },
+  {
+    id: 17,
+    slug: 'puxadas-do-grupo-14-gato',
+    title: 'Puxadas do Grupo 14: Gato',
+    metaTitle: 'Puxadas do Gato (Grupo 14) - Jogo do Bicho',
+    metaDescription: 'O que o Gato puxa? Dezenas 53, 54, 55 e 56. As sete vidas da sorte com o Gato.',
+    excerpt: 'A agilidade do Gato nos palpites. Veja quais animais ele puxa na tabela tradicional.',
+    date: '2026-04-05',
+    author: 'Equipe Puxabicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/gato/800/450',
+    relatedSlugs: ['puxadas-do-grupo-13-galo', 'puxadas-do-grupo-15-jacare'],
+    content: ''
+  },
+  {
+    id: 18,
+    slug: 'puxadas-do-grupo-15-jacare',
+    title: 'Puxadas do Grupo 15: Jacaré',
+    metaTitle: 'Puxadas do Jacaré (Grupo 15) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Jacaré. Dezenas 57, 58, 59 e 60. Fique de olho no Jacaré para ganhar.',
+    excerpt: 'O Jacaré espera pacientemente pelo prêmio. Veja suas puxadas mais comuns.',
+    date: '2026-04-06',
+    author: 'Capitão do Bicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/jacare/800/450',
+    relatedSlugs: ['puxadas-do-grupo-14-gato', 'puxadas-do-grupo-16-leao'],
+    content: ''
+  },
+  {
+    id: 19,
+    slug: 'puxadas-do-grupo-16-leao',
+    title: 'Puxadas do Grupo 16: Leão',
+    metaTitle: 'Puxadas do Leão (Grupo 16) - Jogo do Bicho',
+    metaDescription: 'O que o Leão puxa? Dezenas 61, 62, 63 e 64. O rei da selva e dos palpites.',
+    excerpt: 'O rugido do Leão traz sorte grande. Confira as puxadas do Grupo 16.',
+    date: '2026-04-07',
+    author: 'Sueli Estatística',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/leao/800/450',
+    relatedSlugs: ['puxadas-do-grupo-15-jacare', 'puxadas-do-grupo-17-macaco'],
+    content: ''
+  },
+  {
+    id: 20,
+    slug: 'puxadas-do-grupo-17-macaco',
+    title: 'Puxadas do Grupo 17: Macaco',
+    metaTitle: 'Puxadas do Macaco (Grupo 17) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Macaco no jogo do bicho. Dezenas 65, 66, 67 e 68. Pule de galho em galho até o prêmio.',
+    excerpt: 'A inteligência do Macaco nos sorteios. Veja quais animais ele puxa na tabela.',
+    date: '2026-04-08',
+    author: 'Ju dos Palpites',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/macaco/800/450',
+    relatedSlugs: ['puxadas-do-grupo-16-leao', 'puxadas-do-grupo-18-porco'],
+    content: ''
+  },
+  {
+    id: 21,
+    slug: 'puxadas-do-grupo-18-porco',
+    title: 'Puxadas do Grupo 18: Porco',
+    metaTitle: 'Puxadas do Porco (Grupo 18) - Jogo do Bicho',
+    metaDescription: 'O que o Porco puxa? Dezenas 69, 70, 71 e 72. Encha o cofrinho com as puxadas do Porco.',
+    excerpt: 'A fartura do Porco nos resultados. Descubra os animais que ele atrai.',
+    date: '2026-04-09',
+    author: 'Equipe Puxabicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/porco/800/450',
+    relatedSlugs: ['puxadas-do-grupo-17-macaco', 'puxadas-do-grupo-19-pavao'],
+    content: ''
+  },
+  {
+    id: 22,
+    slug: 'puxadas-do-grupo-19-pavao',
+    title: 'Puxadas do Grupo 19: Pavão',
+    metaTitle: 'Puxadas do Pavão (Grupo 19) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Pavão. Dezenas 73, 74, 75 e 76. A beleza da sorte com o Pavão.',
+    excerpt: 'O Pavão abre as penas para o prêmio. Veja suas puxadas mais exuberantes.',
+    date: '2026-04-10',
+    author: 'Capitão do Bicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/pavao/800/450',
+    relatedSlugs: ['puxadas-do-grupo-18-porco', 'puxadas-do-grupo-20-peru'],
+    content: ''
+  },
+  {
+    id: 23,
+    slug: 'puxadas-do-grupo-20-peru',
+    title: 'Puxadas do Grupo 20: Peru',
+    metaTitle: 'Puxadas do Peru (Grupo 20) - Jogo do Bicho',
+    metaDescription: 'O que o Peru puxa? Dezenas 77, 78, 79 e 80. Ceia de prêmios com o Peru.',
+    excerpt: 'O Peru é tradição nos sorteios. Conheça os animais que ele puxa na tabela clássica.',
+    date: '2026-04-11',
+    author: 'Sueli Estatística',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/peru/800/450',
+    relatedSlugs: ['puxadas-do-grupo-19-pavao', 'puxadas-do-grupo-21-touro'],
+    content: ''
+  },
+  {
+    id: 24,
+    slug: 'puxadas-do-grupo-21-touro',
+    title: 'Puxadas do Grupo 21: Touro',
+    metaTitle: 'Puxadas do Touro (Grupo 21) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Touro no jogo do bicho. Dezenas 81, 82, 83 e 84. A força bruta da sorte.',
+    excerpt: 'O Touro investe contra o azar. Descubra quais animais ele puxa nos resultados.',
+    date: '2026-04-12',
+    author: 'Ju dos Palpites',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/touro/800/450',
+    relatedSlugs: ['puxadas-do-grupo-20-peru', 'puxadas-do-grupo-22-tigre'],
+    content: ''
+  },
+  {
+    id: 25,
+    slug: 'puxadas-do-grupo-22-tigre',
+    title: 'Puxadas do Grupo 22: Tigre',
+    metaTitle: 'Puxadas do Tigre (Grupo 22) - Jogo do Bicho',
+    metaDescription: 'O que o Tigre puxa? Dezenas 85, 86, 87 e 88. O bote certeiro do Tigre na sorte.',
+    excerpt: 'A ferocidade do Tigre nos palpites. Veja quais animais ele puxa na tabela.',
+    date: '2026-04-13',
+    author: 'Equipe Puxabicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/tigre/800/450',
+    relatedSlugs: ['puxadas-do-grupo-21-touro', 'puxadas-do-grupo-23-urso'],
+    content: ''
+  },
+  {
+    id: 26,
+    slug: 'puxadas-do-grupo-23-urso',
+    title: 'Puxadas do Grupo 23: Urso',
+    metaTitle: 'Puxadas do Urso (Grupo 23) - Jogo do Bicho',
+    metaDescription: 'Puxadas do Urso. Dezenas 89, 90, 91 e 92. Hibernando na sorte com o Urso.',
+    excerpt: 'O Urso é robusto nos resultados. Conheça as puxadas tradicionais deste grupo.',
+    date: '2026-04-14',
+    author: 'Capitão do Bicho',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/urso/800/450',
+    relatedSlugs: ['puxadas-do-grupo-22-tigre', 'puxadas-do-grupo-24-veado'],
+    content: ''
+  },
+  {
+    id: 27,
+    slug: 'puxadas-do-grupo-24-veado',
+    title: 'Puxadas do Grupo 24: Veado',
+    metaTitle: 'Puxadas do Veado (Grupo 24) - Jogo do Bicho',
+    metaDescription: 'O que o Veado puxa? Dezenas 93, 94, 95 e 96. A elegância da sorte com o Veado.',
+    excerpt: 'O Veado corre rápido para o prêmio. Veja quais animais ele puxa na tabela clássica.',
+    date: '2026-04-15',
+    author: 'Sueli Estatística',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/veado/800/450',
+    relatedSlugs: ['puxadas-do-grupo-23-urso', 'puxadas-do-grupo-25-vaca'],
+    content: ''
+  },
+  {
+    id: 28,
+    slug: 'puxadas-do-grupo-25-vaca',
+    title: 'Puxadas do Grupo 25: Vaca',
+    metaTitle: 'Puxadas da Vaca (Grupo 25) - Jogo do Bicho',
+    metaDescription: 'Puxadas da Vaca no jogo do bicho. Dezenas 97, 98, 99 e 00. O leite da sorte com a Vaca.',
+    excerpt: 'A Vaca encerra a tabela com chave de ouro. Descubra o que ela puxa nos sorteios.',
+    date: '2026-04-16',
+    author: 'Ju dos Palpites',
+    category: 'Tabelas',
+    image: 'https://picsum.photos/seed/vaca/800/450',
+    relatedSlugs: ['puxadas-do-grupo-24-veado', 'as-puxadas-mais-famosas-avestruz-e-vaca'],
+    content: ''
+  },
+  {
+    id: 29,
+    slug: 'significado-dos-sonhos-e-as-puxadas',
+    title: 'Significado dos Sonhos e as Puxadas',
+    metaTitle: 'Sonhos e Puxadas: Como Interpretar seus Sonhos no Bicho',
+    metaDescription: 'Aprenda a relacionar seus sonhos com as puxadas do jogo do bicho. Guia de interpretação e palpites.',
+    excerpt: 'Seu subconsciente pode estar te dando o prêmio. Veja como unir sonhos e puxadas.',
+    date: '2026-04-17',
+    author: 'Equipe Puxabicho',
+    category: 'Mística',
+    image: 'https://picsum.photos/seed/sonhos/800/450',
+    relatedSlugs: ['o-que-e-a-puxada-do-jogo-do-bicho', 'dicas-de-especialistas-para-puxadas-certeiras'],
+    content: ''
+  },
+  {
+    id: 30,
+    slug: 'dicas-de-especialistas-para-puxadas-certeiras',
+    title: 'Dicas de Especialistas para Puxadas Certeiras',
+    metaTitle: 'Dicas de Especialistas: Como Fazer Puxadas Certeiras',
+    metaDescription: 'Confira as melhores dicas dos nossos especialistas para dominar a técnica das puxadas e ganhar no bicho.',
+    excerpt: 'O segredo dos grandes apostadores revelado. Melhore sua performance com estas dicas.',
+    date: '2026-04-18',
+    author: 'Capitão do Bicho',
+    category: 'Estratégia',
+    image: 'https://picsum.photos/seed/especialista/800/450',
+    relatedSlugs: ['como-ganhar-no-jogo-do-bicho-usando-puxadas', 'significado-dos-sonhos-e-as-puxadas'],
+    content: ''
+  }
+];
+
+// Add content to posts (simulated for brevity, but detailed enough for SEO)
+BLOG_POSTS.forEach(post => {
+  post.content = `
+# ${post.title}
+
+A técnica das **puxadas no jogo do bicho** é uma das mais tradicionais e respeitadas pelos apostadores brasileiros. Neste artigo, vamos explorar profundamente como o ${post.slug.includes('grupo') ? 'Grupo ' + post.slug.split('-')[3] : 'conceito de puxada'} funciona na prática.
+
+## Por que as Puxadas são importantes?
+
+Muitos jogadores acreditam que os resultados do jogo do bicho não são puramente aleatórios, mas seguem padrões cíclicos. Quando um animal sai no primeiro prêmio, ele "puxa" outros animais para os sorteios seguintes.
+
+### Como usar esta informação?
+
+1. **Observe o resultado anterior:** Veja qual animal saiu na cabeça (1º prêmio).
+2. **Consulte a tabela:** Verifique quais animais são puxados por ele.
+3. **Faça seu palpite:** Escolha um ou mais animais da lista de puxadas para sua próxima aposta.
+
+## Detalhes do Conteúdo
+
+As puxadas são baseadas em décadas de observação. Por exemplo, o **Avestruz** é conhecido por puxar a **Vaca**, o **Pavão** e o **Peru**. Essa relação mística e estatística é o que guia milhares de apostadores todos os dias.
+
+### Dicas de Ouro
+
+* **Não aposte tudo em um só bicho:** Diversifique seus palpites dentro da lista de puxadas.
+* **Acompanhe a Federal:** Os sorteios da Loteria Federal costumam ditar as puxadas mais fortes da semana.
+* **Siga sua intuição:** As puxadas são um guia, mas sua sorte pessoal também conta.
+
+Esperamos que este guia sobre **${post.title}** ajude você a ter melhores resultados em suas apostas. Lembre-se sempre de jogar com responsabilidade!
+  `;
+});
+
+function BlogCard({ post }: { post: BlogPost }) {
+  return (
+    <Link to={`/blog/${post.slug}`} className="group">
+      <motion.div 
+        whileHover={{ y: -5 }}
+        className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all h-full flex flex-col"
+      >
+        <div className="aspect-video overflow-hidden relative">
+          <img 
+            src={post.image} 
+            alt={post.title} 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute top-4 left-4 bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            {post.category}
+          </div>
+        </div>
+        <div className="p-6 flex-grow flex flex-col">
+          <div className="text-xs text-slate-400 font-medium mb-2 flex items-center gap-2">
+            <Calendar size={12} /> {new Date(post.date).toLocaleDateString('pt-BR')}
+          </div>
+          <h3 className="text-lg font-bold text-slate-800 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">
+            {post.title}
+          </h3>
+          <p className="text-sm text-slate-500 line-clamp-3 mb-4 flex-grow">
+            {post.excerpt}
+          </p>
+          <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Ler Artigo</span>
+            <ChevronRight size={16} className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
+          </div>
+        </div>
+      </motion.div>
+    </Link>
+  );
+}
+
+function BlogListPage() {
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-12">
+      <SEO 
+        title="Blog Puxabicho - Dicas, Puxadas e Estratégias do Jogo do Bicho" 
+        description="Acompanhe as melhores dicas, tabelas de puxadas atualizadas e estratégias para ganhar no jogo do bicho em nosso blog oficial."
+      />
+      <div className="text-center mb-16">
+        <h1 className="text-4xl font-black text-slate-800 mb-4 tracking-tight">Blog do Puxabicho</h1>
+        <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+          Sua fonte definitiva de conhecimento sobre puxadas, estatísticas e a cultura do jogo do bicho no Brasil.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {BLOG_POSTS.map(post => (
+          <BlogCard key={post.id} post={post} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BlogPostPage() {
+  const { slug } = useParams();
+  const post = BLOG_POSTS.find(p => p.slug === slug);
+  const navigate = useNavigate();
+
+  if (!post) {
+    return (
+      <div className="max-w-5xl mx-auto px-4 py-20 text-center">
+        <h2 className="text-2xl font-bold text-slate-800 mb-4">Artigo não encontrado</h2>
+        <button onClick={() => navigate('/blog')} className="text-emerald-600 font-bold flex items-center gap-2 mx-auto">
+          <ArrowLeft size={20} /> Voltar para o Blog
+        </button>
+      </div>
+    );
+  }
+
+  const relatedPosts = BLOG_POSTS.filter(p => post.relatedSlugs.includes(p.slug));
+
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "image": post.image,
+    "author": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Puxabicho",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://puxabicho.com/logo.png"
+      }
+    },
+    "datePublished": post.date,
+    "description": post.metaDescription
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <SEO 
+        title={post.metaTitle} 
+        description={post.metaDescription}
+        schema={blogSchema}
+      />
+      
+      <button 
+        onClick={() => navigate('/blog')} 
+        className="mb-8 text-slate-500 hover:text-emerald-600 font-medium flex items-center gap-2 transition-colors"
+      >
+        <ArrowLeft size={20} /> Voltar para o Blog
+      </button>
+
+      <article className="bg-white rounded-[40px] shadow-sm border border-slate-200 overflow-hidden">
+        <div className="aspect-[21/9] overflow-hidden">
+          <img 
+            src={post.image} 
+            alt={post.title} 
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+        </div>
+        
+        <div className="p-8 md:p-12">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              {post.category}
+            </span>
+            <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
+              <Calendar size={14} /> {new Date(post.date).toLocaleDateString('pt-BR')}
+            </span>
+            <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
+              <User size={14} /> {post.author}
+            </span>
+          </div>
+
+          <div className="prose prose-slate max-w-none prose-headings:text-slate-800 prose-headings:font-black prose-p:text-slate-600 prose-p:leading-relaxed prose-strong:text-emerald-700">
+            <Markdown>{post.content}</Markdown>
+          </div>
+
+          <div className="mt-12 pt-12 border-t border-slate-100">
+            <div className="flex items-center justify-between mb-8">
+              <h3 className="text-2xl font-bold text-slate-800">Artigos Relacionados</h3>
+              <Link to="/blog" className="text-emerald-600 font-bold text-sm hover:underline">Ver todos</Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {relatedPosts.map(p => (
+                <BlogCard key={p.id} post={p} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  );
+}
+
 function SEO({ title, description, schema }: { title: string; description?: string; schema?: any }) {
   const location = useLocation();
   const baseUrl = window.location.origin;
@@ -187,6 +815,9 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                   <Link to="/palpites" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <Sparkles size={20} className="text-emerald-500" aria-hidden="true" /> Palpites do Dia
                   </Link>
+                  <Link to="/blog" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
+                    <BookOpen size={20} className="text-emerald-500" aria-hidden="true" /> Blog Oficial
+                  </Link>
                   <Link to="/o-que-e-puxada" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <BookOpen size={20} className="text-emerald-500" aria-hidden="true" /> O que são Puxadas?
                   </Link>
@@ -345,6 +976,7 @@ function Layout({ children }: { children: ReactNode }) {
               <Link to="/puxadas" className={`transition-colors ${isActive('/puxadas') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Puxadas</Link>
               <Link to="/palpites" className={`transition-colors ${isActive('/palpites') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Palpites</Link>
               <Link to="/estatisticas" className={`transition-colors ${isActive('/estatisticas') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Estatísticas</Link>
+              <Link to="/blog" className={`transition-colors ${isActive('/blog') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Blog</Link>
             </div>
 
           <div className="flex items-center gap-2">
@@ -392,6 +1024,7 @@ function Layout({ children }: { children: ReactNode }) {
                 <li><Link to="/puxadas" className="hover:text-emerald-400 transition-colors">Tabela de Puxadas</Link></li>
                 <li><Link to="/palpites" className="hover:text-emerald-400 transition-colors">Palpites do Dia</Link></li>
                 <li><Link to="/estatisticas" className="hover:text-emerald-400 transition-colors">Estatísticas e Cálculos</Link></li>
+                <li><Link to="/blog" className="hover:text-emerald-400 transition-colors">Blog do Puxabicho</Link></li>
                 <li><Link to="/o-que-e-puxada" className="hover:text-emerald-400 transition-colors">O que são Puxadas?</Link></li>
               </ul>
             </div>
@@ -1909,6 +2542,7 @@ function PrivacyPage() {
         <p>A sua privacidade é importante para nós. É política do Puxadas do Bicho respeitar a sua privacidade em relação a qualquer informação que possamos coletar no site.</p>
         <h2 className="text-xl font-bold text-slate-800 mt-6 mb-2">Como Usamos suas Informações</h2>
         <p>Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento.</p>
+        <h2 className="text-xl font-bold text-slate-800 mt-6 mb-2">Seus Direitos</h2>
       </div>
     </div>
   );
@@ -2128,6 +2762,8 @@ export default function App() {
           <Route path="/termos" element={<TermsPage />} />
           <Route path="/privacidade" element={<PrivacyPage />} />
           <Route path="/jogo-responsavel" element={<ResponsibleGamingPage />} />
+          <Route path="/blog" element={<BlogListPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
@@ -2149,3 +2785,4 @@ export default function App() {
 // 1. PrivacyPage: Adicionados H2 "Dados que Coletamos" e "Como Usamos suas Informações" (Linhas 1907-1910).
 // 2. CategoryPuxadaPage: H2 atualizado para "Tabela de {category.name} do Jogo do Bicho Atualizada" (Linha 602).
 // 3. AnimalDetailPage: H2 atualizado para "Últimos Resultados do {animal.name} no Jogo do Bicho" (Linha 1198).
+// 4. PrivacyPage: Adicionado H2 "Seus Direitos" (Linha 1912).
