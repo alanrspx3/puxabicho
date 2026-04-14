@@ -1334,10 +1334,10 @@ function PalpitesPage() {
           transition={{ delay: 0.1 }}
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
-          <h2 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             <div className="w-1.5 h-6 bg-amber-500 rounded-full" aria-hidden="true"></div>
             Grupos Sugeridos
-          </h2>
+          </h3>
           <div className="flex flex-wrap gap-3">
             {palpites.grupos.map((g, i) => (
               <div key={i} className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center font-bold text-amber-700 text-xl shadow-sm">
@@ -1355,10 +1355,10 @@ function PalpitesPage() {
           transition={{ delay: 0.2 }}
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
-          <h2 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             <div className="w-1.5 h-6 bg-blue-500 rounded-full" aria-hidden="true"></div>
             Centenas Sugeridas
-          </h2>
+          </h3>
           <div className="grid grid-cols-2 gap-3">
             {palpites.centenas.map((c, i) => (
               <div key={i} className="py-3 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center font-mono font-bold text-blue-700 text-xl shadow-sm">
@@ -1376,10 +1376,10 @@ function PalpitesPage() {
           transition={{ delay: 0.3 }}
           className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
         >
-          <h2 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
             <div className="w-1.5 h-6 bg-purple-500 rounded-full" aria-hidden="true"></div>
             Milhares Sugeridos
-          </h2>
+          </h3>
           <div className="grid grid-cols-2 gap-3">
             {palpites.milhares.map((m, i) => (
               <div key={i} className="py-3 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center font-mono font-bold text-purple-700 text-xl shadow-sm">
@@ -1731,28 +1731,28 @@ function MethodologyPage() {
         </p>
         
         <section className="space-y-3">
-          <h3 className="text-xl font-bold text-slate-800">1. Tabelas Tradicionais</h3>
+          <h2 className="text-xl font-bold text-slate-800">1. Tabelas Tradicionais</h2>
           <p>
             Utilizamos como base as tabelas de puxadas mais antigas e respeitadas do Brasil, que foram passadas de geração em geração por décadas. Essas tabelas formam o "núcleo" do nosso banco de dados.
           </p>
         </section>
 
         <section className="space-y-3">
-          <h3 className="text-xl font-bold text-slate-800">2. Análise de Frequência</h3>
+          <h2 className="text-xl font-bold text-slate-800">2. Análise de Frequência</h2>
           <p>
             Nossos algoritmos analisam os resultados dos últimos 12 meses para identificar padrões de recorrência. Quando um animal aparece no sorteio principal, monitoramos quais animais surgem nos sorteios subsequentes (1º ao 5º prêmio).
           </p>
         </section>
 
         <section className="space-y-3">
-          <h3 className="text-xl font-bold text-slate-800">3. Revisão Editorial</h3>
+          <h2 className="text-xl font-bold text-slate-800">3. Revisão Editorial</h2>
           <p>
             Diferente de sites que geram dados puramente aleatórios, nossa equipe editorial revisa manualmente as "puxadas recomendadas" para garantir que elas façam sentido dentro do contexto histórico do jogo.
           </p>
         </section>
 
         <div className="bg-blue-50 p-6 rounded-3xl border border-blue-100">
-          <h4 className="font-bold text-blue-800 mb-2">Nota Importante</h4>
+          <h3 className="font-bold text-blue-800 mb-2">Nota Importante</h3>
           <p className="text-sm text-blue-700">
             É importante ressaltar que o Jogo do Bicho é uma atividade baseada em probabilidade e sorte. Nenhuma metodologia, por mais avançada que seja, pode garantir resultados futuros. Nossos dados devem ser usados apenas como referência estatística.
           </p>
@@ -1833,7 +1833,7 @@ function AboutPage() {
         <p>
           Nossa missão é fornecer um guia completo, fácil de usar e extremamente rápido para que entusiastas possam consultar as famosas "puxadas" e resultados em tempo real.
         </p>
-        <h3 className="text-xl font-bold text-slate-800 mt-8">Nossa Expertise</h3>
+        <h2 className="text-xl font-bold text-slate-800 mt-8">Nossa Expertise</h2>
         <p>
           Contamos com uma equipe de analistas que estudam os padrões de sorteios há anos, compilando as tabelas de puxadas mais respeitadas do mercado. Todo o nosso conteúdo é revisado para garantir que você tenha a melhor informação disponível.
         </p>
@@ -1862,7 +1862,7 @@ function ResponsibleGamingPage() {
         </p>
         
         <section className="space-y-3">
-          <h3 className="text-xl font-bold text-slate-800">Dicas para um Jogo Saudável:</h3>
+          <h2 className="text-xl font-bold text-slate-800">Dicas para um Jogo Saudável:</h2>
           <ul className="list-disc pl-5 space-y-2">
             <li>Estabeleça um limite de tempo e dinheiro para gastar.</li>
             <li>Nunca tente recuperar perdas apostando mais.</li>
@@ -2132,3 +2132,9 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+// CORREÇÕES DE HIERARQUIA DE HEADINGS PARA SEO:
+// 1. PalpitesPage: Alterados H2 para H3 em "Grupos Sugeridos", "Centenas Sugeridas" e "Milhares Sugeridos" (Linhas 1337, 1358, 1379).
+// 2. MethodologyPage: Alterados H3 para H2 em seções 1, 2 e 3 (Linhas 1734, 1741, 1748) e H4 para H3 em "Nota Importante" (Linha 1755).
+// 3. AboutPage: Alterado H3 para H2 em "Nossa Expertise" (Linha 1836).
+// 4. ResponsibleGamingPage: Alterado H3 para H2 em "Dicas para um Jogo Saudável:" (Linha 1865).
