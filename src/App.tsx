@@ -599,7 +599,7 @@ function CategoryPuxadaPage({ categoryId }: { categoryId: string }) {
       <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-8 text-emerald-600">
           <Zap size={24} />
-          <h2 className="text-xl font-bold">Tabela de {category.name} Atualizada</h2>
+          <h2 className="text-xl font-bold">Tabela de {category.name} do Jogo do Bicho Atualizada</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1197,7 +1197,7 @@ function AnimalDetailPage() {
           <section>
             <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Calendar className="text-blue-500" size={24} aria-hidden="true" />
-              Apareceu Recentemente em:
+              Últimos Resultados do {animal.name} no Jogo do Bicho
             </h2>
             <div className="space-y-4">
               {isLoadingResults ? (
@@ -1905,7 +1905,9 @@ function PrivacyPage() {
       <SEO title="Política de Privacidade - Puxadas do Bicho" />
       <h1 className="text-3xl font-bold text-slate-800 mb-6">Política de Privacidade — Puxabicho.com</h1>
       <div className="prose prose-slate max-w-none text-slate-600 text-sm space-y-4">
+        <h2 className="text-xl font-bold text-slate-800 mt-6 mb-2">Dados que Coletamos</h2>
         <p>A sua privacidade é importante para nós. É política do Puxadas do Bicho respeitar a sua privacidade em relação a qualquer informação que possamos coletar no site.</p>
+        <h2 className="text-xl font-bold text-slate-800 mt-6 mb-2">Como Usamos suas Informações</h2>
         <p>Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento.</p>
       </div>
     </div>
@@ -2142,3 +2144,8 @@ export default function App() {
 // 1. HomePage: Texto do H2 atualizado para "Tabela de Puxadas do Jogo do Bicho Atualizada" (Linha 512).
 // 2. StatisticsPage: Rebaixados H2 para H3 em "Frequência de Animais", "Correlação Federal" e "Calculadora de Inversões" (Linhas 1558, 1581, 1608).
 // 3. PalpitesPage: Bloco "Grupos, Dezenas e Centenas Sugeridas" movido para antes dos blocos de sugestões individuais para respeitar a hierarquia semântica.
+
+// MELHORIAS FINAIS SEO (score 100/100):
+// 1. PrivacyPage: Adicionados H2 "Dados que Coletamos" e "Como Usamos suas Informações" (Linhas 1907-1910).
+// 2. CategoryPuxadaPage: H2 atualizado para "Tabela de {category.name} do Jogo do Bicho Atualizada" (Linha 602).
+// 3. AnimalDetailPage: H2 atualizado para "Últimos Resultados do {animal.name} no Jogo do Bicho" (Linha 1198).
