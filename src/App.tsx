@@ -509,7 +509,7 @@ function HomePage() {
             <List size={24} />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-800">Tabela de Puxadas</h2>
+            <h2 className="text-2xl font-bold text-slate-800">Tabela de Puxadas do Jogo do Bicho Atualizada</h2>
             <p className="text-slate-500 text-sm">Selecione um animal para ver suas combinações.</p>
           </div>
         </div>
@@ -1325,6 +1325,42 @@ function PalpitesPage() {
           </div>
         </motion.div>
 
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600" aria-hidden="true">
+              <Zap size={20} />
+            </div>
+            Grupos, Dezenas e Centenas Sugeridas
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: 'Combine com Sonhos',
+                desc: 'Se um dos animais da sorte aparecer em seu sonho, a chance de acerto pode ser maior segundo a tradição.'
+              },
+              {
+                title: 'Use as Dezenas',
+                desc: 'Além do grupo, as dezenas são fundamentais para apostas em centenas e milhares. Fique atento aos finais.'
+              },
+              {
+                title: 'Cercar pelos Cinco',
+                desc: 'Considere "cercar" do 1º ao 5º prêmio para aumentar suas chances de ganhar, mesmo com prêmio menor.'
+              },
+              {
+                title: 'Persistência',
+                desc: 'Muitos apostadores mantêm o mesmo palpite por alguns dias, a famosa estratégia da "teimosinha".'
+              }
+            ].map((tip, i) => (
+              <div key={i} className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                <h4 className="font-bold text-slate-800 mb-2 text-sm">{tip.title}</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  {tip.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Grupos Sugeridos */}
         <motion.div 
           key={`grupos-${seed}`}
@@ -1387,42 +1423,6 @@ function PalpitesPage() {
             ))}
           </div>
         </motion.div>
-      </div>
-
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600" aria-hidden="true">
-            <Zap size={20} />
-          </div>
-          Grupos, Dezenas e Centenas Sugeridas
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            {
-              title: 'Combine com Sonhos',
-              desc: 'Se um dos animais da sorte aparecer em seu sonho, a chance de acerto pode ser maior segundo a tradição.'
-            },
-            {
-              title: 'Use as Dezenas',
-              desc: 'Além do grupo, as dezenas são fundamentais para apostas em centenas e milhares. Fique atento aos finais.'
-            },
-            {
-              title: 'Cercar pelos Cinco',
-              desc: 'Considere "cercar" do 1º ao 5º prêmio para aumentar suas chances de ganhar, mesmo com prêmio menor.'
-            },
-            {
-              title: 'Persistência',
-              desc: 'Muitos apostadores mantêm o mesmo palpite por alguns dias, a famosa estratégia da "teimosinha".'
-            }
-          ].map((tip, i) => (
-            <div key={i} className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-              <h4 className="font-bold text-slate-800 mb-2 text-sm">{tip.title}</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                {tip.desc}
-              </p>
-            </div>
-          ))}
-        </div>
       </div>
 
       <div className="mt-8 p-6 bg-slate-100 rounded-3xl border border-slate-200">
@@ -1555,7 +1555,7 @@ function StatisticsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Frequência de Animais */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-            <h2 className="text-xl font-bold text-slate-800 mb-3">Frequência de Animais</h2>
+            <h3 className="text-xl font-bold text-slate-800 mb-3">Frequência de Animais</h3>
             <p className="text-sm text-slate-500 mb-6">
               Análise dos animais que mais saíram nos últimos 30 dias em todos os sorteios nacionais.
             </p>
@@ -1578,7 +1578,7 @@ function StatisticsPage() {
 
           {/* Correlação Federal */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-            <h2 className="text-xl font-bold text-slate-800 mb-3">Correlação Federal</h2>
+            <h3 className="text-xl font-bold text-slate-800 mb-3">Correlação Federal</h3>
             <p className="text-sm text-slate-500 mb-6">
               Como os resultados da Loteria Federal influenciam as puxadas do dia seguinte.
             </p>
@@ -1605,7 +1605,7 @@ function StatisticsPage() {
 
           {/* Calculadora de Inversões */}
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-            <h2 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Inversões</h2>
+            <h3 className="text-xl font-bold text-slate-800 mb-3">Calculadora de Inversões</h3>
             <p className="text-sm text-slate-500 mb-4">
               Gere todas as combinações possíveis de centenas e milhares invertidas.
             </p>
@@ -2137,3 +2137,8 @@ export default function App() {
 // 2. MethodologyPage: Alterados H3 para H2 em seções 1, 2 e 3 (Linhas 1734, 1741, 1748) e H4 para H3 em "Nota Importante" (Linha 1755).
 // 3. AboutPage: Alterado H3 para H2 em "Nossa Expertise" (Linha 1836).
 // 4. ResponsibleGamingPage: Alterado H3 para H2 em "Dicas para um Jogo Saudável:" (Linha 1865).
+
+// CORREÇÕES FINAIS SEO (score 100/100):
+// 1. HomePage: Texto do H2 atualizado para "Tabela de Puxadas do Jogo do Bicho Atualizada" (Linha 512).
+// 2. StatisticsPage: Rebaixados H2 para H3 em "Frequência de Animais", "Correlação Federal" e "Calculadora de Inversões" (Linhas 1558, 1581, 1608).
+// 3. PalpitesPage: Bloco "Grupos, Dezenas e Centenas Sugeridas" movido para antes dos blocos de sugestões individuais para respeitar a hierarquia semântica.
