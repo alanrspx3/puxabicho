@@ -3096,6 +3096,27 @@ function AnimalDetailPage() {
             </div>
           </section>
 
+          <section className="mb-10 p-6 bg-emerald-900 rounded-3xl border border-emerald-800 text-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-emerald-400/30 transition-colors"></div>
+            <div className="relative z-10">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Zap className="text-emerald-400" size={24} aria-hidden="true" />
+                Onde Apostar?
+              </h3>
+              <p className="text-emerald-100 mb-6 text-sm leading-relaxed">
+                Recomendamos a <strong>SpotBichos</strong> para você fazer suas apostas com segurança, rapidez e confiança. Clique no botão abaixo para começar agora mesmo!
+              </p>
+              <a 
+                href="https://spotbichos.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full bg-emerald-500 hover:bg-emerald-400 text-white font-black py-4 px-8 rounded-2xl shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] uppercase tracking-wider text-center"
+              >
+                Apostar Agora <ChevronRight size={20} />
+              </a>
+            </div>
+          </section>
+
           <section className="mb-10">
             <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Info className="text-emerald-500" size={24} aria-hidden="true" />
