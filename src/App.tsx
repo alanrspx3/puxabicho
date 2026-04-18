@@ -3322,166 +3322,185 @@ function PalpitesPage() {
         title="Palpites do Dia - Jogo do Bicho" 
         description="Receba palpites diários para o jogo do bicho. Sugestões de grupos, centenas e milhares baseadas em algoritmos de sorte."
       />
-      <div className="bg-emerald-700 rounded-3xl p-8 text-white mb-8 relative overflow-hidden">
+      
+      {/* Hero Section */}
+      <div className="bg-emerald-700 rounded-3xl p-8 text-white mb-12 relative overflow-hidden">
         <div className="relative z-10">
-          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-            <Sparkles size={32} aria-hidden="true" /> Palpites do Jogo do Bicho para Hoje
+          <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
+            <Sparkles size={32} aria-hidden="true" className="text-emerald-400" /> Palpites do Jogo do Bicho para Hoje
           </h1>
-          <p className="text-emerald-100 opacity-90">Sorte do dia {new Date().toLocaleDateString('pt-BR')}. Gere novos palpites agora!</p>
+          <p className="text-emerald-100 opacity-90 text-lg">Sorte do dia {new Date().toLocaleDateString('pt-BR')}. Gere novos palpites baseados em estatísticas!</p>
           <button 
             onClick={() => setSeed(s => s + 1)}
-            className="mt-6 bg-white text-emerald-800 px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-50 transition-colors shadow-lg"
+            className="mt-6 bg-white text-emerald-800 px-8 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-50 transition-all shadow-lg active:scale-95 group"
           >
-            <RefreshCw size={18} aria-hidden="true" /> Gerar Novos Palpites
+            <RefreshCw size={18} aria-hidden="true" className="group-hover:rotate-180 transition-transform duration-500" /> Gerar Novos Palpites
           </button>
         </div>
-        <div className="absolute -right-10 -bottom-10 opacity-10 rotate-12">
-          <Sparkles size={200} />
+        <div className="absolute -right-10 -bottom-10 opacity-10 rotate-12 pointer-events-none">
+          <Sparkles size={240} />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="space-y-16">
         {/* Animais da Sorte */}
-        <motion.div 
-          key={`animals-${seed}`}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="md:col-span-3 bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
-        >
-          <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-2 h-8 bg-emerald-500 rounded-full" aria-hidden="true"></div>
-            Animais da Sorte de Hoje
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {palpites.animals.map((animal) => (
-                <Link 
-                  to={`/puxadas/${animal.slug}`}
-                  key={animal.id} 
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group"
-                >
-                  <AnimalMedia 
-                    animal={animal} 
-                    className="w-16 h-16 rounded-xl bg-white group-hover:scale-110 transition-transform" 
-                    emojiClassName="text-5xl"
-                  />
-                  <div>
-                    <div className="font-bold text-slate-800 text-lg">{animal.name}</div>
-                    <div className="text-emerald-600 font-bold text-sm">Grupo {animal.id.toString().padStart(2, '0')}</div>
-                  </div>
-                </Link>
-              ))}
-          </div>
-        </motion.div>
-
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600" aria-hidden="true">
-              <Zap size={20} />
+        <section>
+          <motion.div 
+            key={`animals-${seed}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8"
+          >
+            <h2 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-2">
+              <div className="w-2 h-8 bg-emerald-500 rounded-full" aria-hidden="true"></div>
+              Animais da Sorte de Hoje
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {palpites.animals.map((animal) => (
+                  <Link 
+                    to={`/puxadas/${animal.slug}`}
+                    key={animal.id} 
+                    className="flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group shadow-sm"
+                  >
+                    <AnimalMedia 
+                      animal={animal} 
+                      className="w-20 h-20 rounded-xl bg-white group-hover:scale-110 transition-transform shadow-sm" 
+                      emojiClassName="text-6xl"
+                    />
+                    <div>
+                      <div className="font-bold text-slate-800 text-xl">{animal.name}</div>
+                      <div className="text-emerald-600 font-bold text-base">Grupo {animal.id.toString().padStart(2, '0')}</div>
+                    </div>
+                  </Link>
+                ))}
             </div>
-            Grupos, Dezenas e Centenas Sugeridas
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: 'Combine com Sonhos',
-                desc: 'Se um dos animais da sorte aparecer em seu sonho, a chance de acerto pode ser maior segundo a tradição.'
-              },
-              {
-                title: 'Use as Dezenas',
-                desc: 'Além do grupo, as dezenas são fundamentais para apostas em centenas e milhares. Fique atento aos finais.'
-              },
-              {
-                title: 'Cercar pelos Cinco',
-                desc: 'Considere "cercar" do 1º ao 5º prêmio para aumentar suas chances de ganhar, mesmo com prêmio menor.'
-              },
-              {
-                title: 'Persistência',
-                desc: 'Muitos apostadores mantêm o mesmo palpite por alguns dias, a famosa estratégia da "teimosinha".'
-              }
-            ].map((tip, i) => (
-              <div key={i} className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
-                <h4 className="font-bold text-slate-800 mb-2 text-sm">{tip.title}</h4>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  {tip.desc}
-                </p>
+          </motion.div>
+        </section>
+
+        {/* Sugestões Principal */}
+        <section>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600" aria-hidden="true">
+                <Zap size={20} />
               </div>
-            ))}
+              Grupos, Dezenas e Centenas Sugeridas
+            </h2>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Grupos Sugeridos */}
+            <motion.div 
+              key={`grupos-${seed}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
+            >
+              <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <div className="w-1.5 h-6 bg-amber-500 rounded-full" aria-hidden="true"></div>
+                Grupos Sugeridos
+              </h3>
+              <div className="flex flex-wrap gap-3 mt-auto">
+                {palpites.grupos.map((g, i) => (
+                  <div key={i} className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center font-bold text-amber-700 text-xl shadow-sm">
+                    {g}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Centenas Sugeridas */}
+            <motion.div 
+              key={`centenas-${seed}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
+            >
+              <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <div className="w-1.5 h-6 bg-blue-500 rounded-full" aria-hidden="true"></div>
+                Centenas Sugeridas
+              </h3>
+              <div className="grid grid-cols-2 gap-3 mt-auto">
+                {palpites.centenas.map((c, i) => (
+                  <div key={i} className="py-3 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center font-mono font-bold text-blue-700 text-xl shadow-sm">
+                    {c}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Milhares Sugeridos */}
+            <motion.div 
+              key={`milhares-${seed}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
+            >
+              <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <div className="w-1.5 h-6 bg-purple-500 rounded-full" aria-hidden="true"></div>
+                Milhares Sugeridos
+              </h3>
+              <div className="grid grid-cols-2 gap-3 mt-auto">
+                {palpites.milhares.map((m, i) => (
+                  <div key={i} className="py-3 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center font-mono font-bold text-purple-700 text-xl shadow-sm">
+                    {m}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Dicas Section */}
+        <section>
+          <div className="bg-slate-50 rounded-3xl border border-slate-200 p-8">
+            <h3 className="text-xl font-bold text-slate-800 mb-8 px-2 flex items-center gap-2">
+              <BookOpen size={24} className="text-emerald-500" /> Dicas para seus Palpites
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  title: 'Combine com Sonhos',
+                  desc: 'Se um dos animais da sorte aparecer em seu sonho, a chance de acerto pode ser maior segundo a tradição.'
+                },
+                {
+                  title: 'Use as Dezenas',
+                  desc: 'Além do grupo, as dezenas são fundamentais para apostas em centenas e milhares. Fique atento aos finais.'
+                },
+                {
+                  title: 'Cercar pelos Cinco',
+                  desc: 'Considere "cercar" do 1º ao 5º prêmio para aumentar suas chances de ganhar, mesmo com prêmio menor.'
+                },
+                {
+                  title: 'Persistência',
+                  desc: 'Muitos apostadores mantêm o mesmo palpite por alguns dias, a famosa estratégia da "teimosinha".'
+                }
+              ].map((tip, i) => (
+                <div key={i} className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                  <h4 className="font-bold text-slate-800 mb-2 text-base">{tip.title}</h4>
+                  <p className="text-sm text-slate-500 leading-relaxed">
+                    {tip.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Footer info */}
+        <div className="p-6 bg-emerald-50 rounded-3xl border border-emerald-100">
+          <h4 className="font-bold text-emerald-800 mb-2 flex items-center gap-2 text-lg">
+            <Info size={20} aria-hidden="true" /> Dica de Ouro
+          </h4>
+          <p className="text-emerald-700 leading-relaxed">
+            Os palpites são gerados aleatoriamente com base em estatísticas de frequência e puxadas tradicionais. 
+            Lembre-se que o Jogo do Bicho é uma atividade de entretenimento e os resultados são imprevisíveis. 
+            Jogue com responsabilidade e apenas o que puder.
+          </p>
         </div>
-
-        {/* Grupos Sugeridos */}
-        <motion.div 
-          key={`grupos-${seed}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
-        >
-          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-1.5 h-6 bg-amber-500 rounded-full" aria-hidden="true"></div>
-            Grupos Sugeridos
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            {palpites.grupos.map((g, i) => (
-              <div key={i} className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center font-bold text-amber-700 text-xl shadow-sm">
-                {g}
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Centenas Sugeridas */}
-        <motion.div 
-          key={`centenas-${seed}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
-        >
-          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-1.5 h-6 bg-blue-500 rounded-full" aria-hidden="true"></div>
-            Centenas Sugeridas
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            {palpites.centenas.map((c, i) => (
-              <div key={i} className="py-3 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center font-mono font-bold text-blue-700 text-xl shadow-sm">
-                {c}
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Milhares Sugeridos */}
-        <motion.div 
-          key={`milhares-${seed}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6"
-        >
-          <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-1.5 h-6 bg-purple-500 rounded-full" aria-hidden="true"></div>
-            Milhares Sugeridos
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            {palpites.milhares.map((m, i) => (
-              <div key={i} className="py-3 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center font-mono font-bold text-purple-700 text-xl shadow-sm">
-                {m}
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-
-      <div className="mt-8 p-6 bg-slate-100 rounded-3xl border border-slate-200">
-        <h4 className="font-bold text-slate-700 mb-2 flex items-center gap-2">
-          <Info size={18} aria-hidden="true" /> Dica de Ouro
-        </h4>
-        <p className="text-sm text-slate-500 leading-relaxed">
-          Os palpites são gerados aleatoriamente com base em estatísticas de frequência e puxadas tradicionais. 
-          Lembre-se que o Jogo do Bicho é uma atividade de entretenimento e os resultados são imprevisíveis. 
-          Jogue com responsabilidade.
-        </p>
       </div>
     </div>
   );
