@@ -3107,9 +3107,9 @@ function AnimalDetailPage() {
                 Recomendamos a <strong>SpotBichos</strong> para você fazer suas apostas com segurança, rapidez e confiança. Clique no botão abaixo para começar agora mesmo!
               </p>
               <a 
-                href="https://spotbichos.com" 
+                href="https://spotbichos.com/?btag=IC98SFO6" 
                 target="_blank" 
-                rel="noopener noreferrer"
+                rel="sponsored noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 w-full bg-emerald-500 hover:bg-emerald-400 text-white font-black py-4 px-8 rounded-2xl shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] uppercase tracking-wider text-center"
               >
                 Apostar Agora <ChevronRight size={20} />
