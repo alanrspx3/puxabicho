@@ -2642,11 +2642,14 @@ function CategoryPuxadaPage({ categoryId }: { categoryId: string }) {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                {animal.puxadas.map((puxada, idx) => (
-                  <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
-                    {puxada}
-                  </span>
-                ))}
+                {animal.puxadas.map((pID, idx) => {
+                  const pAnimal = ANIMALS.find(a => a.id === pID);
+                  return (
+                    <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
+                      {pAnimal?.name || pID}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -2734,11 +2737,14 @@ function ExpertPuxadaPage({ expertId }: { expertId: string }) {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                {animal.puxadas.map((puxada, idx) => (
-                  <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
-                    {puxada}
-                  </span>
-                ))}
+                {animal.puxadas.map((pID, idx) => {
+                  const pAnimal = ANIMALS.find(a => a.id === pID);
+                  return (
+                    <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
+                      {pAnimal?.name || pID}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -2952,7 +2958,7 @@ function AnimalDetailPage() {
         "@id": `https://puxabicho.com/puxadas/${animal.slug}`,
         "url": `https://puxabicho.com/puxadas/${animal.slug}`,
         "name": `Puxadas do ${animal.name} - Jogo do Bicho | Puxabicho`,
-        "description": `Descubra o que o ${animal.name} puxa no jogo do bicho. Confira a lista completa de puxadas (${animal.puxadas.join(', ')}) e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}.`,
+        "description": `Descubra o que o ${animal.name} puxa no jogo do bicho. Confira a lista completa de puxadas (${animal.puxadas.map(id => ANIMALS.find(a => a.id === id)?.name || id).join(', ')}) e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}.`,
         "inLanguage": "pt-BR",
         "isPartOf": { "@id": "https://puxabicho.com" }
       },
@@ -2987,7 +2993,7 @@ function AnimalDetailPage() {
             "name": `O que o ${animal.name} puxa no jogo do bicho?`,
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": `O ${animal.name} puxa os seguintes animais: ${animal.puxadas.join(', ')}.`
+              "text": `O ${animal.name} puxa os seguintes animais: ${animal.puxadas.map(id => ANIMALS.find(a => a.id === id)?.name || id).join(', ')}.`
             }
           },
           {
@@ -3025,11 +3031,11 @@ function AnimalDetailPage() {
   };
 
   const recommendedPuxadas = useMemo(() => {
-    const existingPuxadas = animal.puxadas || [];
+    const existingPuxadaIds = animal.puxadas || [];
     // Get animals that are NOT the current one and NOT in the current puxadas list
     return ANIMALS.filter(a => 
-      a.name !== animal.name && 
-      !existingPuxadas.includes(a.name)
+      a.id !== animal.id && 
+      !existingPuxadaIds.includes(a.id)
     ).sort(() => 0.5 - Math.random()).slice(0, 4);
   }, [animal]);
 
@@ -3071,12 +3077,13 @@ function AnimalDetailPage() {
               O que o {animal.name} puxa? — Tabela Completa
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {animal.puxadas?.map((puxadaName) => {
-                const puxadaAnimal = ANIMALS.find(a => a.name === puxadaName);
+              {animal.puxadas?.map((puxadaId) => {
+                const puxadaAnimal = ANIMALS.find(a => a.id === puxadaId);
+                const puxadaName = puxadaAnimal?.name || `ID ${puxadaId}`;
                 return (
                   <Link 
-                    to={`/puxadas/${puxadaAnimal?.slug || puxadaName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`}
-                    key={puxadaName}
+                    to={`/puxadas/${puxadaAnimal?.slug || puxadaId}`}
+                    key={puxadaId}
                     className="rounded-2xl overflow-hidden"
                   >
                     <motion.div 
@@ -3179,7 +3186,7 @@ function AnimalDetailPage() {
                   Combinação Ideal
                 </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Tente combinar o {animal.name} com o {animal.puxadas?.[0]} em um Duque de Grupo para aumentar suas chances.
+                  Tente combinar o {animal.name} com o {ANIMALS.find(a => a.id === animal.puxadas?.[0])?.name || 'outro bicho'} em um Duque de Grupo para aumentar suas chances.
                 </p>
               </div>
             </div>
@@ -3305,6 +3312,11 @@ function PalpitesPage() {
     const randomAnimals = getRandom(ANIMALS, 3);
     const grupos = randomAnimals.map(a => a.id.toString().padStart(2, '0'));
     
+    const dezenas = randomAnimals.map(a => {
+      const nums = a.numbers;
+      return nums[Math.floor(Math.random() * nums.length)].toString().padStart(2, '0');
+    });
+    
     const centenas = Array.from({ length: 4 }, () => 
       Math.floor(Math.random() * 1000).toString().padStart(3, '0')
     );
@@ -3313,7 +3325,7 @@ function PalpitesPage() {
       Math.floor(Math.random() * 10000).toString().padStart(4, '0')
     );
 
-    return { animals: randomAnimals, grupos, centenas, milhares };
+    return { animals: randomAnimals, grupos, dezenas, centenas, milhares };
   }, [seed]);
 
   return (
@@ -3388,7 +3400,7 @@ function PalpitesPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Grupos Sugeridos */}
             <motion.div 
               key={`grupos-${seed}`}
@@ -3399,12 +3411,33 @@ function PalpitesPage() {
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <div className="w-1.5 h-6 bg-amber-500 rounded-full" aria-hidden="true"></div>
-                Grupos Sugeridos
+                Grupos
               </h3>
-              <div className="flex flex-wrap gap-3 mt-auto">
+              <div className="flex flex-wrap gap-2 mt-auto">
                 {palpites.grupos.map((g, i) => (
-                  <div key={i} className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center font-bold text-amber-700 text-xl shadow-sm">
+                  <div key={i} className="w-full py-3 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center font-bold text-amber-700 text-xl shadow-sm">
                     {g}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Dezenas Sugeridas */}
+            <motion.div 
+              key={`dezenas-${seed}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
+            >
+              <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <div className="w-1.5 h-6 bg-emerald-500 rounded-full" aria-hidden="true"></div>
+                Dezenas
+              </h3>
+              <div className="flex flex-wrap gap-2 mt-auto">
+                {palpites.dezenas.map((d, i) => (
+                  <div key={i} className="w-full py-3 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center font-bold text-emerald-700 text-xl shadow-sm">
+                    {d}
                   </div>
                 ))}
               </div>
@@ -3415,14 +3448,14 @@ function PalpitesPage() {
               key={`centenas-${seed}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.3 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <div className="w-1.5 h-6 bg-blue-500 rounded-full" aria-hidden="true"></div>
-                Centenas Sugeridas
+                Centenas
               </h3>
-              <div className="grid grid-cols-2 gap-3 mt-auto">
+              <div className="grid grid-cols-1 gap-2 mt-auto">
                 {palpites.centenas.map((c, i) => (
                   <div key={i} className="py-3 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center font-mono font-bold text-blue-700 text-xl shadow-sm">
                     {c}
@@ -3436,14 +3469,14 @@ function PalpitesPage() {
               key={`milhares-${seed}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.4 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <div className="w-1.5 h-6 bg-purple-500 rounded-full" aria-hidden="true"></div>
-                Milhares Sugeridos
+                Milhares
               </h3>
-              <div className="grid grid-cols-2 gap-3 mt-auto">
+              <div className="grid grid-cols-1 gap-2 mt-auto">
                 {palpites.milhares.map((m, i) => (
                   <div key={i} className="py-3 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center font-mono font-bold text-purple-700 text-xl shadow-sm">
                     {m}
@@ -4169,35 +4202,41 @@ function ContactPage() {
 // 8. INSTITUCIONAIS: Adicionado H1 em todas as páginas (convertido do primeiro H2).
 // 9. GERAL: Garantido 1 H1 por página, hierarquia linear H1->H2->H3, e keywords nas primeiras palavras do H1.
 
+export const routes = [
+  { path: "/", element: <HomePage /> },
+  { path: "/puxadas", element: <PuxadasPage /> },
+  { path: "/puxadas/:name", element: <AnimalDetailPage /> },
+  { path: "/puxadas-do-dia", element: <CategoryPuxadaPage categoryId="do-dia" /> },
+  { path: "/puxadas-de-hoje", element: <CategoryPuxadaPage categoryId="de-hoje" /> },
+  { path: "/puxadas-boas", element: <CategoryPuxadaPage categoryId="boas" /> },
+  { path: "/puxada-certeira", element: <CategoryPuxadaPage categoryId="certeira" /> },
+  { path: "/puxadas-da-sueli", element: <ExpertPuxadaPage expertId="sueli" /> },
+  { path: "/puxadas-da-ju", element: <ExpertPuxadaPage expertId="ju" /> },
+  { path: "/puxadas-do-capitao", element: <ExpertPuxadaPage expertId="capitao" /> },
+  { path: "/puxadas-do-magrao", element: <ExpertPuxadaPage expertId="magrao" /> },
+  { path: "/puxadas-do-kaledri", element: <ExpertPuxadaPage expertId="kaledri" /> },
+  { path: "/palpites", element: <PalpitesPage /> },
+  { path: "/estatisticas", element: <StatisticsPage /> },
+  { path: "/sobre", element: <AboutPage /> },
+  { path: "/o-que-e-puxada", element: <GuidePage /> },
+  { path: "/metodologia", element: <MethodologyPage /> },
+  { path: "/contato", element: <ContactPage /> },
+  { path: "/termos", element: <TermsPage /> },
+  { path: "/privacidade", element: <PrivacyPage /> },
+  { path: "/jogo-responsavel", element: <ResponsibleGamingPage /> },
+  { path: "/blog", element: <BlogListPage /> },
+  { path: "/blog/:slug", element: <BlogPostPage /> }
+];
+
 export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Layout>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/puxadas" element={<PuxadasPage />} />
-          <Route path="/puxadas/:name" element={<AnimalDetailPage />} />
-          <Route path="/puxadas-do-dia" element={<CategoryPuxadaPage categoryId="do-dia" />} />
-          <Route path="/puxadas-de-hoje" element={<CategoryPuxadaPage categoryId="de-hoje" />} />
-          <Route path="/puxadas-boas" element={<CategoryPuxadaPage categoryId="boas" />} />
-          <Route path="/puxada-certeira" element={<CategoryPuxadaPage categoryId="certeira" />} />
-          <Route path="/puxadas-da-sueli" element={<ExpertPuxadaPage expertId="sueli" />} />
-          <Route path="/puxadas-da-ju" element={<ExpertPuxadaPage expertId="ju" />} />
-          <Route path="/puxadas-do-capitao" element={<ExpertPuxadaPage expertId="capitao" />} />
-          <Route path="/puxadas-do-magrao" element={<ExpertPuxadaPage expertId="magrao" />} />
-          <Route path="/puxadas-do-kaledri" element={<ExpertPuxadaPage expertId="kaledri" />} />
-          <Route path="/palpites" element={<PalpitesPage />} />
-          <Route path="/estatisticas" element={<StatisticsPage />} />
-          <Route path="/sobre" element={<AboutPage />} />
-          <Route path="/o-que-e-puxada" element={<GuidePage />} />
-          <Route path="/metodologia" element={<MethodologyPage />} />
-          <Route path="/contato" element={<ContactPage />} />
-          <Route path="/termos" element={<TermsPage />} />
-          <Route path="/privacidade" element={<PrivacyPage />} />
-          <Route path="/jogo-responsavel" element={<ResponsibleGamingPage />} />
-          <Route path="/blog" element={<BlogListPage />} />
-          <Route path="/blog/:slug" element={<BlogPostPage />} />
+          {routes.map((route, i) => (
+            <Route key={i} {...route} />
+          ))}
         </Routes>
       </Layout>
     </BrowserRouter>
