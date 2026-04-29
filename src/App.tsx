@@ -2058,16 +2058,9 @@ function BlogPostPage() {
 
 function SEO({ title, description, schema }: { title: string; description?: string; schema?: any }) {
   const location = useLocation();
-  const [baseUrl, setBaseUrl] = useState('https://puxabicho.com');
-  
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setBaseUrl(window.location.origin);
-    }
-  }, []);
 
-  const cleanBaseUrl = baseUrl.replace(/\/$/, '');
-  const canonicalUrl = `${cleanBaseUrl}${location.pathname}`;
+  // [HYDRATION FIX 2] Usar sempre o valor fixo — não precisa de estado dinâmico
+  const canonicalUrl = `https://puxabicho.com${location.pathname}`;
 
   // SECURITY FIX: Sanitize schema to prevent XSS in JSON-LD
   const sanitizeSchema = (obj: any): any => {
@@ -2146,46 +2139,23 @@ function ScrollToTop() {
 
 // --- Animal Media Component ---
 function AnimalMedia({ animal, className, emojiClassName }: { animal: any; className?: string; emojiClassName?: string }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
+  // [HYDRATION FIX 1] Remover IntersectionObserver, renderizar imagem diretamente com loading="lazy"
   return (
-    <div 
-      ref={ref} 
+    <div
       className={`${className} flex items-center justify-center overflow-hidden`}
-      aria-busy={!isVisible}
     >
-      {isVisible ? (
-        animal.imageUrl ? (
-          <img 
-            src={animal.imageUrl} 
-            alt={`Ilustração do animal ${animal.name}`} 
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <span className={emojiClassName} role="img" aria-label={animal.name}>{animal.emoji}</span>
-        )
+      {animal.imageUrl ? (
+        <img
+          src={animal.imageUrl}
+          alt={`Ilustração do animal ${animal.name}`}
+          className="w-full h-full object-cover"
+          referrerPolicy="no-referrer"
+          loading="lazy"
+        />
       ) : (
-        <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[1em]" aria-hidden="true" />
+        <span className={emojiClassName} role="img" aria-label={animal.name}>
+          {animal.emoji}
+        </span>
       )}
     </div>
   );
@@ -2379,10 +2349,19 @@ function useSchema(schemas: object | object[], deps: any[] = []) {
 // --- Layout Component ---
 function Layout({ children }: { children: ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const location = useLocation();
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    const current = location.pathname.replace(/\/$/, '') || '/';
+    const target = path.replace(/\/$/, '') || '/';
+    return current === target;
+  };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Return focus to trigger when drawer closes
   useEffect(() => {
@@ -2397,10 +2376,7 @@ function Layout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div 
-      className="min-h-screen bg-slate-50 flex flex-col" 
-      suppressHydrationWarning={true}
-    >
+    <div className="min-h-screen bg-slate-50 flex flex-col" suppressHydrationWarning={true}>
       <a 
         href="#main-content" 
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-emerald-700 focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:font-bold"
@@ -2408,7 +2384,7 @@ function Layout({ children }: { children: ReactNode }) {
         Pular para o conteúdo
       </a>
       
-      <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      {isMounted && <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />}
 
       <header className="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -2505,11 +2481,12 @@ function Layout({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      {/* Robust Bottom Tab Bar (Mobile Only) */}
-      <nav 
-        aria-label="Navegação inferior"
-        className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-slate-200 px-2 py-2 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]"
-      >
+      {/* Robust Bottom Tab Bar (Mobile Only) - Only show after mount to avoid hydration mismatch with visibility classes */}
+      {isMounted && (
+        <nav 
+          aria-label="Navegação inferior"
+          className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-slate-200 px-2 py-2 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]"
+        >
         <Link 
           to="/" 
           aria-current={isActive('/') ? 'page' : undefined}
@@ -2549,6 +2526,7 @@ function Layout({ children }: { children: ReactNode }) {
           <span className="text-[10px] font-bold uppercase tracking-tight">Mais</span>
         </button>
       </nav>
+      )}
     </div>
   );
 }
@@ -3077,27 +3055,35 @@ function AnimalDetailPage() {
   const navigate = useNavigate();
   const animal = ANIMALS.find(a => a.slug === name?.toLowerCase());
   const [results, setResults] = useState<any[]>([]);
-  const [isLoadingResults, setIsLoadingResults] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchResults() {
-      // [FIX] Fetch check for JSON and isolation in useEffect
+    const fetchResults = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const response = await fetch('/api/results');
         const contentType = response.headers.get('content-type');
+
         if (!response.ok || !contentType?.includes('application/json')) {
-          console.warn('API não retornou JSON:', '/api/results', 'Status:', response.status);
-          setIsLoadingResults(false);
+          console.warn('API não retornou JSON:', response.status);
+          setError('Resultados temporariamente indisponíveis');
+          setResults([]);
           return;
         }
+
         const data = await response.json();
         setResults(data);
-      } catch (error) {
-        console.error("Error fetching results para /api/results:", error);
+      } catch (err) {
+        console.error('Erro ao buscar resultados:', err);
+        setError('Erro ao carregar resultados');
+        setResults([]);
       } finally {
-        setIsLoadingResults(false);
+        setLoading(false);
       }
-    }
+    };
+
     fetchResults();
   }, []);
 
@@ -3402,12 +3388,20 @@ function AnimalDetailPage() {
               Últimos Resultados do {animal.name} no Jogo do Bicho
             </h2>
             <div className="space-y-4">
-              {isLoadingResults ? (
+              {loading && (
                 <div className="flex flex-col items-center justify-center py-12 text-slate-400">
                   <Loader2 className="animate-spin mb-2" size={32} />
                   <p className="text-sm font-medium">Buscando resultados atualizados...</p>
                 </div>
-              ) : results.filter(result => 
+              )}
+
+              {error && (
+                <div className="text-center py-6 px-4 text-emerald-800 text-sm bg-emerald-50 rounded-2xl border border-emerald-100 italic">
+                  {error}
+                </div>
+              )}
+
+              {!loading && !error && results.filter(result => 
                 result.numbers.some((num: any) => num.animal.toLowerCase() === animal.name.toLowerCase())
               ).length > 0 ? (
                 results.filter(result => 
@@ -3434,7 +3428,7 @@ function AnimalDetailPage() {
                     </div>
                   </div>
                 ))
-              ) : (
+              ) : !loading && !error && (
                 <p className="text-slate-400 text-sm italic">Nenhum resultado recente encontrado para este animal nos sorteios de hoje.</p>
               )}
             </div>
@@ -3751,6 +3745,11 @@ function PalpitesPage() {
 function BetCalculator() {
   const [amount, setAmount] = useState<string>('1.00');
   const [type, setType] = useState<'duque' | 'terno' | 'quadra'>('duque');
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const multipliers = {
     duque: 18.5,
@@ -3822,8 +3821,8 @@ function BetCalculator() {
           <div className="flex justify-between items-end">
             <div>
               <div className="text-[10px] font-bold text-slate-400 uppercase">Retorno Estimado</div>
-              <div className="text-2xl font-bold text-emerald-600">
-                R$ {calculateReturn().toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              <div className="text-2xl font-bold text-emerald-600" suppressHydrationWarning={true}>
+                {isMounted ? `R$ ${calculateReturn().toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'R$ ...'}
               </div>
             </div>
             <div className="text-[10px] font-bold text-slate-300 italic">
