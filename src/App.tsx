@@ -1,5 +1,5 @@
 import React, { useState, ReactNode, useEffect, useMemo, useRef } from 'react';
-import { Routes, Route, Link, useParams, useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ANIMALS } from './constants';
 import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle, Loader2, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -1786,23 +1786,6 @@ function BlogCard({ post }: { post: BlogPost }) {
 function BlogListPage() {
   const [activeCategory, setActiveCategory] = useState('Todos');
 
-  // [FIX 1]
-  const listSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "Blog Puxabicho - Artigos e Dicas",
-      "url": "https://puxabicho.com/blog",
-      "itemListElement": BLOG_POSTS.map((post, i) => ({
-        "@type": "ListItem",
-        "position": i + 1,
-        "url": `https://puxabicho.com/blog/${post.slug}`
-      }))
-    }
-  ];
-
-  useSchema(listSchemas);
-
   const filteredPosts = useMemo(() => {
     if (activeCategory === 'Todos') return BLOG_POSTS;
     return BLOG_POSTS.filter(post => post.category.toLowerCase() === activeCategory.toLowerCase());
@@ -1865,35 +1848,6 @@ function BlogPostPage() {
     return matches.map(m => m.replace(/<[^>]+>/g, '').trim());
   }, [post]);
 
-  // [SCHEMA] BlogPost (NewsArticle)
-  const blogSchemas = post ? [
-    {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": post.title,
-      "description": post.metaDescription,
-      "author": { "@type": "Person", "name": post.author },
-      "datePublished": post.date,
-      "image": post.image,
-      "publisher": {
-        "@type": "Organization",
-        "name": "Puxabicho",
-        "logo": { "@type": "ImageObject", "url": "https://puxabicho.com/favicon.svg" }
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://puxabicho.com/blog" },
-        { "@type": "ListItem", "position": 3, "name": post.title, "item": `https://puxabicho.com/blog/${post.slug}` }
-      ]
-    }
-  ] : [];
-
-  useSchema(blogSchemas, [slug]);
-
   if (!post) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-20 text-center">
@@ -1905,12 +1859,33 @@ function BlogPostPage() {
     );
   }
 
-  // [FIX 4] Removing unused/commented blogSchema
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "image": post.image,
+    "author": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Puxabicho",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://puxabicho.com/logo.png"
+      }
+    },
+    "datePublished": post.date,
+    "description": post.metaDescription
+  };
+
   return (
     <div className="bg-slate-50 min-h-screen">
       <SEO 
         title={post.metaTitle} 
         description={post.metaDescription}
+        schema={blogSchema}
       />
 
       <section className="bg-emerald-900 relative overflow-hidden">
@@ -2058,8 +2033,9 @@ function BlogPostPage() {
 
 function SEO({ title, description, schema }: { title: string; description?: string; schema?: any }) {
   const location = useLocation();
-  // [HYDRATION FIX 2] Removed dynamic baseUrl - was causing SSG vs client mismatch
-  const canonicalUrl = `https://puxabicho.com${location.pathname}`;
+  const baseUrl = window.location.origin;
+  const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+  const canonicalUrl = `${cleanBaseUrl}${location.pathname}`;
 
   // SECURITY FIX: Sanitize schema to prevent XSS in JSON-LD
   const sanitizeSchema = (obj: any): any => {
@@ -2137,21 +2113,47 @@ function ScrollToTop() {
 }
 
 // --- Animal Media Component ---
-// [HYDRATION FIX 1] Removed IntersectionObserver - causes SSG vs client mismatch
-// Using native loading="lazy" instead
 function AnimalMedia({ animal, className, emojiClassName }: { animal: any; className?: string; emojiClassName?: string }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className={`${className} flex items-center justify-center overflow-hidden`}>
-      {animal.imageUrl ? (
-        <img
-          src={animal.imageUrl}
-          alt={`Ilustração do animal ${animal.name}`}
-          className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-          loading="lazy"
-        />
+    <div 
+      ref={ref} 
+      className={`${className} flex items-center justify-center overflow-hidden`}
+      aria-busy={!isVisible}
+    >
+      {isVisible ? (
+        animal.imageUrl ? (
+          <img 
+            src={animal.imageUrl} 
+            alt={`Ilustração do animal ${animal.name}`} 
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <span className={emojiClassName} role="img" aria-label={animal.name}>{animal.emoji}</span>
+        )
       ) : (
-        <span className={emojiClassName} role="img" aria-label={animal.name}>{animal.emoji}</span>
+        <div className="animate-pulse bg-slate-200/50 rounded-lg w-full h-full min-h-[1em]" aria-hidden="true" />
       )}
     </div>
   );
@@ -2165,6 +2167,8 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
         <>
           {/* Backdrop */}
           <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
             aria-hidden="true"
@@ -2321,41 +2325,13 @@ function Breadcrumbs() {
   );
 }
 
-function useSchema(schemas: object | object[], deps: any[] = []) {
-  useEffect(() => {
-    const id = 'schema-ld-json'
-    const existing = document.getElementById(id)
-    if (existing) existing.remove()
-
-    const script = document.createElement('script')
-    script.type = 'application/ld+json'
-    script.id = id
-    script.textContent = JSON.stringify(Array.isArray(schemas) ? schemas : [schemas])
-    document.head.appendChild(script)
-
-    return () => {
-      const el = document.getElementById(id)
-      if (el) el.remove()
-    }
-  }, deps)
-}
-
 // --- Layout Component ---
 function Layout({ children }: { children: ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const location = useLocation();
 
-  const isActive = (path: string) => {
-    const current = location.pathname.replace(/\/$/, '') || '/';
-    const target = path.replace(/\/$/, '') || '/';
-    return current === target;
-  };
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isActive = (path: string) => location.pathname === path;
 
   // Return focus to trigger when drawer closes
   useEffect(() => {
@@ -2370,14 +2346,13 @@ function Layout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col" suppressHydrationWarning={true}>
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       <a 
         href="#main-content" 
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-emerald-700 focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:font-bold"
       >
         Pular para o conteúdo
       </a>
-      
       <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       <header className="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
@@ -2475,12 +2450,11 @@ function Layout({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      {/* Bottom Tab Bar (Mobile Only) */}
-      {(
-        <nav 
-          aria-label="Navegação inferior"
-          className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-slate-200 px-2 py-2 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]"
-        >
+      {/* Robust Bottom Tab Bar (Mobile Only) */}
+      <nav 
+        aria-label="Navegação inferior"
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-slate-200 px-2 py-2 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]"
+      >
         <Link 
           to="/" 
           aria-current={isActive('/') ? 'page' : undefined}
@@ -2520,66 +2494,12 @@ function Layout({ children }: { children: ReactNode }) {
           <span className="text-[10px] font-bold uppercase tracking-tight">Mais</span>
         </button>
       </nav>
-      )}
     </div>
   );
 }
 
 // --- Home Page ---
 function HomePage() {
-  // [SCHEMA] Home
-  const homeSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Puxabicho",
-      "alternateName": "Puxadas do Bicho",
-      "url": "https://puxabicho.com",
-      "description": "Portal de puxadas do jogo do bicho com tabela completa dos 25 animais, palpites diários e estatísticas.",
-      "inLanguage": "pt-BR",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://puxabicho.com/puxadas?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Puxabicho",
-      "url": "https://puxabicho.com",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://puxabicho.com/favicon.svg",
-        "width": 60,
-        "height": 60
-      },
-      "description": "Portal especializado em puxadas do jogo do bicho, palpites e estatísticas dos 25 animais.",
-      "foundingDate": "2024",
-      "inLanguage": "pt-BR",
-      "areaServed": "BR"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Puxadas do Bicho — Tabela Completa dos 25 Animais",
-      "url": "https://puxabicho.com",
-      "description": "Tabela completa de puxadas do jogo do bicho com os 25 animais, palpites do dia e estatísticas atualizadas.",
-      "isPartOf": { "@id": "https://puxabicho.com" },
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" }
-        ]
-      }
-    }
-  ];
-
-  useSchema(homeSchemas);
-
   return (
     <>
       <SEO 
@@ -2589,6 +2509,8 @@ function HomePage() {
       <section className="bg-emerald-800 text-white py-16 px-4 relative overflow-hidden">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             className="inline-block mb-6 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest"
           >
             O Guia Nº 1 do Brasil
@@ -2687,28 +2609,6 @@ function CategoryPuxadaPage({ categoryId }: { categoryId: string }) {
   
   if (!category) return null;
 
-  // [SCHEMA] Category
-  const categorySchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Puxadas", "item": "https://puxabicho.com/puxadas" },
-        { "@type": "ListItem", "position": 3, "name": category.name, "item": `https://puxabicho.com${category.path}` }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": category.title,
-      "description": category.description,
-      "url": `https://puxabicho.com${category.path}`
-    }
-  ];
-
-  useSchema(categorySchemas, [categoryId]);
-
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <SEO title={category.title} description={category.description} />
@@ -2742,14 +2642,11 @@ function CategoryPuxadaPage({ categoryId }: { categoryId: string }) {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                {animal.puxadas.map((pID, idx) => {
-                  const pAnimal = ANIMALS.find(a => a.id === pID);
-                  return (
-                    <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
-                      {pAnimal?.name || pID}
-                    </span>
-                  );
-                })}
+                {animal.puxadas.map((puxada, idx) => (
+                  <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
+                    {puxada}
+                  </span>
+                ))}
               </div>
             </div>
           ))}
@@ -2804,34 +2701,6 @@ function ExpertPuxadaPage({ expertId }: { expertId: string }) {
   
   if (!expert) return null;
 
-  const expertSlug = expert.path.replace('/', '');
-  
-  // [SCHEMA] Expert (ProfilePage)
-  const expertSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfilePage",
-      "mainEntity": {
-        "@type": "Person",
-        "name": expert.name.replace('Puxadas do ', '').replace('Puxadas da ', ''),
-        "jobTitle": "Especialista em Jogo do Bicho",
-        "description": expert.description,
-        "url": `https://puxabicho.com${expert.path}`
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Puxadas", "item": "https://puxabicho.com/puxadas" },
-        { "@type": "ListItem", "position": 3, "name": expert.name, "item": `https://puxabicho.com${expert.path}` }
-      ]
-    }
-  ];
-
-  useSchema(expertSchemas, [expertId]);
-
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <SEO title={expert.title} description={expert.description} />
@@ -2865,14 +2734,11 @@ function ExpertPuxadaPage({ expertId }: { expertId: string }) {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                {animal.puxadas.map((pID, idx) => {
-                  const pAnimal = ANIMALS.find(a => a.id === pID);
-                  return (
-                    <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
-                      {pAnimal?.name || pID}
-                    </span>
-                  );
-                })}
+                {animal.puxadas.map((puxada, idx) => (
+                  <span key={idx} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-sm">
+                    {puxada}
+                  </span>
+                ))}
               </div>
             </div>
           ))}
@@ -3047,35 +2913,22 @@ function AnimalDetailPage() {
   const navigate = useNavigate();
   const animal = ANIMALS.find(a => a.slug === name?.toLowerCase());
   const [results, setResults] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoadingResults, setIsLoadingResults] = useState(true);
 
   useEffect(() => {
-    const fetchResults = async () => {
+    async function fetchResults() {
       try {
-        setLoading(true);
-        setError(null);
         const response = await fetch('/api/results');
-        const contentType = response.headers.get('content-type');
-
-        if (!response.ok || !contentType?.includes('application/json')) {
-          console.warn('API não retornou JSON:', response.status);
-          setError('Resultados temporariamente indisponíveis');
-          setResults([]);
-          return;
+        if (response.ok) {
+          const data = await response.json();
+          setResults(data);
         }
-
-        const data = await response.json();
-        setResults(data);
-      } catch (err) {
-        console.error('Erro ao buscar resultados:', err);
-        setError('Erro ao carregar resultados');
-        setResults([]);
+      } catch (error) {
+        console.error("Error fetching results:", error);
       } finally {
-        setLoading(false);
+        setIsLoadingResults(false);
       }
-    };
-
+    }
     fetchResults();
   }, []);
 
@@ -3090,79 +2943,94 @@ function AnimalDetailPage() {
     );
   }
 
-  // [SCHEMA] AnimalPage
-  const animalSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Puxadas", "item": "https://puxabicho.com/puxadas" },
-        { "@type": "ListItem", "position": 3, "name": `Puxadas do ${animal.name}`, "item": `https://puxabicho.com/puxadas/${animal.slug}` }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": `O que o ${animal.name} puxa no jogo do bicho?`,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `O ${animal.name} (Grupo ${animal.id.toString().padStart(2, '0')}) puxa os animais: ${animal.puxadas.map(id => ANIMALS.find(a => a.id === id)?.name || id).join(', ')}. As dezenas do ${animal.name} são ${animal.numbers.join(', ')}.`
+  // Generate dynamic JSON-LD Schema
+  const dynamicSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `https://puxabicho.com/puxadas/${animal.slug}`,
+        "url": `https://puxabicho.com/puxadas/${animal.slug}`,
+        "name": `Puxadas do ${animal.name} - Jogo do Bicho | Puxabicho`,
+        "description": `Descubra o que o ${animal.name} puxa no jogo do bicho. Confira a lista completa de puxadas (${animal.puxadas.join(', ')}) e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}.`,
+        "inLanguage": "pt-BR",
+        "isPartOf": { "@id": "https://puxabicho.com" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Início",
+            "item": "https://puxabicho.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Puxadas",
+            "item": "https://puxabicho.com/puxadas"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": animal.name,
+            "item": `https://puxabicho.com/puxadas/${animal.slug}`
           }
-        },
-        {
-          "@type": "Question",
-          "name": `Qual o número do ${animal.name} no jogo do bicho?`,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `O ${animal.name} pertence ao Grupo ${animal.id.toString().padStart(2, '0')} do jogo do bicho. Suas dezenas são: ${animal.numbers.join(', ')}.`
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": `O que o ${animal.name} puxa no jogo do bicho?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `O ${animal.name} puxa os seguintes animais: ${animal.puxadas.join(', ')}.`
+            }
+          },
+          {
+            "@type": "Question",
+            "name": `Qual o número do ${animal.name} no jogo do bicho?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `O ${animal.name} pertence ao Grupo ${animal.id.toString().padStart(2, '0')} e seus números (dezenas) são ${animal.numbers.join(', ')}.`
+            }
+          },
+          {
+            "@type": "Question",
+            "name": `As puxadas do ${animal.name} são garantidas?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `As puxadas do ${animal.name} são baseadas em observações populares e estatísticas históricas do folclore do jogo do bicho, não sendo uma garantia de resultados futuros ou ganhos financeiros.`
+            }
           }
-        },
-        {
-          "@type": "Question",
-          "name": `O que significa sonhar com ${animal.name} no jogo do bicho?`,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `Sonhar com ${animal.name} é um sinal para considerar o Grupo ${animal.id.toString().padStart(2, '0')} nas apostas do jogo do bicho. Consulte a tabela de puxadas do ${animal.name} no Puxabicho para ver os animais relacionados.`
-          }
+        ]
+      },
+      {
+        "@type": "Dataset",
+        "name": `Puxadas do ${animal.name} - Jogo do Bicho`,
+        "description": `Dados estatísticos e tradicionais sobre as puxadas do animal ${animal.name} no jogo do bicho.`,
+        "url": `https://puxabicho.com/puxadas/${animal.slug}`,
+        "inLanguage": "pt-BR",
+        "keywords": [`puxadas do ${animal.slug}`, `${animal.slug} jogo do bicho`, `${animal.slug} puxa`, `grupo ${animal.id.toString().padStart(2, '0')}`],
+        "creator": {
+          "@type": "WebSite",
+          "@id": "https://puxabicho.com",
+          "name": "Puxabicho"
         }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": `Animais puxados pelo ${animal.name}`,
-      "description": `Lista de animais que o ${animal.name} puxa no jogo do bicho`,
-      "url": `https://puxabicho.com/puxadas/${animal.slug}`,
-      "numberOfItems": animal.puxadas?.length || 0,
-      "itemListElement": (animal.puxadas || []).map((id: number, i: number) => {
-        const pAnimal = ANIMALS.find(a => a.id === id);
-        return {
-          "@type": "ListItem",
-          "position": i + 1,
-          "name": pAnimal?.name || `ID ${id}`,
-          "url": `https://puxabicho.com/puxadas/${pAnimal?.slug || id}`
-        };
-      })
-    }
-  ];
-
-  useSchema(animalSchemas, [animal.slug]); // [SCHEMA]
+      }
+    ]
+  };
 
   const recommendedPuxadas = useMemo(() => {
-    const existingPuxadaIds = animal.puxadas || [];
-    // Deterministic selection based on animal.id for SSG stability
+    const existingPuxadas = animal.puxadas || [];
+    // Get animals that are NOT the current one and NOT in the current puxadas list
     return ANIMALS.filter(a => 
-      a.id !== animal.id && 
-      !existingPuxadaIds.includes(a.id)
-    ).sort((a, b) => {
-      const scoreA = (a.id * animal.id * 13) % 25;
-      const scoreB = (b.id * animal.id * 13) % 25;
-      return scoreA - scoreB;
-    }).slice(0, 4);
+      a.name !== animal.name && 
+      !existingPuxadas.includes(a.name)
+    ).sort(() => 0.5 - Math.random()).slice(0, 4);
   }, [animal]);
 
   return (
@@ -3170,6 +3038,7 @@ function AnimalDetailPage() {
       <SEO 
         title={animal.pageTitle || `Puxada do ${animal.name} - Grupo ${animal.id.toString().padStart(2, '0')} | Tabela de Puxadas`} 
         description={animal.metaDescription || `Veja a puxada do ${animal.name} e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}. Descubra quais bichos o ${animal.name} puxa no jogo do bicho e aumente suas chances.`}
+        schema={dynamicSchema}
       />
       <button 
         onClick={() => navigate('/puxadas')} 
@@ -3179,7 +3048,9 @@ function AnimalDetailPage() {
       </button>
 
       <motion.div 
-                className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
       >
         <div className="bg-emerald-700 p-8 text-center text-white flex flex-col items-center">
           <AnimalMedia 
@@ -3200,13 +3071,12 @@ function AnimalDetailPage() {
               O que o {animal.name} puxa? — Tabela Completa
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {animal.puxadas?.map((puxadaId) => {
-                const puxadaAnimal = ANIMALS.find(a => a.id === puxadaId);
-                const puxadaName = puxadaAnimal?.name || `ID ${puxadaId}`;
+              {animal.puxadas?.map((puxadaName) => {
+                const puxadaAnimal = ANIMALS.find(a => a.name === puxadaName);
                 return (
                   <Link 
-                    to={`/puxadas/${puxadaAnimal?.slug || puxadaId}`}
-                    key={puxadaId}
+                    to={`/puxadas/${puxadaAnimal?.slug || puxadaName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`}
+                    key={puxadaName}
                     className="rounded-2xl overflow-hidden"
                   >
                     <motion.div 
@@ -3309,7 +3179,7 @@ function AnimalDetailPage() {
                   Combinação Ideal
                 </h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Tente combinar o {animal.name} com o {ANIMALS.find(a => a.id === animal.puxadas?.[0])?.name || 'outro bicho'} em um Duque de Grupo para aumentar suas chances.
+                  Tente combinar o {animal.name} com o {animal.puxadas?.[0]} em um Duque de Grupo para aumentar suas chances.
                 </p>
               </div>
             </div>
@@ -3378,20 +3248,12 @@ function AnimalDetailPage() {
               Últimos Resultados do {animal.name} no Jogo do Bicho
             </h2>
             <div className="space-y-4">
-              {loading && (
+              {isLoadingResults ? (
                 <div className="flex flex-col items-center justify-center py-12 text-slate-400">
                   <Loader2 className="animate-spin mb-2" size={32} />
                   <p className="text-sm font-medium">Buscando resultados atualizados...</p>
                 </div>
-              )}
-
-              {error && (
-                <div className="text-center py-6 px-4 text-emerald-800 text-sm bg-emerald-50 rounded-2xl border border-emerald-100 italic">
-                  {error}
-                </div>
-              )}
-
-              {!loading && !error && results.filter(result => 
+              ) : results.filter(result => 
                 result.numbers.some((num: any) => num.animal.toLowerCase() === animal.name.toLowerCase())
               ).length > 0 ? (
                 results.filter(result => 
@@ -3418,7 +3280,7 @@ function AnimalDetailPage() {
                     </div>
                   </div>
                 ))
-              ) : !loading && !error && (
+              ) : (
                 <p className="text-slate-400 text-sm italic">Nenhum resultado recente encontrado para este animal nos sorteios de hoje.</p>
               )}
             </div>
@@ -3432,90 +3294,26 @@ function AnimalDetailPage() {
 // --- Palpites Page ---
 function PalpitesPage() {
   const [seed, setSeed] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
-  const [todayFormatted, setTodayFormatted] = useState('');
-  const [isoDate, setIsoDate] = useState('2026-03-22');
-
-  useEffect(() => {
-    setIsMounted(true);
-    const now = new Date();
-    setTodayFormatted(now.toLocaleDateString('pt-BR'));
-    setIsoDate(now.toISOString().split('T')[0]);
-  }, []);
-
-  // [SCHEMA] Palpites
-  const palpitesSchemas = useMemo(() => [
-    {
-      "@context": "https://schema.org",
-      "@type": "Dataset",
-      "name": "Palpites do Jogo do Bicho — Dados do Dia",
-      "description": "Dados estatísticos de palpites do jogo do bicho incluindo grupos, dezenas, centenas e milhares sugeridos com base em análise histórica.",
-      "url": "https://puxabicho.com/palpites",
-      "creator": { "@type": "Organization", "name": "Puxabicho" },
-      "keywords": ["palpites bicho", "jogo do bicho", "dezenas", "centenas"],
-      "inLanguage": "pt-BR",
-      "isAccessibleForFree": true,
-      "temporalCoverage": isoDate
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "O que é bicho atrasado no jogo do bicho?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Bicho atrasado é o animal que não sai há mais sorteios do que a média histórica. Apostadores usam essa informação como indicativo de que o animal tem maior probabilidade de sair em breve."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Como funciona a calculadora de prêmios?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A calculadora de prêmios do Puxabicho permite calcular quanto você receberia apostando em diferentes modalidades: grupo simples, dezena, centena ou milhar, com os multiplicadores de cada modalidade."
-          }
-        }
-      ]
-    }
-  ], [isoDate]);
-
-  useSchema(palpitesSchemas, [isoDate]);
 
   const palpites = useMemo(() => {
-    const getItems = (arr: any[], count: number, s: number) => {
-      const pool = [...arr];
-      if (s === 0) {
-        // Deterministic subset for initial mount and SSG
-        return pool.slice(0, count);
-      }
-      // Shuffle based on seed for user-triggered changes
-      const shuffled = pool.sort(() => 0.5 - Math.random());
+    // Helper to get random items
+    const getRandom = (arr: any[], count: number) => {
+      const shuffled = [...arr].sort(() => 0.5 - Math.random());
       return shuffled.slice(0, count);
     };
 
-    const displayAnimals = getItems(ANIMALS, 3, seed);
-    const grupos = displayAnimals.map(a => a.id.toString().padStart(2, '0'));
+    const randomAnimals = getRandom(ANIMALS, 3);
+    const grupos = randomAnimals.map(a => a.id.toString().padStart(2, '0'));
     
-    const dezenas = displayAnimals.map((a, i) => {
-      const nums = a.numbers;
-      // Stable selection for first render
-      const idx = seed === 0 ? (i % nums.length) : Math.floor(Math.random() * nums.length);
-      return nums[idx].toString().padStart(2, '0');
-    });
+    const centenas = Array.from({ length: 4 }, () => 
+      Math.floor(Math.random() * 1000).toString().padStart(3, '0')
+    );
     
-    const centenas = Array.from({ length: 4 }, (_, i) => {
-      if (seed === 0) return `${(i + 1) * 111}`.padStart(3, '0');
-      return Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    });
-    
-    const milhares = Array.from({ length: 4 }, (_, i) => {
-      if (seed === 0) return `${(i + 1) * 1111}`.padStart(4, '0');
-      return Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    });
+    const milhares = Array.from({ length: 4 }, () => 
+      Math.floor(Math.random() * 10000).toString().padStart(4, '0')
+    );
 
-    return { animals: displayAnimals, grupos, dezenas, centenas, milhares };
+    return { animals: randomAnimals, grupos, centenas, milhares };
   }, [seed]);
 
   return (
@@ -3531,9 +3329,7 @@ function PalpitesPage() {
           <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
             <Sparkles size={32} aria-hidden="true" className="text-emerald-400" /> Palpites do Jogo do Bicho para Hoje
           </h1>
-          <p className="text-emerald-100 opacity-90 text-lg">
-            Sorte do dia <span suppressHydrationWarning={true}>{isMounted ? todayFormatted : '...'}</span>. Gere novos palpites baseados em estatísticas!
-          </p>
+          <p className="text-emerald-100 opacity-90 text-lg">Sorte do dia {new Date().toLocaleDateString('pt-BR')}. Gere novos palpites baseados em estatísticas!</p>
           <button 
             onClick={() => setSeed(s => s + 1)}
             className="mt-6 bg-white text-emerald-800 px-8 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-50 transition-all shadow-lg active:scale-95 group"
@@ -3551,7 +3347,9 @@ function PalpitesPage() {
         <section>
           <motion.div 
             key={`animals-${seed}`}
-                        className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8"
           >
             <h2 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-2">
               <div className="w-2 h-8 bg-emerald-500 rounded-full" aria-hidden="true"></div>
@@ -3590,40 +3388,23 @@ function PalpitesPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Grupos Sugeridos */}
             <motion.div 
               key={`grupos-${seed}`}
-                            transition={{ delay: 0.1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <div className="w-1.5 h-6 bg-amber-500 rounded-full" aria-hidden="true"></div>
-                Grupos
+                Grupos Sugeridos
               </h3>
-              <div className="flex flex-wrap gap-2 mt-auto">
+              <div className="flex flex-wrap gap-3 mt-auto">
                 {palpites.grupos.map((g, i) => (
-                  <div key={i} className="w-full py-3 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center font-bold text-amber-700 text-xl shadow-sm">
+                  <div key={i} className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center font-bold text-amber-700 text-xl shadow-sm">
                     {g}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Dezenas Sugeridas */}
-            <motion.div 
-              key={`dezenas-${seed}`}
-                            transition={{ delay: 0.2 }}
-              className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
-            >
-              <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <div className="w-1.5 h-6 bg-emerald-500 rounded-full" aria-hidden="true"></div>
-                Dezenas
-              </h3>
-              <div className="flex flex-wrap gap-2 mt-auto">
-                {palpites.dezenas.map((d, i) => (
-                  <div key={i} className="w-full py-3 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center font-bold text-emerald-700 text-xl shadow-sm">
-                    {d}
                   </div>
                 ))}
               </div>
@@ -3632,14 +3413,16 @@ function PalpitesPage() {
             {/* Centenas Sugeridas */}
             <motion.div 
               key={`centenas-${seed}`}
-                            transition={{ delay: 0.3 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <div className="w-1.5 h-6 bg-blue-500 rounded-full" aria-hidden="true"></div>
-                Centenas
+                Centenas Sugeridas
               </h3>
-              <div className="grid grid-cols-1 gap-2 mt-auto">
+              <div className="grid grid-cols-2 gap-3 mt-auto">
                 {palpites.centenas.map((c, i) => (
                   <div key={i} className="py-3 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center font-mono font-bold text-blue-700 text-xl shadow-sm">
                     {c}
@@ -3651,14 +3434,16 @@ function PalpitesPage() {
             {/* Milhares Sugeridos */}
             <motion.div 
               key={`milhares-${seed}`}
-                            transition={{ delay: 0.4 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <div className="w-1.5 h-6 bg-purple-500 rounded-full" aria-hidden="true"></div>
-                Milhares
+                Milhares Sugeridos
               </h3>
-              <div className="grid grid-cols-1 gap-2 mt-auto">
+              <div className="grid grid-cols-2 gap-3 mt-auto">
                 {palpites.milhares.map((m, i) => (
                   <div key={i} className="py-3 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center font-mono font-bold text-purple-700 text-xl shadow-sm">
                     {m}
@@ -3725,11 +3510,6 @@ function PalpitesPage() {
 function BetCalculator() {
   const [amount, setAmount] = useState<string>('1.00');
   const [type, setType] = useState<'duque' | 'terno' | 'quadra'>('duque');
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const multipliers = {
     duque: 18.5,
@@ -3801,8 +3581,8 @@ function BetCalculator() {
           <div className="flex justify-between items-end">
             <div>
               <div className="text-[10px] font-bold text-slate-400 uppercase">Retorno Estimado</div>
-              <div className="text-2xl font-bold text-emerald-600" suppressHydrationWarning={true}>
-                {isMounted ? `R$ ${calculateReturn().toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'R$ ...'}
+              <div className="text-2xl font-bold text-emerald-600">
+                R$ {calculateReturn().toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
             </div>
             <div className="text-[10px] font-bold text-slate-300 italic">
@@ -3817,35 +3597,6 @@ function BetCalculator() {
 
 // --- Institutional Pages ---
 function StatisticsPage() {
-  // [SCHEMA] Statistics
-  const statisticsSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Dataset",
-      "name": "Estatísticas do Jogo do Bicho",
-      "description": "Banco de dados estatístico com frequência de animais, dezenas e centenas nos sorteios do bicho.",
-      "url": "https://puxabicho.com/estatisticas",
-      "creator": { "@type": "Organization", "name": "Puxabicho" },
-      "inLanguage": "pt-BR"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Como calcular a probabilidade de um bicho sair?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A probabilidade de um grupo sair no 1º prêmio é de 1 em 25 (4%). Nossas estatísticas mostram a frequência real observada nos últimos meses."
-          }
-        }
-      ]
-    }
-  ];
-
-  useSchema(statisticsSchemas);
-
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <SEO 
@@ -4036,33 +3787,6 @@ function StatisticsPage() {
 }
 
 function MethodologyPage() {
-  // [SCHEMA] Methodology
-  const methodologySchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Metodologia do Puxabicho — Como Calculamos as Puxadas",
-      "description": "Entenda o processo estatístico e histórico por trás da nossa tabela de puxadas do jogo do bicho.",
-      "author": { "@type": "Organization", "name": "Puxabicho" }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Como as puxadas são calculadas?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Nossa metodologia combina tabelas tradicionais históricas com análise de frequência de sorteios dos últimos 12 meses."
-          }
-        }
-      ]
-    }
-  ];
-
-  useSchema(methodologySchemas);
-
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Metodologia - Puxadas do Bicho" description="Entenda como calculamos as puxadas e a base estatística do nosso portal." />
@@ -4105,33 +3829,6 @@ function MethodologyPage() {
 }
 
 function GuidePage() {
-  // [SCHEMA] Guide
-  const guideSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "O que são Puxadas do Bicho? Guia Completo",
-      "description": "Guia educativo para iniciantes sobre o conceito de puxadas no jogo do bicho e como utilizar a tabela.",
-      "author": { "@type": "Organization", "name": "Puxabicho" }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Qual a origem das puxadas no bicho?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "As puxadas surgiram da observação empírica de jogadores ao longo de décadas, notando que certos animais tendem a sair após outros."
-          }
-        }
-      ]
-    }
-  ];
-
-  useSchema(guideSchemas);
-
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="O que são Puxadas? Guia Completo - Puxadas do Bicho" description="Aprenda tudo sobre as puxadas do jogo do bicho: o que são, como funcionam e como usar a tabela a seu favor." />
@@ -4191,27 +3888,6 @@ function GuidePage() {
 }
 
 function AboutPage() {
-  // [SCHEMA] Institutional
-  const aboutSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "AboutPage",
-      "name": "Sobre Nós - Puxabicho",
-      "description": "Conheça a equipe por trás do Puxadas do Bicho e nossa missão de informar com precisão.",
-      "url": "https://puxabicho.com/sobre"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Sobre Nós", "item": "https://puxabicho.com/sobre" }
-      ]
-    }
-  ];
-
-  useSchema(aboutSchemas);
-
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Sobre Nós - Puxadas do Bicho" description="Conheça a equipe por trás do Puxadas do Bicho e nossa missão de informar com precisão." />
@@ -4239,26 +3915,6 @@ function AboutPage() {
 }
 
 function ResponsibleGamingPage() {
-  // [SCHEMA] ResponsibleGaming
-  const responsibleSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Jogo Responsável - Puxabicho",
-      "url": "https://puxabicho.com/jogo-responsavel"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Jogo Responsável", "item": "https://puxabicho.com/jogo-responsavel" }
-      ]
-    }
-  ];
-
-  useSchema(responsibleSchemas);
-
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Jogo Responsável - Puxadas do Bicho" description="Informações sobre como manter o jogo como uma atividade saudável e divertida." />
@@ -4295,26 +3951,6 @@ function ResponsibleGamingPage() {
 }
 
 function TermsPage() {
-  // [SCHEMA] Terms
-  const termsSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Termos de Uso - Puxabicho",
-      "url": "https://puxabicho.com/termos"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Termos de Uso", "item": "https://puxabicho.com/termos" }
-      ]
-    }
-  ];
-
-  useSchema(termsSchemas);
-
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Termos de Uso - Puxadas do Bicho" />
@@ -4331,26 +3967,6 @@ function TermsPage() {
 }
 
 function PrivacyPage() {
-  // [SCHEMA] Privacy
-  const privacySchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Política de Privacidade - Puxabicho",
-      "url": "https://puxabicho.com/privacidade"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Privacidade", "item": "https://puxabicho.com/privacidade" }
-      ]
-    }
-  ];
-
-  useSchema(privacySchemas);
-
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <SEO title="Política de Privacidade - Puxadas do Bicho" />
@@ -4368,27 +3984,6 @@ function PrivacyPage() {
 
 function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-
-  // [SCHEMA] Contact
-  const contactSchemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "ContactPage",
-      "name": "Contato - Puxabicho",
-      "description": "Entre em contato com a equipe do Puxabicho para dúvidas, sugestões ou parcerias.",
-      "url": "https://puxabicho.com/contato"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Contato", "item": "https://puxabicho.com/contato" }
-      ]
-    }
-  ];
-
-  useSchema(contactSchemas);
   const [errors, setErrors] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
@@ -4448,7 +4043,9 @@ function ContactPage() {
           <h2 className="text-xl font-bold text-slate-800 mb-6">Envie uma Mensagem</h2>
           
           {submitted ? (
-            <motion.div
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               className="bg-emerald-50 border border-emerald-100 p-6 rounded-2xl text-center"
             >
               <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -4572,89 +4169,38 @@ function ContactPage() {
 // 8. INSTITUCIONAIS: Adicionado H1 em todas as páginas (convertido do primeiro H2).
 // 9. GERAL: Garantido 1 H1 por página, hierarquia linear H1->H2->H3, e keywords nas primeiras palavras do H1.
 
-// --- News List Page ---
-function NewsListPage() {
-  return <BlogListPage />;
-}
-
-// --- Daily News Wrapper ---
-function DailyNewsPageWrapper() {
-  const { slug } = useParams();
-  const post = BLOG_POSTS.find(p => p.slug === slug);
-  
-  // [FIX 3] NewsArticle Schema
-  const newsSchemas = post ? [
-    {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": post.title,
-      "description": post.metaDescription,
-      "author": { "@type": "Person", "name": post.author },
-      "datePublished": post.date,
-      "image": post.image,
-      "publisher": {
-        "@type": "Organization",
-        "name": "Puxabicho",
-        "logo": { "@type": "ImageObject", "url": "https://puxabicho.com/favicon.svg" }
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://puxabicho.com" },
-        { "@type": "ListItem", "position": 2, "name": "Notícias", "item": "https://puxabicho.com/noticias" },
-        { "@type": "ListItem", "position": 3, "name": post?.title, "item": `https://puxabicho.com/noticias/${post?.slug}` }
-      ]
-    }
-  ] : [];
-
-  useSchema(newsSchemas, [slug]);
-
-  return <BlogPostPage />;
-}
-
-export const routes = [
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: "puxadas", element: <PuxadasPage /> },
-      { path: "puxadas/:name", element: <AnimalDetailPage /> },
-      { path: "puxadas-do-dia", element: <CategoryPuxadaPage categoryId="do-dia" /> },
-      { path: "puxadas-de-hoje", element: <CategoryPuxadaPage categoryId="de-hoje" /> },
-      { path: "puxadas-boas", element: <CategoryPuxadaPage categoryId="boas" /> },
-      { path: "puxada-certeira", element: <CategoryPuxadaPage categoryId="certeira" /> },
-      { path: "puxadas-da-sueli", element: <ExpertPuxadaPage expertId="sueli" /> },
-      { path: "puxadas-da-ju", element: <ExpertPuxadaPage expertId="ju" /> },
-      { path: "puxadas-do-capitao", element: <ExpertPuxadaPage expertId="capitao" /> },
-      { path: "puxadas-do-magrao", element: <ExpertPuxadaPage expertId="magrao" /> },
-      { path: "puxadas-do-kaledri", element: <ExpertPuxadaPage expertId="kaledri" /> },
-      { path: "palpites", element: <PalpitesPage /> },
-      { path: "estatisticas", element: <StatisticsPage /> },
-      { path: "sobre", element: <AboutPage /> },
-      { path: "o-que-e-puxada", element: <GuidePage /> },
-      { path: "metodologia", element: <MethodologyPage /> },
-      { path: "contato", element: <ContactPage /> },
-      { path: "termos", element: <TermsPage /> },
-      { path: "privacidade", element: <PrivacyPage /> },
-      { path: "jogo-responsavel", element: <ResponsibleGamingPage /> },
-      { path: "blog", element: <BlogListPage /> },
-      { path: "blog/:slug", element: <BlogPostPage /> },
-      // [FIX 2] Noticias routes
-      { path: "noticias", element: <NewsListPage /> },
-      { path: "noticias/:slug", element: <DailyNewsPageWrapper /> }
-    ]
-  }
-];
-
 export default function App() {
   return (
-    <Layout>
+    <BrowserRouter>
       <ScrollToTop />
-      <Outlet />
-    </Layout>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/puxadas" element={<PuxadasPage />} />
+          <Route path="/puxadas/:name" element={<AnimalDetailPage />} />
+          <Route path="/puxadas-do-dia" element={<CategoryPuxadaPage categoryId="do-dia" />} />
+          <Route path="/puxadas-de-hoje" element={<CategoryPuxadaPage categoryId="de-hoje" />} />
+          <Route path="/puxadas-boas" element={<CategoryPuxadaPage categoryId="boas" />} />
+          <Route path="/puxada-certeira" element={<CategoryPuxadaPage categoryId="certeira" />} />
+          <Route path="/puxadas-da-sueli" element={<ExpertPuxadaPage expertId="sueli" />} />
+          <Route path="/puxadas-da-ju" element={<ExpertPuxadaPage expertId="ju" />} />
+          <Route path="/puxadas-do-capitao" element={<ExpertPuxadaPage expertId="capitao" />} />
+          <Route path="/puxadas-do-magrao" element={<ExpertPuxadaPage expertId="magrao" />} />
+          <Route path="/puxadas-do-kaledri" element={<ExpertPuxadaPage expertId="kaledri" />} />
+          <Route path="/palpites" element={<PalpitesPage />} />
+          <Route path="/estatisticas" element={<StatisticsPage />} />
+          <Route path="/sobre" element={<AboutPage />} />
+          <Route path="/o-que-e-puxada" element={<GuidePage />} />
+          <Route path="/metodologia" element={<MethodologyPage />} />
+          <Route path="/contato" element={<ContactPage />} />
+          <Route path="/termos" element={<TermsPage />} />
+          <Route path="/privacidade" element={<PrivacyPage />} />
+          <Route path="/jogo-responsavel" element={<ResponsibleGamingPage />} />
+          <Route path="/blog" element={<BlogListPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   );
 }
 
