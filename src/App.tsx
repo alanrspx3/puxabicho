@@ -2058,8 +2058,7 @@ function BlogPostPage() {
 
 function SEO({ title, description, schema }: { title: string; description?: string; schema?: any }) {
   const location = useLocation();
-
-  // [HYDRATION FIX 2] Usar sempre o valor fixo — não precisa de estado dinâmico
+  // [HYDRATION FIX 2] Removed dynamic baseUrl - was causing SSG vs client mismatch
   const canonicalUrl = `https://puxabicho.com${location.pathname}`;
 
   // SECURITY FIX: Sanitize schema to prevent XSS in JSON-LD
@@ -2138,12 +2137,11 @@ function ScrollToTop() {
 }
 
 // --- Animal Media Component ---
+// [HYDRATION FIX 1] Removed IntersectionObserver - causes SSG vs client mismatch
+// Using native loading="lazy" instead
 function AnimalMedia({ animal, className, emojiClassName }: { animal: any; className?: string; emojiClassName?: string }) {
-  // [HYDRATION FIX 1] Remover IntersectionObserver, renderizar imagem diretamente com loading="lazy"
   return (
-    <div
-      className={`${className} flex items-center justify-center overflow-hidden`}
-    >
+    <div className={`${className} flex items-center justify-center overflow-hidden`}>
       {animal.imageUrl ? (
         <img
           src={animal.imageUrl}
@@ -2153,9 +2151,7 @@ function AnimalMedia({ animal, className, emojiClassName }: { animal: any; class
           loading="lazy"
         />
       ) : (
-        <span className={emojiClassName} role="img" aria-label={animal.name}>
-          {animal.emoji}
-        </span>
+        <span className={emojiClassName} role="img" aria-label={animal.name}>{animal.emoji}</span>
       )}
     </div>
   );
