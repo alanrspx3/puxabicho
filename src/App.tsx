@@ -2165,8 +2165,6 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
         <>
           {/* Backdrop */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
             aria-hidden="true"
@@ -2591,8 +2589,6 @@ function HomePage() {
       <section className="bg-emerald-800 text-white py-16 px-4 relative overflow-hidden">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
             className="inline-block mb-6 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest"
           >
             O Guia Nº 1 do Brasil
@@ -3183,9 +3179,7 @@ function AnimalDetailPage() {
       </button>
 
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
+                className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
       >
         <div className="bg-emerald-700 p-8 text-center text-white flex flex-col items-center">
           <AnimalMedia 
@@ -3557,9 +3551,7 @@ function PalpitesPage() {
         <section>
           <motion.div 
             key={`animals-${seed}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8"
+                        className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8"
           >
             <h2 className="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-2">
               <div className="w-2 h-8 bg-emerald-500 rounded-full" aria-hidden="true"></div>
@@ -3602,9 +3594,7 @@ function PalpitesPage() {
             {/* Grupos Sugeridos */}
             <motion.div 
               key={`grupos-${seed}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+                            transition={{ delay: 0.1 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
@@ -3623,9 +3613,7 @@ function PalpitesPage() {
             {/* Dezenas Sugeridas */}
             <motion.div 
               key={`dezenas-${seed}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+                            transition={{ delay: 0.2 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
@@ -3644,9 +3632,7 @@ function PalpitesPage() {
             {/* Centenas Sugeridas */}
             <motion.div 
               key={`centenas-${seed}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+                            transition={{ delay: 0.3 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
@@ -3665,9 +3651,7 @@ function PalpitesPage() {
             {/* Milhares Sugeridos */}
             <motion.div 
               key={`milhares-${seed}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+                            transition={{ delay: 0.4 }}
               className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col"
             >
               <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
@@ -4464,9 +4448,7 @@ function ContactPage() {
           <h2 className="text-xl font-bold text-slate-800 mb-6">Envie uma Mensagem</h2>
           
           {submitted ? (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <motion.div
               className="bg-emerald-50 border border-emerald-100 p-6 rounded-2xl text-center"
             >
               <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
