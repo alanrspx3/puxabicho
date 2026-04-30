@@ -2378,7 +2378,7 @@ function Layout({ children }: { children: ReactNode }) {
         Pular para o conteúdo
       </a>
       
-      {isMounted && <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />}
+      <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       <header className="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -2475,8 +2475,8 @@ function Layout({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      {/* Robust Bottom Tab Bar (Mobile Only) - Only show after mount to avoid hydration mismatch with visibility classes */}
-      {isMounted && (
+      {/* Bottom Tab Bar (Mobile Only) */}
+      {(
         <nav 
           aria-label="Navegação inferior"
           className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-slate-200 px-2 py-2 flex justify-around items-center z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]"
