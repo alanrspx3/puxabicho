@@ -1831,6 +1831,98 @@ function BlogListPage() {
   );
 }
 
+function TabelaPage() {
+  const tableSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "mainEntity": {
+      "@type": "Table",
+      "about": "Tabela completa dos 25 animais do Jogo do Bicho, grupos e dezenas",
+      "name": "Tabela do Jogo do Bicho",
+      "description": "Lista de todos os animais, grupos (01-25) e as dezenas (00-99) correspondentes no Jogo do Bicho.",
+      "mainEntityOfPage": {
+        "@type": "ItemPage",
+        "@id": "https://puxabicho.com/tabela"
+      },
+      "hasPart": ANIMALS.map(animal => ({
+        "@type": "ListItem",
+        "position": animal.id,
+        "item": {
+          "@type": "Thing",
+          "name": animal.name,
+          "description": `Grupo ${String(animal.id).padStart(2, '0')} - Dezenas: ${animal.numbers.map(n => String(n).padStart(2, '0')).join(', ')}`,
+          "alternateName": animal.emoji
+        }
+      }))
+    }
+  };
+
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-12">
+      <SEO 
+        title="Tabela do Jogo do Bicho — 25 Animais, Grupos e Dezenas Completa" 
+        description="Tabela completa do jogo do bicho com todos os 25 animais, grupos (01–25) e dezenas correspondentes (00–99). Pesquise por nome ou número."
+        schema={tableSchema}
+      />
+      
+      <div className="mb-10">
+        <h1 className="text-3xl md:text-4xl font-black text-slate-800 mb-4 tracking-tight">Tabela do Jogo do Bicho — Grupos e Dezenas</h1>
+        <p className="text-slate-600 leading-relaxed max-w-3xl">
+          Consulte abaixo a tabela oficial do jogo do bicho. Cada um dos 25 animais corresponde a um grupo, e cada grupo contém 4 dezenas consecutivas. Ao todo, as dezenas vão de 00 a 99.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {ANIMALS.map((animal) => (
+          <Link 
+            to={`/puxadas/${animal.slug}`}
+            key={animal.id} 
+            className="flex items-center justify-between bg-white p-5 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all group"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center text-3xl group-hover:bg-emerald-50 transition-colors">
+                {animal.emoji}
+              </div>
+              <div>
+                <div className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Grupo {String(animal.id).padStart(2, '0')}</div>
+                <div className="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors uppercase">{animal.name}</div>
+              </div>
+            </div>
+            <div className="flex gap-1.5 flex-wrap justify-end max-w-[120px]">
+              {animal.numbers.map((n) => (
+                <span key={n} className="w-8 h-8 flex items-center justify-center bg-slate-100 rounded-lg text-xs font-bold text-slate-600 border border-slate-200">
+                  {String(n).padStart(2, '0')}
+                </span>
+              ))}
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="mt-12 bg-emerald-900 rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-800 rounded-full blur-3xl -mr-32 -mt-32 opacity-50" />
+        <div className="relative z-10 max-w-2xl">
+          <h2 className="text-2xl font-bold mb-4">Como funciona a tabela?</h2>
+          <div className="space-y-4 text-emerald-100 text-sm leading-relaxed">
+            <p>
+              O bicho do grupo é determinado pelas dezenas finais do milhar sorteado. Por exemplo, se o resultado for <strong>4523</strong>, a dezena é <strong>23</strong>.
+            </p>
+            <p>
+              Verificando na tabela, a dezena 23 pertence ao <strong>Grupo 06 (Cabra)</strong>, que compreende as dezenas 21, 22, 23 e 24.
+            </p>
+            <p>
+              Nossa tabela acima contém todos os 25 grupos tradicionais. Você pode clicar em qualquer animal para ver as <strong>puxadas</strong> recomendadas para ele.
+            </p>
+          </div>
+          <Link to="/o-que-e-puxada" className="inline-flex items-center gap-2 mt-8 bg-white text-emerald-900 font-bold px-6 py-3 rounded-xl hover:bg-emerald-50 transition-all">
+            Entenda o que são Puxadas <ChevronRight size={18} />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function BlogPostPage() {
   const { slug } = useParams();
   const post = BLOG_POSTS.find(p => p.slug === slug);
@@ -1862,11 +1954,20 @@ function BlogPostPage() {
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://puxabicho.com/blog/${post.slug}`
+    },
     "headline": post.title,
-    "image": post.image,
+    "description": post.metaDescription,
+    "image": {
+      "@type": "ImageObject",
+      "url": post.image
+    },
     "author": {
       "@type": "Person",
-      "name": post.author
+      "name": post.author,
+      "url": "https://puxabicho.com"
     },
     "publisher": {
       "@type": "Organization",
@@ -1877,7 +1978,8 @@ function BlogPostPage() {
       }
     },
     "datePublished": post.date,
-    "description": post.metaDescription
+    "dateModified": post.date,
+    "keywords": post.tags?.join(', ')
   };
 
   return (
@@ -2210,6 +2312,9 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                   <Link to="/puxadas" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <Zap size={20} className="text-emerald-500" aria-hidden="true" /> Guia de Puxadas
                   </Link>
+                  <Link to="/tabela" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
+                    <Grid size={20} className="text-emerald-500" aria-hidden="true" /> Tabela de Grupos
+                  </Link>
                   <Link to="/palpites" onClick={onClose} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors uppercase text-xs">
                     <Sparkles size={20} className="text-emerald-500" aria-hidden="true" /> Palpites do Dia
                   </Link>
@@ -2371,6 +2476,7 @@ function Layout({ children }: { children: ReactNode }) {
               <Link to="/puxadas" className={`transition-colors ${isActive('/puxadas') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Puxadas</Link>
               <Link to="/palpites" className={`transition-colors ${isActive('/palpites') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Palpites</Link>
               <Link to="/estatisticas" className={`transition-colors ${isActive('/estatisticas') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Estatísticas</Link>
+              <Link to="/tabela" className={`transition-colors ${isActive('/tabela') ? 'text-white' : 'text-emerald-100 hover:text-white'}`}>Tabela</Link>
             </div>
 
           <div className="flex items-center gap-2">
@@ -2415,7 +2521,8 @@ function Layout({ children }: { children: ReactNode }) {
             </div>
             <div>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/puxadas" className="hover:text-emerald-400 transition-colors">Tabela de Puxadas</Link></li>
+                <li><Link to="/puxadas" className="hover:text-emerald-400 transition-colors">Puxadas do Bicho</Link></li>
+                <li><Link to="/tabela" className="hover:text-emerald-400 transition-colors">Tabela do Bicho</Link></li>
                 <li><Link to="/palpites" className="hover:text-emerald-400 transition-colors">Palpites do Dia</Link></li>
                 <li><Link to="/estatisticas" className="hover:text-emerald-400 transition-colors">Estatísticas e Cálculos</Link></li>
                 <li><Link to="/blog" className="hover:text-emerald-400 transition-colors">Blog do Puxabicho</Link></li>
@@ -2500,11 +2607,26 @@ function Layout({ children }: { children: ReactNode }) {
 
 // --- Home Page ---
 function HomePage() {
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": ANIMALS.map((animal, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `https://puxabicho.com/puxadas/${animal.slug}`,
+        "name": animal.name
+      }))
+    }
+  };
+
   return (
     <>
       <SEO 
         title="Puxada do Bicho: Guia Completo das Puxadas dos 25 Animais" 
         description="Guia de puxadas do jogo do bicho com tabela completa dos 25 animais. Descubra qual bicho puxa outro e veja as combinações mais usadas."
+        schema={homeSchema}
       />
       <section className="bg-emerald-800 text-white py-16 px-4 relative overflow-hidden">
         <div className="max-w-5xl mx-auto text-center relative z-10">
@@ -4196,6 +4318,7 @@ export default function App() {
           <Route path="/termos" element={<TermsPage />} />
           <Route path="/privacidade" element={<PrivacyPage />} />
           <Route path="/jogo-responsavel" element={<ResponsibleGamingPage />} />
+          <Route path="/tabela" element={<TabelaPage />} />
           <Route path="/blog" element={<BlogListPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
         </Routes>
