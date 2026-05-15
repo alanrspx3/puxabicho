@@ -143,4 +143,34 @@
   <url><loc>https://puxabicho.com/puxadas/urso</loc><priority>0.6</priority></url>
   <url><loc>https://puxabicho.com/puxadas/veado</loc><priority>0.6</priority></url>
   <url><loc>https://puxabicho.com/puxadas/vaca</loc><priority>0.6</priority></url>
+  <url>
+    <loc>https://puxabicho.com/palpiteiros/puxada-do-mitao</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://puxabicho.com/palpiteiros/puxadas-do-fabio</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://puxabicho.com/palpiteiros/palpite-do-tavinho</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://puxabicho.com/palpiteiros/puxada-do-tavinho</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://puxabicho.com/palpiteiros/puxada-da-jacinta</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

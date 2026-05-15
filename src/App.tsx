@@ -1,9 +1,12 @@
 import React, { useState, ReactNode, useEffect, useMemo, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ANIMALS } from './constants';
-import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle, Loader2, Clock } from 'lucide-react';
+import { Menu, Search, Calendar, ChevronRight, Share2, Info, Home, List, Grid, ArrowLeft, Zap, Sparkles, RefreshCw, X, Facebook, Instagram, MessageCircle, BarChart3, BookOpen, HelpCircle, ShieldCheck, User, Mail, Scale, AlertTriangle, Loader2, Clock, Target, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Markdown from 'react-markdown';
+import AdBanner from './AdBanner';
+import TipsterPage from './TipsterPage';
+import { TIPSTERS } from './tipsters';
 
 interface BlogPost {
   id: number;
@@ -1919,6 +1922,10 @@ function TabelaPage() {
           </Link>
         </div>
       </div>
+      
+      <div className="pt-8 mt-8 border-t border-slate-100 overflow-hidden">
+        <AdBanner format="post-content" slot="9461676796" className="max-w-sm mx-auto" />
+      </div>
     </div>
   );
 }
@@ -2410,6 +2417,12 @@ function Breadcrumbs() {
             if (animal) name = animal.name;
           }
 
+          // Handle tipster slugs
+          if (pathnames[index - 1] === 'palpiteiros') {
+            const tipster = TIPSTERS.find(t => t.slug === value);
+            if (tipster) name = tipster.name;
+          }
+
           return (
             <li key={to} className="flex items-center gap-2">
               <ChevronRight size={12} className="text-slate-300" aria-hidden="true" />
@@ -2498,6 +2511,9 @@ function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
+      
+      <AdBanner format="leaderboard" slot="9459631191" className="hidden md:block my-4" />
+      <AdBanner format="rectangle" slot="9459631191" className="md:hidden my-4" />
 
       <Breadcrumbs />
 
@@ -2689,6 +2705,46 @@ function HomePage() {
           ))}
         </div>
       </div>
+
+      {/* Seção de Palpiteiros Oficiais */}
+      <section className="bg-slate-100 py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold uppercase tracking-widest mb-3">
+                <Target size={12} />
+                Palpites de Especialistas
+              </div>
+              <h2 className="text-3xl font-black text-slate-800">Palpiteiros Oficiais</h2>
+              <p className="text-slate-500 mt-2 font-medium">Confira as tabelas exclusivas dos maiores especialistas em puxadas do Brasil.</p>
+            </div>
+            <Link to="/palpiteiros/puxada-do-mitao" className="text-emerald-600 font-bold hover:underline flex items-center gap-1 text-sm transition-all group">
+              Ver todos os especialistas <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {TIPSTERS.map((t) => (
+              <Link 
+                key={t.slug}
+                to={`/palpiteiros/${t.slug}`}
+                className="bg-white p-6 rounded-[2.5rem] border border-slate-200 shadow-sm hover:shadow-2xl transition-all hover:-translate-y-2 group"
+              >
+                <div className={`w-16 h-16 bg-${t.color}-100 rounded-3xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-inner`}>
+                  {t.emoji}
+                </div>
+                <h3 className="text-lg font-black text-slate-800 mb-2 leading-tight">{t.name}</h3>
+                <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed mb-6 font-medium">
+                  {t.description}
+                </p>
+                <div className={`mt-auto inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-${t.color}-600 group-hover:gap-3 transition-all`}>
+                  Ver Puxada <ArrowRight size={14} />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 }
@@ -2955,6 +3011,51 @@ function PuxadasPage() {
           {/* Expert Puxadas Section */}
           {!searchTerm && (
             <>
+              {/* ── Puxadas de Especialistas ─────────────────── */}
+          <section className="mt-16" aria-label="Puxadas de Especialistas">
+
+            {/* Cabeçalho */}
+            <div className="flex items-center gap-2 mb-6">
+              <Sparkles size={20} className="text-emerald-500" />
+              <h2 className="text-xl font-bold text-slate-800">
+                Puxadas de Especialistas
+              </h2>
+            </div>
+
+            {/* Grid de cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {TIPSTERS.map((tipster) => (
+                <Link
+                  key={tipster.slug}
+                  to={`/palpiteiros/${tipster.slug}`}
+                  className="flex items-center gap-4 p-5 bg-white border border-slate-200 rounded-2xl hover:border-emerald-400 hover:shadow-sm transition-all group"
+                >
+                  {/* Ícone */}
+                  <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+                    <User size={20} className="text-emerald-500" />
+                  </div>
+
+                  {/* Textos */}
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold text-slate-800 text-sm truncate">
+                      {tipster.displayName}
+                    </div>
+                    <div className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5">
+                      Tabela Completa
+                    </div>
+                  </div>
+
+                  {/* Seta */}
+                  <ChevronRight
+                    size={16}
+                    className="text-slate-300 group-hover:text-emerald-400 transition-colors shrink-0"
+                  />
+                </Link>
+              ))}
+            </div>
+
+          </section>
+
               <div className="mt-16">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
@@ -3025,6 +3126,10 @@ function PuxadasPage() {
           </button>
         </div>
       )}
+
+      <div className="pt-8 mt-8 border-top border-slate-100">
+        <AdBanner format="post-content" slot="4444444444" />
+      </div>
     </div>
   );
 }
@@ -3156,102 +3261,107 @@ function AnimalDetailPage() {
   }, [animal]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <SEO 
         title={animal.pageTitle || `Puxada do ${animal.name} - Grupo ${animal.id.toString().padStart(2, '0')} | Tabela de Puxadas`} 
         description={animal.metaDescription || `Veja a puxada do ${animal.name} e as dezenas do grupo ${animal.id.toString().padStart(2, '0')}. Descubra quais bichos o ${animal.name} puxa no jogo do bicho e aumente suas chances.`}
         schema={dynamicSchema}
       />
-      <button 
-        onClick={() => navigate('/puxadas')} 
-        className="mb-6 text-slate-500 hover:text-emerald-600 font-medium flex items-center gap-2 transition-colors"
-      >
-        <ArrowLeft size={20} /> Voltar para Puxadas
-      </button>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
-      >
-        <div className="bg-emerald-700 p-8 text-center text-white flex flex-col items-center">
-          <AnimalMedia 
-            animal={animal} 
-            className="w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-lg" 
-            emojiClassName="text-7xl text-white"
-          />
-          <h1 className="text-4xl font-black tracking-tight">Puxadas do {animal.name} no Jogo do Bicho</h1>
-          <div className="mt-2 inline-block px-4 py-1 bg-emerald-800/50 rounded-full text-sm font-bold">
-            Grupo {animal.id.toString().padStart(2, '0')}
-          </div>
-        </div>
+      <div className="flex flex-col lg:flex-row gap-8">
+        <main className="flex-1 min-w-0">
+          <button 
+            onClick={() => navigate('/puxadas')} 
+            className="mb-6 text-slate-500 hover:text-emerald-600 font-medium flex items-center gap-2 transition-colors uppercase text-xs tracking-widest"
+          >
+            <ArrowLeft size={16} /> Voltar para Puxadas
+          </button>
 
-        <div className="p-8">
-          <section className="mb-10">
-            <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Zap className="text-amber-500" size={24} aria-hidden="true" />
-              O que o {animal.name} puxa? — Tabela Completa
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {animal.puxadas?.map((puxadaName) => {
-                const puxadaAnimal = ANIMALS.find(a => a.name === puxadaName);
-                return (
-                  <Link 
-                    to={`/puxadas/${puxadaAnimal?.slug || puxadaName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`}
-                    key={puxadaName}
-                    className="rounded-2xl overflow-hidden"
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
+          >
+            <div className="bg-emerald-700 p-8 text-center text-white flex flex-col items-center">
+              <AnimalMedia 
+                animal={animal} 
+                className="w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-lg" 
+                emojiClassName="text-7xl text-white"
+              />
+              <h1 className="text-4xl font-black tracking-tight">Puxadas do {animal.name} no Jogo do Bicho</h1>
+              <div className="mt-2 inline-block px-4 py-1 bg-emerald-800/50 rounded-full text-sm font-bold">
+                Grupo {animal.id.toString().padStart(2, '0')}
+              </div>
+            </div>
+
+            <div className="p-8">
+              <section className="mb-10">
+                <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                  <Zap className="text-amber-500" size={24} aria-hidden="true" />
+                  O que o {animal.name} puxa? — Tabela Completa
+                </h2>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {animal.puxadas?.map((puxadaName) => {
+                    const puxadaAnimal = ANIMALS.find(a => a.name === puxadaName);
+                    return (
+                      <Link 
+                        to={`/puxadas/${puxadaAnimal?.slug || puxadaName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}`}
+                        key={puxadaName}
+                        className="rounded-2xl overflow-hidden"
+                      >
+                        <motion.div 
+                          whileTap={{ scale: 0.95, backgroundColor: "#ecfdf5" }}
+                          className="p-4 border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group flex flex-col items-center h-full"
+                        >
+                          <AnimalMedia 
+                            animal={puxadaAnimal || { emoji: '❓', name: puxadaName }} 
+                            className="w-12 h-12 rounded-lg bg-white mb-1 group-hover:scale-110 transition-transform" 
+                            emojiClassName="text-3xl"
+                          />
+                          <div className="font-bold text-slate-700 group-hover:text-emerald-700">{puxadaName}</div>
+                        </motion.div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </section>
+
+              <section className="mb-10 p-6 bg-emerald-900 rounded-3xl border border-emerald-800 text-white relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-emerald-400/30 transition-colors"></div>
+                <div className="relative z-10">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Zap className="text-emerald-400" size={24} aria-hidden="true" />
+                    Onde Apostar?
+                  </h3>
+                  <p className="text-emerald-100 mb-6 text-sm leading-relaxed">
+                    Recomendamos a <strong>SpotBichos</strong> para você fazer suas apostas com segurança, rapidez e confiança. Clique no botão abaixo para começar agora mesmo!
+                  </p>
+                  <a 
+                    href="https://spotbichos.com/?btag=IC98SFO6" 
+                    target="_blank" 
+                    rel="sponsored noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 w-full bg-emerald-500 hover:bg-emerald-400 text-white font-black py-4 px-8 rounded-2xl shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] uppercase tracking-wider text-center"
                   >
-                    <motion.div 
-                      whileTap={{ scale: 0.95, backgroundColor: "#ecfdf5" }}
-                      className="p-4 border border-slate-100 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center group flex flex-col items-center h-full"
-                    >
-                      <AnimalMedia 
-                        animal={puxadaAnimal || { emoji: '❓', name: puxadaName }} 
-                        className="w-12 h-12 rounded-lg bg-white mb-1 group-hover:scale-110 transition-transform" 
-                        emojiClassName="text-3xl"
-                      />
-                      <div className="font-bold text-slate-700 group-hover:text-emerald-700">{puxadaName}</div>
-                    </motion.div>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
+                    Apostar Agora <ChevronRight size={20} />
+                  </a>
+                </div>
+              </section>
 
-          <section className="mb-10 p-6 bg-emerald-900 rounded-3xl border border-emerald-800 text-white relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full -mr-16 -mt-16 blur-2xl group-hover:bg-emerald-400/30 transition-colors"></div>
-            <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Zap className="text-emerald-400" size={24} aria-hidden="true" />
-                Onde Apostar?
-              </h3>
-              <p className="text-emerald-100 mb-6 text-sm leading-relaxed">
-                Recomendamos a <strong>SpotBichos</strong> para você fazer suas apostas com segurança, rapidez e confiança. Clique no botão abaixo para começar agora mesmo!
-              </p>
-              <a 
-                href="https://spotbichos.com/?btag=IC98SFO6" 
-                target="_blank" 
-                rel="sponsored noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 w-full bg-emerald-500 hover:bg-emerald-400 text-white font-black py-4 px-8 rounded-2xl shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] uppercase tracking-wider text-center"
-              >
-                Apostar Agora <ChevronRight size={20} />
-              </a>
-            </div>
-          </section>
+              <section className="mb-10">
+                <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                  <Info className="text-emerald-500" size={24} aria-hidden="true" />
+                  História do {animal.name} no jogo do bicho
+                </h3>
+                <div className="prose prose-slate max-w-none">
+                  <p className="text-slate-600 leading-relaxed text-lg">
+                    {animal.history}
+                  </p>
+                </div>
+              </section>
 
-          <section className="mb-10">
-            <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Info className="text-emerald-500" size={24} aria-hidden="true" />
-              História do {animal.name} no jogo do bicho
-            </h3>
-            <div className="prose prose-slate max-w-none">
-              <p className="text-slate-600 leading-relaxed text-lg">
-                {animal.history}
-              </p>
-            </div>
-          </section>
+              <AdBanner format="rectangle" slot="6119151985" className="mx-auto my-8" />
 
-          {animal.luckyNumber && (
+              {animal.luckyNumber && (
             <section className="mb-10 p-6 bg-amber-50 rounded-3xl border border-amber-100">
               <h3 className="text-xl font-bold text-amber-800 mb-2 flex items-center gap-2">
                 <Sparkles className="text-amber-500" size={24} aria-hidden="true" />
@@ -3409,8 +3519,20 @@ function AnimalDetailPage() {
           </section>
         </div>
       </motion.div>
-    </div>
-  );
+
+      <div className="pt-8 mt-12 border-t border-slate-100 overflow-hidden">
+        <AdBanner format="post-content" slot="9461676796" className="max-w-sm mx-auto" />
+      </div>
+    </main>
+
+    <aside className="hidden lg:block w-[300px] shrink-0">
+      <div className="sticky top-20 text-center">
+        <AdBanner format="sidebar" slot="9866825303" />
+      </div>
+    </aside>
+  </div>
+</div>
+);
 }
 
 // --- Palpites Page ---
@@ -3728,10 +3850,13 @@ function StatisticsPage() {
       
       <div className="mb-12 text-center max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Estatísticas do Jogo do Bicho — Frequência dos Animais</h1>
-        <p className="text-slate-600 leading-relaxed">
+        <p className="text-slate-600 leading-relaxed mb-8">
           Confira as principais estatísticas do jogo do bicho e loteria federal, cálculos, consultas, 
           tabelas, inversões e muito mais ferramentas para lhe auxiliar em seus eventuais jogos.
         </p>
+        
+        {/* Ad Position Meio */}
+        <AdBanner format="rectangle" slot="6119151985" className="my-8 mx-auto" />
       </div>
 
       <div className="mb-12">
@@ -3904,6 +4029,10 @@ function StatisticsPage() {
           ))}
         </div>
       </div>
+
+      <div className="pt-8 mt-12 border-t border-slate-200 overflow-hidden">
+        <AdBanner format="post-content" slot="9461676796" className="max-w-sm mx-auto" />
+      </div>
     </div>
   );
 }
@@ -3967,6 +4096,8 @@ function GuidePage() {
           </p>
         </section>
 
+        <AdBanner format="rectangle" slot="2222222222" className="mx-auto my-8" />
+
         <div className="bg-slate-100 p-8 rounded-3xl border border-slate-200">
           <h2 className="text-xl font-bold text-slate-800 mb-4">Como funciona na prática?</h2>
           <p className="mb-4">Imagine que o animal sorteado no 1º prêmio foi o <strong>Avestruz</strong>. Segundo a tabela tradicional de puxadas:</p>
@@ -4004,6 +4135,10 @@ function GuidePage() {
             Entender as puxadas é mergulhar na cultura e na mística do Jogo do Bicho. Use nosso guia como uma bússola estatística, mas lembre-se sempre de manter o jogo como uma diversão saudável.
           </p>
         </div>
+      </div>
+
+      <div className="pt-8 mt-12 border-t border-slate-100">
+        <AdBanner format="post-content" slot="4444444444" />
       </div>
     </div>
   );
@@ -4319,6 +4454,7 @@ export default function App() {
           <Route path="/privacidade" element={<PrivacyPage />} />
           <Route path="/jogo-responsavel" element={<ResponsibleGamingPage />} />
           <Route path="/tabela" element={<TabelaPage />} />
+          <Route path="/palpiteiros/:slug" element={<TipsterPage />} />
           <Route path="/blog" element={<BlogListPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
         </Routes>

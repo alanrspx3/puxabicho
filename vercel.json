@@ -13,7 +13,7 @@
         { "key": "X-XSS-Protection", "value": "1; mode=block" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' vercel-insights-cdn.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: plus.unsplash.com images.unsplash.com; connect-src 'self' vercel-insights-cdn.vercel-insights.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' vercel-insights-cdn.vercel-insights.com https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagservices.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: plus.unsplash.com images.unsplash.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://www.google.com https://*.googlesyndication.com; connect-src 'self' vercel-insights-cdn.vercel-insights.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://adservice.google.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com;"
         }
       ]
     }
