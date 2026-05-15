@@ -4,89 +4,80 @@ type AdFormat = 'leaderboard' | 'rectangle' | 'sidebar' | 'post-content';
 
 interface AdBannerProps {
   format: AdFormat;
-  slot: string; // TODO: substituir pelo data-ad-slot real do AdSense
+  slot: string;
   className?: string;
 }
 
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle: unknown[];
   }
 }
 
-const AdBanner: React.FC<AdBannerProps> = ({ format, slot, className = "" }) => {
+const AdBanner: React.FC<AdBannerProps> = ({ format, slot, className = '' }) => {
+  const adRef = useRef<HTMLModElement>(null);
   const adInitialized = useRef(false);
 
-  useEffect(() => {
-    // Evita erro no console durante desenvolvimento
-    if (process.env.NODE_ENV === 'development') return;
+  // Vite usa import.meta.env.DEV, não process.env.NODE_ENV
+  if (import.meta.env.DEV) return null;
 
-    try {
-      if (typeof window !== 'undefined' && !adInitialized.current) {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        adInitialized.current = true;
+  useEffect(() => {
+    if (adInitialized.current) return;
+    // Aguarda o elemento ter largura real antes de fazer push
+    const el = adRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect.width > 0 && !adInitialized.current) {
+          adInitialized.current = true;
+          observer.disconnect();
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+          } catch (e) {
+            console.error('AdSense error:', e);
+          }
+        }
       }
-    } catch (e) {
-      console.error("AdSense error:", e);
-    }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  // Não renderiza em desenvolvimento
-  if (process.env.NODE_ENV === 'development') return null;
-
-  const getFormatStyles = () => {
+  const getMinHeight = () => {
     switch (format) {
-      case 'leaderboard':
-        return { 
-          minHeight: '90px', 
-          maxWidth: '728px', 
-          display: 'block', 
-          margin: '0 auto' 
-        };
-      case 'rectangle':
-        return { 
-          minHeight: '250px', 
-          maxWidth: '300px', 
-          display: 'block', 
-          margin: '0 auto' 
-        };
-      case 'sidebar':
-        return { 
-          minHeight: '600px', 
-          maxWidth: '300px', 
-          display: 'block' 
-        };
-      case 'post-content':
-        return { 
-          minHeight: '280px', 
-          maxWidth: '336px', 
-          display: 'block', 
-          margin: '0 auto' 
-        };
-      default:
-        return {};
+      case 'leaderboard':  return '90px';
+      case 'rectangle':    return '250px';
+      case 'sidebar':      return '600px';
+      case 'post-content': return '280px';
+      default:             return '90px';
     }
   };
 
-  const isResponsive = format === 'rectangle' || format === 'post-content';
+  const isResponsive = format === 'rectangle' || format === 'post-content' || format === 'leaderboard';
 
   return (
-    <div 
-      className={`adsbygoogle-container ${className}`} 
-      role="complementary" 
+    <div
+      className={`adsbygoogle-container w-full ${className}`}
+      role="complementary"
       aria-label="Anúncio publicitário"
     >
-      <div className="text-[10px] text-slate-400 uppercase tracking-widest mb-1 text-center font-medium">
+      <span className="block text-[10px] text-slate-400 uppercase tracking-widest mb-1 text-center font-medium">
         Publicidade
-      </div>
-      <ins 
+      </span>
+      <ins
+        ref={adRef}
         className="adsbygoogle"
-        style={getFormatStyles()}
+        style={{
+          display: 'block',
+          minHeight: getMinHeight(),
+          width: '100%',
+        }}
         data-ad-client="ca-pub-1175286466704578"
         data-ad-slot={slot}
-        data-ad-format={isResponsive ? "auto" : undefined}
-        data-full-width-responsive={isResponsive ? "true" : undefined}
-      ></ins>
+        data-ad-format={isResponsive ? 'auto' : undefined}
+        data-full-width-responsive={isResponsive ? 'true' : undefined}
+      />
     </div>
   );
 };
