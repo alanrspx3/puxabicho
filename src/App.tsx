@@ -2417,10 +2417,29 @@ function Breadcrumbs() {
             if (animal) name = animal.name;
           }
 
-          // Handle tipster slugs
-          if (pathnames[index - 1] === 'palpiteiros') {
-            const tipster = TIPSTERS.find(t => t.slug === value);
-            if (tipster) name = tipster.name;
+          // Handle tipster slugs at root
+          const tipster = TIPSTERS.find(t => t.slug === value);
+          if (tipster) {
+            name = tipster.displayName;
+            // Inject "Puxadas" parent in breadcrumb if at root
+            if (index === 0) {
+              return (
+                <React.Fragment key={to}>
+                  <li className="flex items-center gap-2">
+                    <ChevronRight size={12} className="text-slate-300" aria-hidden="true" />
+                    <Link to="/puxadas" className="hover:text-emerald-600 transition-colors">
+                      Puxadas
+                    </Link>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <ChevronRight size={12} className="text-slate-300" aria-hidden="true" />
+                    <span className="text-slate-800 font-bold" aria-current="page">
+                      {name}
+                    </span>
+                  </li>
+                </React.Fragment>
+              );
+            }
           }
 
           return (
@@ -2718,7 +2737,7 @@ function HomePage() {
               <h2 className="text-3xl font-black text-slate-800">Palpiteiros Oficiais</h2>
               <p className="text-slate-500 mt-2 font-medium">Confira as tabelas exclusivas dos maiores especialistas em puxadas do Brasil.</p>
             </div>
-            <Link to="/palpiteiros/puxada-do-mitao" className="text-emerald-600 font-bold hover:underline flex items-center gap-1 text-sm transition-all group">
+            <Link to="/puxada-do-mitao" className="text-emerald-600 font-bold hover:underline flex items-center gap-1 text-sm transition-all group">
               Ver todos os especialistas <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -2727,7 +2746,7 @@ function HomePage() {
             {TIPSTERS.map((t) => (
               <Link 
                 key={t.slug}
-                to={`/palpiteiros/${t.slug}`}
+                to={`/${t.slug}`}
                 className="bg-white p-6 rounded-[2.5rem] border border-slate-200 shadow-sm hover:shadow-2xl transition-all hover:-translate-y-2 group"
               >
                 <div className={`w-16 h-16 bg-${t.color}-100 rounded-3xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-inner`}>
@@ -3027,7 +3046,7 @@ function PuxadasPage() {
               {TIPSTERS.map((tipster) => (
                 <Link
                   key={tipster.slug}
-                  to={`/palpiteiros/${tipster.slug}`}
+                  to={`/${tipster.slug}`}
                   className="flex items-center gap-4 p-5 bg-white border border-slate-200 rounded-2xl hover:border-emerald-400 hover:shadow-sm transition-all group"
                 >
                   {/* Ícone */}
@@ -4454,9 +4473,9 @@ export default function App() {
           <Route path="/privacidade" element={<PrivacyPage />} />
           <Route path="/jogo-responsavel" element={<ResponsibleGamingPage />} />
           <Route path="/tabela" element={<TabelaPage />} />
-          <Route path="/palpiteiros/:slug" element={<TipsterPage />} />
           <Route path="/blog" element={<BlogListPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/:slug" element={<TipsterPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

@@ -67,15 +67,15 @@ export default function TipsterPage() {
     "@graph": [
       {
         "@type": "WebPage",
-        "@id": `https://puxabicho.com/palpiteiros/${tipster.slug}`,
-        "url": `https://puxabicho.com/palpiteiros/${tipster.slug}`,
+        "@id": `https://puxabicho.com/${tipster.slug}`,
+        "url": `https://puxabicho.com/${tipster.slug}`,
         "name": tipster.pageTitle,
         "description": tipster.metaDescription,
-        "breadcrumb": { "@id": `https://puxabicho.com/palpiteiros/${tipster.slug}#breadcrumb` }
+        "breadcrumb": { "@id": `https://puxabicho.com/${tipster.slug}#breadcrumb` }
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://puxabicho.com/palpiteiros/${tipster.slug}#breadcrumb`,
+        "@id": `https://puxabicho.com/${tipster.slug}#breadcrumb`,
         "itemListElement": [
           {
             "@type": "ListItem",
@@ -101,7 +101,7 @@ export default function TipsterPage() {
         "name": tipster.name,
         "description": tipster.bio,
         "jobTitle": "Especialista em Jogos de Sorte",
-        "url": `https://puxabicho.com/palpiteiros/${tipster.slug}`
+        "url": `https://puxabicho.com/${tipster.slug}`
       },
       {
         "@type": "FAQPage",
